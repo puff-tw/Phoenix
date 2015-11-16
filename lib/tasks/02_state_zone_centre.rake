@@ -103,5 +103,5 @@ namespace :state_zone_city do
   # end
 
   desc "Run all tasks in this file"
-  task all: [:seed_states, :seed_zones, :seed_cities]#, :seed_business_entitites_with_users]
+  task seed_all: [:seed_states, :seed_zones, :seed_cities]#, :seed_business_entitites_with_users]
 end
