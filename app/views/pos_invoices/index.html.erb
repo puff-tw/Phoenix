@@ -1,21 +1,21 @@
 <% provide(:title, 'POS Invoice listing') %>
 <%= link_to 'New Sale invoice', new_pos_invoice_path, class: 'pull-right' %>
 <div class="display responsive no-wrap voucher_line_items">
-  <table id='pos_invoice_index' , data-source="<%= pos_invoices_url(format: :json) %>" , class='DataTable-line-items'>
+  <table id='pos_invoice_index', data-source="<%= pos_invoices_url(format: :json) %>", class='DataTable-line-items'>
     <thead>
-    <tr>
-      <th class='col-md-1 text-center'>Date</th>
-      <th class='col-md-1 text-center'>Invoice #</th>
-      <th class='col-md-2 text-center'>Entity </th>
-      <th class='col-md-2 text-center'>Location </th>
-      <th class='col-md-1 text-center'>Amount</th>
-      <th class='col-md-2 text-center'>Created by </th>
-      <th class='col-md-2 text-center'>Operations</th>
-    </tr>
+      <tr>
+        <th class='col-md-1 text-center'>Date</th>
+        <th class='col-md-1 text-center'>Invoice #</th>
+        <th class='col-md-2 text-center'>Entity</th>
+        <th class='col-md-2 text-center'>Location</th>
+        <th class='col-md-1 text-center'>Amount</th>
+        <th class='col-md-2 text-center'>Created by</th>
+        <th class='col-md-2 text-center'>Operations</th>
+      </tr>
     </thead>
     <tbody>
-    <%# @pos_invoices.find_each do |pos_invoice| %>
-    <!-- <tr>
+      <%# @pos_invoices.find_each do |pos_invoice| %>
+        <!-- <tr>
           <td class='text-center'><%#= pos_invoice.txn_date.strftime('%d/%m/%Y') %></td>
           <td class='text-center'><%#= pos_invoice.number %></td>
           <td class='text-center'>
@@ -27,49 +27,7 @@
             <%#= link_to "PDF version", pos_invoice_url(pos_invoice.id, format: "pdf"), target: :_blank %> | <%#= link_to 'Edit', edit_pos_invoice_path(pos_invoice.id) if current_power.include_record?(:updatable, pos_invoice) %>
           </td>
         </tr> -->
-    <%# end %>
+      <%# end %>
     </tbody>
   </table>
 </div>
-
-
-<script>
-  $(function () {
-    var dt = $('#pos_invoice_index').dataTable({
-      processing: true,
-      serverSide: true,
-      ajax: $('#pos_invoice_index').data('source'),
-      aLengthMenu: [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]],
-      pagingType: 'full_numbers',
-      order: [[0, "desc"], [1, "desc"]],
-      sPaginationType: "bootstrap",
-      columns: [
-        {"sClass": "text-center"},
-        {"sClass": "text-center"},
-        {"sClass": "text-center", "sortable": false},
-        {"sClass": "text-center"},
-        {"sClass": "text-right", "sortable": false},
-        {"sClass": "text-center"},
-        {"sClass": "text-center", "sortable": false}
-      ]
-    });
-
-    $('#date_search').keyup(function () {
-      dt.column(0).search(this.value).draw();
-    });
-    $('#entity_search').keyup(function () {
-      dt.column(2).search(this.value).draw();
-    });
-    $('#location_search').keyup(function () {
-      dt.column(3).search(this.value).draw();
-    });
-    $('#invoice_search').keyup(function () {
-      dt.column(1).search(this.value).draw();
-    });
-
-    $('#created_search').keyup(function () {
-      dt.column(5).search(this.value).draw();
-    });
-
-  });
-</script>

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-
-
   mount RailsAdmin::Engine => '/masters', as: 'rails_admin'
 
   # root :to => redirect('/masters')
@@ -49,12 +47,6 @@ Rails.application.routes.draw do
   resources :states
   resources :voucher_sequences, path: 'voucher-sequences', except: :show
 
-
-  get '/total-sales-summary' => 'total_sales_summary#show'
-  get '/total-sales-summary-report' => 'total_sales_summary#constructdatatable'
-  post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
-  get '/on-hand-lookup' => 'on_hand_look_up#show'
-  get '/on-hand-lookup-report' =>'on_hand_look_up#calculate'
   # AWS health check
   get '/ping' => 'ping#show'
   # get '/sales' => 'reports#index'

@@ -7,7 +7,6 @@ function null_values_replaced_with_not_defined (option_value) {
     return '<i>no prefix</i>';
   }
 }
-var dt = null;
 
 $(document).on('ready page:load', function() {
   $(".selectme").select2({
@@ -106,7 +105,7 @@ $(document).on('ready page:load', function() {
 
   $.fn.dataTable.moment( 'DD/MM/YYYY' );
 
-  dt = $('.DataTable').DataTable({
+  $('.DataTable').DataTable({
     // "sDom": 'flt<ip>',
     // "sDom": "<lfr>Tt<ip>",
     "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
@@ -124,7 +123,7 @@ $(document).on('ready page:load', function() {
     // http://datatables.net/reference/option/pagingType
   });
 
-  dt = $('.DataTable-Server').DataTable({
+  $('.DataTable-Server').DataTable({
     // "sDom": 'flt<ip>',
     // "sDom": "<lfr>Tt<ip>",
     "aLengthMenu": [[12, 25, 50, 100, -1], [12, 25, 50, 100, "All"]],
@@ -154,13 +153,4 @@ $(document).on('ready page:load', function() {
   //   "sPaginationType": "bootstrap",
   //   responsive: true
   // });
-
-
 });
-
-function myFilter(id,columnId, value) {
-  var dt = $(id).DataTable()
-  dt.columns(columnId)
-      .search(value)
-      .draw();
-}
