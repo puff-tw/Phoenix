@@ -29,35 +29,35 @@ class LookupReport < ActiveType::Object
     CSV.generate(options) do |csv|
       csv << ['Code', 'Title', 'Available stock']
       bus_ent_locs.keys.each do |loc| # Locations already in sorted order
-        master[loc].keys.sort.each do |product|
+	master[loc].keys.sort.each do |product|
 
-          if (product_id == '')
+	  if (product_id == '')
 
-            available_stock = 0
-            available_stock += master[loc][product]['opening_stock'].to_i
-            available_stock += master[loc][product]['inventory_in'].to_i
-            available_stock -= master[loc][product]['inventory_out'].to_i
-            available_stock -= master[loc][product]['pos_sales'].to_i
-            available_stock -= master[loc][product]['in_transit'].to_i
+	    available_stock = 0
+	    available_stock += master[loc][product]['opening_stock'].to_i
+	    available_stock += master[loc][product]['inventory_in'].to_i
+	    available_stock -= master[loc][product]['inventory_out'].to_i
+	    available_stock -= master[loc][product]['pos_sales'].to_i
+	    available_stock -= master[loc][product]['in_transit'].to_i
 
-            csv << [product,
-                    products[product][0],
-                    available_stock]
-          else
-            if (product == Product.find(product_id.to_i)['sku'])
-              available_stock = 0
-              available_stock += master[loc][product]['opening_stock'].to_i
-              available_stock += master[loc][product]['inventory_in'].to_i
-              available_stock -= master[loc][product]['inventory_out'].to_i
-              available_stock -= master[loc][product]['pos_sales'].to_i
-              available_stock -= master[loc][product]['in_transit'].to_i
+	    csv << [product,
+		    products[product][0],
+		    available_stock]
+	  else
+	    if (product == Product.find(product_id.to_i)['sku'])
+	      available_stock = 0
+	      available_stock += master[loc][product]['opening_stock'].to_i
+	      available_stock += master[loc][product]['inventory_in'].to_i
+	      available_stock -= master[loc][product]['inventory_out'].to_i
+	      available_stock -= master[loc][product]['pos_sales'].to_i
+	      available_stock -= master[loc][product]['in_transit'].to_i
 
-              csv << [product,
-                      products[product][0],
-                      available_stock]
-            end
-          end
-        end
+	      csv << [product,
+		      products[product][0],
+		      available_stock]
+	    end
+	  end
+	end
       end
     end
   end
@@ -105,28 +105,28 @@ class LookupReport < ActiveType::Object
   def self.locationwise_inventory_in_vouchers_within_period(master=Hash.new, from_date='01/04/2015', to_date=Time.zone.now.strftime('%d/%m/%Y'), location_id=nil)
     if location_id.present?
       inv_in_vouchers, prods_in = hash_reorganise_locatiowise(master, 'inventory_in',
-                                                              InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_in)
+							      InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_in)
       )
       int_tnsfr_in, prods_tnsfr = hash_reorganise_locatiowise({}, 'inventory_in',
-                                                              InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(secondary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:secondary_location_id, :sku).order("secondary_location_id, products.sku").sum(:quantity_in)
+							      InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(secondary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:secondary_location_id, :sku).order("secondary_location_id, products.sku").sum(:quantity_in)
       )
     else
       inv_in_vouchers, prods_in = hash_reorganise_locatiowise(master, 'inventory_in',
-                                                              InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_in)
+							      InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_in)
       )
       int_tnsfr_in, prods_tnsfr = hash_reorganise_locatiowise({}, 'inventory_in',
-                                                              InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:secondary_location_id, :sku).order("secondary_location_id, products.sku").sum(:quantity_in)
+							      InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:secondary_location_id, :sku).order("secondary_location_id, products.sku").sum(:quantity_in)
       )
     end
     int_tnsfr_in.keys.each do |loc|
       int_tnsfr_in[loc].keys.each do |prod|
-        inv_in_vouchers[loc] || inv_in_vouchers[loc] = Hash.new
-        inv_in_vouchers[loc][prod] || inv_in_vouchers[loc][prod] = Hash.new
-        if inv_in_vouchers[loc][prod]['inventory_in'].present?
-          inv_in_vouchers[loc][prod]['inventory_in'] += int_tnsfr_in[loc][prod]['inventory_in']
-        else
-          inv_in_vouchers[loc][prod]['inventory_in'] = int_tnsfr_in[loc][prod]['inventory_in']
-        end
+	inv_in_vouchers[loc] || inv_in_vouchers[loc] = Hash.new
+	inv_in_vouchers[loc][prod] || inv_in_vouchers[loc][prod] = Hash.new
+	if inv_in_vouchers[loc][prod]['inventory_in'].present?
+	  inv_in_vouchers[loc][prod]['inventory_in'] += int_tnsfr_in[loc][prod]['inventory_in']
+	else
+	  inv_in_vouchers[loc][prod]['inventory_in'] = int_tnsfr_in[loc][prod]['inventory_in']
+	end
       end
     end
     return inv_in_vouchers, (prods_in + prods_tnsfr).uniq.sort
@@ -135,28 +135,28 @@ class LookupReport < ActiveType::Object
   def self.locationwise_inventory_out_vouchers_within_period(master=Hash.new, from_date='01/04/2015', to_date=Time.zone.now.strftime('%d/%m/%Y'), location_id=nil)
     if location_id.present?
       inv_out_vouchers, prods_out = hash_reorganise_locatiowise(master, 'inventory_out',
-                                                                InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
+								InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
       )
       int_tnsfr_out, prods_tnsfr = hash_reorganise_locatiowise({}, 'inventory_out',
-                                                               InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
+							       InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
       )
     else
       inv_out_vouchers, prods_out = hash_reorganise_locatiowise(master, 'inventory_out',
-                                                                InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
+								InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
       )
       int_tnsfr_out, prods_tnsfr = hash_reorganise_locatiowise({}, 'inventory_out',
-                                                               InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
+							       InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
       )
     end
     int_tnsfr_out.keys.each do |loc|
       int_tnsfr_out[loc].keys.each do |prod|
-        inv_out_vouchers[loc] || inv_out_vouchers[loc] = Hash.new
-        inv_out_vouchers[loc][prod] || inv_out_vouchers[loc][prod] = Hash.new
-        if inv_out_vouchers[loc][prod]['inventory_out'].present?
-          inv_out_vouchers[loc][prod]['inventory_out'] += int_tnsfr_out[loc][prod]['inventory_out']
-        else
-          inv_out_vouchers[loc][prod]['inventory_out'] = int_tnsfr_out[loc][prod]['inventory_out']
-        end
+	inv_out_vouchers[loc] || inv_out_vouchers[loc] = Hash.new
+	inv_out_vouchers[loc][prod] || inv_out_vouchers[loc][prod] = Hash.new
+	if inv_out_vouchers[loc][prod]['inventory_out'].present?
+	  inv_out_vouchers[loc][prod]['inventory_out'] += int_tnsfr_out[loc][prod]['inventory_out']
+	else
+	  inv_out_vouchers[loc][prod]['inventory_out'] = int_tnsfr_out[loc][prod]['inventory_out']
+	end
       end
     end
     return inv_out_vouchers, (prods_out + prods_tnsfr).uniq.sort
@@ -165,11 +165,11 @@ class LookupReport < ActiveType::Object
   def self.locationwise_in_transit_within_period(master=Hash.new, from_date='01/04/2015', to_date=Time.zone.now.strftime('%d/%m/%Y'), location_id=nil)
     if location_id.present?
       hash_reorganise_locatiowise(master, 'in_transit',
-                                  InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum("quantity_out - quantity_in")
+				  InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where(primary_location_id: location_id).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum("quantity_out - quantity_in")
       )
     else
       hash_reorganise_locatiowise(master, 'in_transit',
-                                  InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum("quantity_out - quantity_in")
+				  InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInternalTransferVoucher.where("date(voucher_date) >= ? AND date(voucher_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum("quantity_out - quantity_in")
       )
     end
   end
@@ -178,30 +178,30 @@ class LookupReport < ActiveType::Object
     # pos quantity returned as positive, stored negative in DB
     if location_id.present?
       hash_reorganise_locatiowise(master, 'pos_sales',
-                                  InvoiceLineItem.where("invoice_line_items.account_txn_id IN (?)", PosInvoice.joins(:header).where("date(txn_date) >= ? AND date(txn_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where("invoice_headers.business_entity_location_id = ?", location_id).references("invoice_headers").pluck(:id)).includes(:product, account_txn: :header).group(:business_entity_location_id, :sku).order("business_entity_location_id, products.sku").sum("-quantity")
+				  InvoiceLineItem.where("invoice_line_items.account_txn_id IN (?)", PosInvoice.joins(:header).where("date(txn_date) >= ? AND date(txn_date) <= ?", Date.parse(from_date), Date.parse(to_date)).where("invoice_headers.business_entity_location_id = ?", location_id).references("invoice_headers").pluck(:id)).includes(:product, account_txn: :header).group(:business_entity_location_id, :sku).order("business_entity_location_id, products.sku").sum("-quantity")
       )
     else
       hash_reorganise_locatiowise(master, 'pos_sales',
-                                  InvoiceLineItem.where("invoice_line_items.account_txn_id IN (?)", PosInvoice.where("date(txn_date) >= ? AND date(txn_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, account_txn: :header).group(:business_entity_location_id, :sku).order("business_entity_location_id, products.sku").sum("-quantity")
+				  InvoiceLineItem.where("invoice_line_items.account_txn_id IN (?)", PosInvoice.where("date(txn_date) >= ? AND date(txn_date) <= ?", Date.parse(from_date), Date.parse(to_date)).pluck(:id)).includes(:product, account_txn: :header).group(:business_entity_location_id, :sku).order("business_entity_location_id, products.sku").sum("-quantity")
       )
     end
   end
 
   def self.locationwise_inventory_out_vouchers_without_reserved_accounts_consolidated(master=Hash.new)
     hash_reorganise_locatiowise(master, 'inventory_out_wo_reserved',
-                                InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where("secondary_entity_id NOT IN (105, 129, 130)").pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
+				InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where("secondary_entity_id NOT IN (105, 129, 130)").pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
     )
   end
 
   def self.locationwise_inventory_in_vouchers_consolidated(master=Hash.new)
     hash_reorganise_locatiowise(master, 'inventory_in',
-                                InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInVoucher.pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_in)
+				InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryInVoucher.pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_in)
     )
   end
 
   def self.locationwise_retail_sale_vouchers_consolidated(master=Hash.new)
     hash_reorganise_locatiowise(master, 'retail_sales',
-                                InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where(secondary_entity_id: 105).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
+				InventoryTxnLineItem.where('inventory_txn_id IN (?)', InventoryOutVoucher.where(secondary_entity_id: 105).pluck(:id)).includes(:product, :inventory_txn).group(:primary_location_id, :sku).order("primary_location_id, products.sku").sum(:quantity_out)
     )
   end
 end

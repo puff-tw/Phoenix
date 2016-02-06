@@ -2,14 +2,14 @@ class OnHandLookUpController < ApplicationController
   def show
 
     @location = BusinessEntity
-                    .joins(:locations)
-                    .select('business_entity_locations.id,
-                              business_entities.alias_name,
-                              business_entity_locations.name')
-                    .where('business_entities.id = business_entity_locations.business_entity_id', 'business_entity_locations.active = TRUE')
+		    .joins(:locations)
+		    .select('business_entity_locations.id,
+			      business_entities.alias_name,
+			      business_entity_locations.name')
+		    .where('business_entities.id = business_entity_locations.business_entity_id', 'business_entity_locations.active = TRUE')
     @products = Product.all.where('active' => true).order('sku');
   end
-  
+
   def calculate
     filter_params = Hash.new
     filter_params[:location_id] = params[:location_id]
