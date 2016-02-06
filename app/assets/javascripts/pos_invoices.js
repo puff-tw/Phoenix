@@ -57,24 +57,93 @@ $(document).on('ready page:load', function() {
     // $('#open_new_invoice')[0].click();
   }
 
+    (function ($) {
+        $.fn.serializeObject = function () {
+
+            var self = this,
+                json = {},
+                push_counters = {},
+                patterns = {
+                    "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+                    "key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+                    "push": /^$/,
+                    "fixed": /^\d+$/,
+                    "named": /^[a-zA-Z0-9_]+$/
+                };
+
+
+            this.build = function (base, key, value) {
+                base[key] = value;
+                return base;
+            };
+
+            this.push_counter = function (key) {
+                if (push_counters[key] === undefined) {
+                    push_counters[key] = 0;
+                }
+                return push_counters[key]++;
+            };
+
+            $.each($(this).serializeArray(), function () {
+
+                // skip invalid keys
+                if (!patterns.validate.test(this.name)) {
+                    return;
+                }
+
+                var k,
+                    keys = this.name.match(patterns.key),
+                    merge = this.value,
+                    reverse_key = this.name;
+
+                while ((k = keys.pop()) !== undefined) {
+
+                    // adjust reverse_key
+                    reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+                    // push
+                    if (k.match(patterns.push)) {
+                        merge = self.build([], self.push_counter(reverse_key), merge);
+                    }
+
+                    // fixed
+                    else if (k.match(patterns.fixed)) {
+                        merge = self.build([], k, merge);
+                    }
+
+                    // named
+                    else if (k.match(patterns.named)) {
+                        merge = self.build({}, k, merge);
+                    }
+                }
+
+                json = $.extend(true, json, merge);
+            });
+
+            return json;
+        };
+    })(jQuery);
+
+
   $(function() {
-    return $('#pos_invoice_index').dataTable({
-      processing: true,
-      serverSide: true,
-      ajax: $('#pos_invoice_index').data('source'),
-      aLengthMenu: [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]],
-      pagingType: 'full_numbers',
-      order: [[ 0, "desc" ], [ 1, "desc" ]],
-      sPaginationType: "bootstrap",
-      columns: [
-                  {"sClass": "text-center"},
-                  {"sClass": "text-center"},
-                  {"sClass": "text-center", "sortable": false},
-                  {"sClass": "text-center"},
-                  {"sClass": "text-right", "sortable": false},
-                  {"sClass": "text-center"},
-                  {"sClass": "text-center", "sortable": false}
-                ]
+        //return $('#pos_invoice_index').dataTable({
+        //    processing: true,
+        //    serverSide: true,
+        //    ajax: $('#pos_invoice_index').data('source'),
+        //    aLengthMenu: [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]],
+        //    pagingType: 'full_numbers',
+        //    order: [[0, "desc"], [1, "desc"]],
+        //    sPaginationType: "bootstrap",
+        //    columns: [
+        //        {"sClass": "text-center"},
+        //        {"sClass": "text-center"},
+        //        {"sClass": "text-center", "sortable": false},
+        //        {"sClass": "text-center"},
+        //        {"sClass": "text-right", "sortable": false},
+        //        {"sClass": "text-center"},
+        //        {"sClass": "text-center", "sortable": false}
+        //    ]
+        //});
     });
   });
 
@@ -136,4 +205,80 @@ $(document).on('click', '#save_button', function(event) {
     $('.change_tendered:first').focus();
     return event.preventDefault();
   }
+
+    if (1) {
+
+        event.preventDefault();
+
+        var values = {};
+        $.each($("#new_pos_invoice").serializeArray(), function (i, field) {
+            values[field.name] = field.value;
 });
+        var getValue = function (valueName) {
+            return values[valueName];
+        };
+
+        //console.log(JSON.stringify($(this).serializeObject()));
+        var result = $('#new_pos_invoice').serializeObject();
+
+        var postedData1 = {};
+
+        postedData1['location'] = result.pos_invoice.header_attributes.business_entity_location_id;
+        var quantity = [];
+        $.each(result.pos_invoice.line_items_attributes, function (i, field) {
+            if (field.sku != "") {
+                var postedData = {};
+
+                postedData['sku'] = field.sku;
+                postedData['quantity'] = field.quantity;
+
+                quantity.push(postedData);
+            }
+
+        });
+
+        postedData1['items'] = quantity;
+
+
+        var myParams = JSON.stringify(postedData1);
+        var notAvailable = [];
+        var finalResult = true;
+        var mydata = null;
+
+        $.ajax({
+            url: '/total-sales-summary-validate.json',
+            data: {'data': myParams},
+            method: 'post',
+            cache: false
+        }).done(function (data) {
+            mydata = data;
+            $.each(mydata, function (i, field) {
+                if (field.available == false) {
+                    notAvailable.push(field.sku);
+                }
+            });
+
+            if (notAvailable.length > 0) {
+
+                var textDisplay = "SKU: ";
+                $.each(notAvailable, function (i, field) {
+
+					if(i == 0)
+                    	textDisplay = textDisplay +""+field;
+					else
+						textDisplay = textDisplay + "\\" + field;
+
+                });
+                textDisplay = textDisplay + "\nStock not available(Negative sales) Update manually.";
+
+
+                var r = confirm(textDisplay);
+                if (r == true)
+                    $('#new_pos_invoice').submit();
+            } else {
+				$('#new_pos_invoice').submit();
+			}
+        });
+    }
+});
+

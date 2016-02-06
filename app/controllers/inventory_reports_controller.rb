@@ -3,7 +3,7 @@ class InventoryReportsController < ApplicationController
 
   def stock_summary
     filter_params = Hash.new
-    filter_params[:location_id] = params[:location_id]
+    filter_params[:language_id] = params[:location_id]
     filter_params[:from_date] = params[:from_date] || '01/04/2015'
     filter_params[:to_date] = params[:to_date] || Time.zone.now.strftime('%d/%m/%Y')
     @stock_summary = InventoryReport.locationwise_stock_summary({}, filter_params)

@@ -1,0 +1,30 @@
+<form method="get" action="/on-hand-lookup-report.xls">
+  <div class="col-md-12">
+    <div class="col-md-4">
+      <label>Location : </label>
+      <select class="form-control select-box" name="location_id" id="location_id">
+        <option value="">Select one</option>
+        <% @location.each do |c| %>
+            <option value="<%= c.id %>"><%= c.alias_name %> :: <%= c.name %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label>Product : </label>
+      <select class="form-control select-box" name="product_id" id="product_id">
+        <option value="">Select one</option>
+        <% @products.each do |c| %>
+            <option value="<%= c.id %>"><%= c.sku %> :: <%= c.name %> :: <%= c.alias_name %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <input type="submit" name="lookupsubmit" value="Lookup" class="btn btn-primary">
+    </div>
+  </div>
+</form>
+<script>
+  $(function () {
+    $('.select-box').select2();
+  });
+</script>

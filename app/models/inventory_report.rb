@@ -35,7 +35,7 @@ class InventoryReport < ActiveType::Object
           available_stock -= master[loc][product]['pos_sales'].to_i
           available_stock -= master[loc][product]['in_transit'].to_i
 
-          csv << [bus_ent_locs[loc][0],
+          csv << [bus_ent_locs[loc][0].gsub(",", ""),
                   bus_ent_locs[loc][1],
                   product, products[product][0],
                   products[product][1],
