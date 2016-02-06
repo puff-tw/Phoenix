@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate
   before_action :current_ability
+  before_filter :check_rack_mini_profiler
 
   helper_method :current_user
   helper_method :current_business_entity
@@ -41,6 +42,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  def check_rack_mini_profiler
+    # for example - if current_user.admin?
+    if params[:rmp]
+      Rack::MiniProfiler.authorize_request
+    end
+  end
 
   def current_user
     return @current_user if @current_user.present? && @business_entities.present?
