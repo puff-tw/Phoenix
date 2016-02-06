@@ -31,3 +31,9 @@
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# tmp files
+tmp/*
+log/*
+.idea/*
+public/assets

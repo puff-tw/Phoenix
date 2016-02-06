@@ -15,6 +15,7 @@ gem 'bitmask_attributes'
 gem 'consul'
 gem 'assignable_values'
 gem 'airbrake'
+gem 'rake', '~> 10.5'
 gem 'select2-rails', '~> 3.5.9.3'
 gem 'prawn'
 gem 'prawn-table'
@@ -51,6 +52,8 @@ gem 'jbuilder'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt'
 gem 'puma', '2.10.2'
+gem 'awesome_print'
+gem 'rack-mini-profiler'
 
 group :development, :test do
   gem 'capistrano',                   require: false
@@ -59,6 +62,7 @@ group :development, :test do
   gem 'capistrano3-puma',             require: false
   gem "rvm1-capistrano3",             require: false
   gem 'bullet'
+
 
   gem 'rubocop'
   gem 'byebug'

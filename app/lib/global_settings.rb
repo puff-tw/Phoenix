@@ -3,15 +3,18 @@
 # Phase II - Multi-tenant implementation. Values should be populated based on current user's rights.
 class GlobalSettings
   def self.current_bookstall_id
-    156
+    158
+    # 156
   end
 
   def self.current_stores_id
-    155
+    157
+    # 155
   end
 
   def self.current_business_entitry_id
-    136
+    134
+    # 136
   end
 
   def self.organisation_name
@@ -19,10 +22,11 @@ class GlobalSettings
   end
 
   def self.organisation_address
-    'Babuji Memorial Ashram, Manapakkam, Chennai'
+    'Kanha Shanti Vanam, Shri Ramchandra Mission
+13-110, Chegur, Kothur, Mahoobnagar Dt, Telegana 509228'
   end
 
   def self.organisation_registration
-    'TIN # 111111111111'
+    'TIN # 36217061270'
   end
 end
