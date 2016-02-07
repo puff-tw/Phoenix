@@ -1,8 +1,8 @@
-<form method="get" action="/on-hand-lookup-report.xls">
+<form method="get" id='lookup-form' action="/on-hand-lookup-report.xls">
   <div class="col-md-12">
     <div class="col-md-4">
       <label>Location : </label>
-      <select class="form-control select-box" name="location_id" id="location_id">
+      <select class="form-control select-box" name="location_id" id="location_id" required>
         <option value="">Select one</option>
         <% @location.each do |c| %>
             <option value="<%= c.id %>"><%= c.alias_name %> :: <%= c.name %></option>
@@ -20,11 +20,45 @@
     </div>
     <div class="col-md-4">
       <input type="submit" name="lookupsubmit" value="Lookup" class="btn btn-primary">
+      <input type="button" name="lookupsubmit" id='export' value="Export" class="btn btn-primary">
     </div>
   </div>
 </form>
 <script>
   $(function () {
     $('.select-box').select2();
+
+    $('#lookup-form').submit(function(event) {
+
+       if ($('#location_id').val() == '') {
+          alert('Please select The Location..');
+          event.preventDefault();
+          return;
+       }
+
+       $('#lookup-form').attr('action','/on-hand-lookup-report');
+       $('#lookup-form')[0].submit();
+
+
+
+    });
+
+    $('#export').click(function(event) {
+
+       if ($('#location_id').val() == '') {
+          alert('Please select The Location..');
+          event.preventDefault();
+          return;
+       }
+
+       $('#lookup-form').attr('action','/on-hand-lookup-report.xls');
+       $('#lookup-form')[0].submit();
+
+
+
+    });
+
+
+
   });
 </script>

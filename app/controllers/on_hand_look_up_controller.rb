@@ -17,7 +17,7 @@ class OnHandLookUpController < ApplicationController
     filter_params[:from_date] = params[:from_date] || '01/04/2015'
     filter_params[:to_date] = Time.zone.now.strftime('%d/%m/%Y')
 
-    @stock_summary = LookupReport.locationwise_stock_summary({}, filter_params)
+    @stock_summary = LookupReport.locationwise_stock_summary_table({}, filter_params)
 
     respond_to do |format|
       format.xls { send_data LookupReport.locationwise_stock_summary({col_sep: "\t"}, filter_params), filename: "on_hand_lookup_summary_#{params[:location_id]}_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }

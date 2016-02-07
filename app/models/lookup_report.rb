@@ -5,6 +5,73 @@ class LookupReport < ActiveType::Object
   # attribute :to_date, :date
   # attribute :location_id, :integer
 
+   def self.locationwise_stock_summary_table(options = {}, filter_params={})
+
+    from_date = filter_params[:from_date]
+    to_date = filter_params[:to_date]
+    location_id = filter_params[:location_id]
+    product_id = filter_params[:product_id]
+    voucher_id = filter_params[:voucher_id]
+
+    master = Hash.new
+    master, opening_stock_products = locationwise_opening_stock_vouchers_consolidated(master, from_date, location_id)
+    master, inventory_in_products = locationwise_inventory_in_vouchers_within_period(master, from_date, to_date, location_id)
+    master, inventory_out_products = locationwise_inventory_out_vouchers_within_period(master, from_date, to_date, location_id)
+    master, pos_sales_products = locationwise_pos_invoices_within_period(master, from_date, to_date, location_id) # pos quantity fetched as positive, stored negative in DB
+    master, in_transit_products = locationwise_in_transit_within_period(master, from_date, to_date, location_id)
+
+    product_skus = (opening_stock_products + inventory_in_products + inventory_out_products + pos_sales_products + in_transit_products).uniq
+
+    products = Product.sort_skus_by_parentcat_lang(product_skus)
+    bus_ent_locs = Hash.new
+    BusinessEntityLocation.includes(:business_entity).where(id: master.keys).each { |x| bus_ent_locs[x.id] = [x.business_entity_alias_name, x.name] }
+    bus_ent_locs = bus_ent_locs.sort_by { |_, value| value }.to_h
+
+    result = Array.new
+
+    bus_ent_locs.keys.each do |loc| # Locations already in sorted order
+      master[loc].keys.sort.each do |product|
+        available_stock = 0
+        available_stock += master[loc][product]['opening_stock'].to_i
+        available_stock += master[loc][product]['inventory_in'].to_i
+        available_stock -= master[loc][product]['inventory_out'].to_i
+        available_stock -= master[loc][product]['pos_sales'].to_i
+        available_stock -= master[loc][product]['in_transit'].to_i
+
+        if (product_id == '')
+
+          productmap = Hash.new
+          productmap['BusinessEntity'] = bus_ent_locs[loc][0].gsub(",", "")
+          productmap['Location'] = bus_ent_locs[loc][1]
+          productmap['Sku'] = product
+          productmap['ProductName'] = products[product][0]
+          productmap['PCat'] = products[product][1]
+          productmap['Lang'] = products[product][2]
+          productmap['AvailableStock'] = available_stock
+
+          result<<productmap
+        else
+          sku_id = Product.find(product_id.to_i)['sku']
+          if (product == sku_id)
+            productmap = Hash.new
+            productmap['BusinessEntity'] = bus_ent_locs[loc][0].gsub(",", "")
+            productmap['Location'] = bus_ent_locs[loc][1]
+            productmap['Sku'] =product
+            productmap['ProductName'] = products[product][0]
+            productmap['PCat'] = products[product][1]
+            productmap['Lang'] = products[product][2]
+            productmap['AvailableStock'] = available_stock
+
+            result<<productmap
+          end
+        end
+      end
+    end
+
+    return result
+
+  end
+
   def self.locationwise_stock_summary(options = {}, filter_params={})
     from_date = filter_params[:from_date]
     to_date = filter_params[:to_date]
