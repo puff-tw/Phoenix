@@ -354,6 +354,7 @@ DEPENDENCIES
   sidekiq
   spring
   turbolinks
+  tzinfo-data
   uglifier
   web-console (~> 2.0)
 

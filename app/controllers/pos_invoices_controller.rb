@@ -1,10 +1,10 @@
 class PosInvoicesController < ApplicationController
   power :pos_invoices, map: {
-                          [:edit, :update, :get_voucher_sequences] => :updatable_pos_invoices,
-                          [:new, :create, :get_voucher_sequences] => :creatable_pos_invoices,
-                          [:index, :show] => :view_pos_invoices,
-                          [:destroy] => :destroyable_pos_invoices
-                        }, as: :pos_invoice_scope
+      [:edit, :update, :get_voucher_sequences] => :updatable_pos_invoices,
+      [:new, :create, :get_voucher_sequences] => :creatable_pos_invoices,
+      [:index, :show] => :view_pos_invoices,
+      [:destroy] => :destroyable_pos_invoices
+  }, as: :pos_invoice_scope
   include VoucherSequenceable
   before_action :set_pos_invoice, only: [:edit, :update, :destroy]
 
@@ -24,8 +24,8 @@ class PosInvoicesController < ApplicationController
       format.pdf do
         pdf = PosInvoicePdf.new(@pos_invoice)
         send_data pdf.render, filename: "pos_invoice_#{@pos_invoice.number}",
-                              type: "application/pdf",
-                              disposition: 'inline'
+                  type: "application/pdf",
+                  disposition: 'inline'
       end
     end
   end
@@ -40,7 +40,7 @@ class PosInvoicesController < ApplicationController
   end
 
   def create
-    @pos_invoice = PosInvoice.new(pos_invoice_params.merge!(current_user_id: current_user.id))#, current_business_entity: current_business_entity))
+    @pos_invoice = PosInvoice.new(pos_invoice_params.merge!(current_user_id: current_user.id)) #, current_business_entity: current_business_entity))
 
     respond_to do |format|
       if @pos_invoice.save
@@ -60,7 +60,7 @@ class PosInvoicesController < ApplicationController
   def update
     respond_to do |format|
       if @pos_invoice.update(pos_invoice_params.merge!(current_user_id: current_user.id))
-        format.html { redirect_to pos_invoice_url(@pos_invoice.id), flash: {success: 'POS invoice was updated successfully.'}}
+        format.html { redirect_to pos_invoice_url(@pos_invoice.id), flash: {success: 'POS invoice was updated successfully.'} }
         format.json { render :show, status: :ok, location: @pos_invoice }
       else
         initialize_form
@@ -150,4 +150,6 @@ class PosInvoicesController < ApplicationController
     build_child_line_items
     build_payment_children
   end
+
+
 end

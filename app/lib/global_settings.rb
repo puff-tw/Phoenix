@@ -3,18 +3,18 @@
 # Phase II - Multi-tenant implementation. Values should be populated based on current user's rights.
 class GlobalSettings
   def self.current_bookstall_id
-    158
-    # 156
+    #158
+     156
   end
 
   def self.current_stores_id
-    157
-    # 155
+    #157
+     155
   end
 
   def self.current_business_entitry_id
-    134
-    # 136
+    #134
+     136
   end
 
   def self.organisation_name

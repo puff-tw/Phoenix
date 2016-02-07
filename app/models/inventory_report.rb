@@ -28,6 +28,10 @@ class InventoryReport < ActiveType::Object
       csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher In', 'Inv. Voucher Out', 'POS Sales', 'In Transit', 'Avlbl Stk']
       bus_ent_locs.keys.each do |loc| # Locations already in sorted order
         master[loc].keys.sort.each do |product|
+
+
+          #if(product == )
+
           available_stock = 0
           available_stock += master[loc][product]['opening_stock'].to_i
           available_stock += master[loc][product]['inventory_in'].to_i
@@ -35,11 +39,13 @@ class InventoryReport < ActiveType::Object
           available_stock -= master[loc][product]['pos_sales'].to_i
           available_stock -= master[loc][product]['in_transit'].to_i
 
-          csv << [bus_ent_locs[loc][0],
+          csv << [bus_ent_locs[loc][0].gsub(",", ""),
                   bus_ent_locs[loc][1],
                   product, products[product][0],
+                  #"SKU Demo", products[product][0],
                   products[product][1],
                   products[product][2],
+                  #'My Lang',
                   master[loc][product]['opening_stock'],
                   master[loc][product]['inventory_in'],
                   master[loc][product]['inventory_out'],

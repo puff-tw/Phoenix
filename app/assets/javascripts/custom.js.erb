@@ -1,52 +1,52 @@
-function null_values_replaced_with_not_defined (option_value) {
-  if (option_value.text.length > 0)
-  {
+function null_values_replaced_with_not_defined(option_value) {
+  if (option_value.text.length > 0) {
     return option_value.text;
   }
   else {
     return '<i>no prefix</i>';
   }
 }
+var dt = null;
 
-$(document).on('ready page:load', function() {
+$(document).on('ready page:load', function () {
   $(".selectme").select2({
-      formatResult: null_values_replaced_with_not_defined,
-      formatSelection: null_values_replaced_with_not_defined
-      // allowClear: true
+    formatResult: null_values_replaced_with_not_defined,
+    formatSelection: null_values_replaced_with_not_defined
+    // allowClear: true
   });
 
-  setTimeout(function(){
+  setTimeout(function () {
     $('.flash_success_message').slideUp('slow');
   }, 4000);
 
-  setTimeout(function(){
+  setTimeout(function () {
     $('.flash_non_success_message').slideUp('slow');
   }, 12000);
 
   // gem 'bootstrap3-datetimepicker-rails'
   $('.datetimepicker').datetimepicker({
     format: 'DD/MM/YYYY',
-    extraFormats: [ 'DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY' ],
+    extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
     showTodayButton: true,
     showClose: true
   });
   $('.datetimepickerfrom').datetimepicker({
     format: 'DD/MM/YYYY',
-    extraFormats: [ 'DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY' ],
+    extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
     showTodayButton: true,
     showClose: true
   });
   $('.datetimepickerto').datetimepicker({
     format: 'DD/MM/YYYY',
-    extraFormats: [ 'DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY' ],
+    extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
     showTodayButton: true,
     showClose: true
   });
   $(".datetimepickerfrom").on("dp.change", function (e) {
-      $('.datetimepickerto').data("DateTimePicker").minDate(e.date);
+    $('.datetimepickerto').data("DateTimePicker").minDate(e.date);
   });
   $(".datetimepickerto").on("dp.change", function (e) {
-      $('.datetimepickerfrom').data("DateTimePicker").maxDate(e.date);
+    $('.datetimepickerfrom').data("DateTimePicker").maxDate(e.date);
   });
   // end gem 'bootstrap3-datetimepicker-rails'
 
@@ -87,30 +87,30 @@ $(document).on('ready page:load', function() {
   // });
 
 
-  $.fn.dataTable.moment = function ( format, locale ) {
+  $.fn.dataTable.moment = function (format, locale) {
     var types = $.fn.dataTable.ext.type;
 
     // Add type detection
-    types.detect.unshift( function ( d ) {
-        return moment( d, format, locale, true ).isValid() ?
-            'moment-'+format :
-            null;
-    } );
+    types.detect.unshift(function (d) {
+      return moment(d, format, locale, true).isValid() ?
+      'moment-' + format :
+          null;
+    });
 
     // Add sorting method - use an integer for the sorting
-    types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
-        return moment( d, format, locale, true ).unix();
+    types.order['moment-' + format + '-pre'] = function (d) {
+      return moment(d, format, locale, true).unix();
     };
   };
 
-  $.fn.dataTable.moment( 'DD/MM/YYYY' );
+  $.fn.dataTable.moment('DD/MM/YYYY');
 
-  $('.DataTable').DataTable({
+  dt = $('.DataTable').DataTable({
     // "sDom": 'flt<ip>',
     // "sDom": "<lfr>Tt<ip>",
     "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
     "iDisplayLength": 15,
-    "order": [[ 0, "desc" ], [ 1, "desc" ]],
+    "order": [[0, "desc"], [1, "desc"]],
     // ajax: ...,
     // autoWidth: false,
     pagingType: 'full_numbers',
@@ -123,12 +123,12 @@ $(document).on('ready page:load', function() {
     // http://datatables.net/reference/option/pagingType
   });
 
-  $('.DataTable-Server').DataTable({
+  dt = $('.DataTable-Server').DataTable({
     // "sDom": 'flt<ip>',
     // "sDom": "<lfr>Tt<ip>",
     "aLengthMenu": [[12, 25, 50, 100, -1], [12, 25, 50, 100, "All"]],
     "iDisplayLength": 12,
-    "order": [[ 0, "desc" ], [ 1, "desc" ]],
+    "order": [[0, "desc"], [1, "desc"]],
     // ajax: ...,
     // autoWidth: false,
     pagingType: 'full_numbers',
@@ -153,4 +153,13 @@ $(document).on('ready page:load', function() {
   //   "sPaginationType": "bootstrap",
   //   responsive: true
   // });
+
+
 });
+
+function myFilter(id,columnId, value) {
+  var dt = $(id).DataTable()
+  dt.columns(columnId)
+      .search(value)
+      .draw();
+}

@@ -5,7 +5,7 @@ gem 'rails', '~> 4.2.5'
 gem 'pg'
 # gem 'arel'#, '~> 6.0.0'
 # gem 'actionform'
-
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'ancestry'
 gem 'active_type'
 gem 'font-awesome-rails'
