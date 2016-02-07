@@ -39,8 +39,8 @@ class AccountTxn < MyActiveRecord
     super
     self.status = attributes[:status].presence || 1 # Default Active
     self.number = attributes[:number].presence || 0 # Pre-filled for new invoice
-    self.business_entity_id = 1 if self.business_entity_id.blank?
-    self.voucher_sequence_id = 6 if self.voucher_sequence_id.blank?
+    self.business_entity_id = 134 if self.business_entity_id.blank?
+    self.voucher_sequence_id = 465 if self.voucher_sequence_id.blank?
     self.currency_id = 1 if self.currency_id.blank?
   end
 
