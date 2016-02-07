@@ -16,6 +16,13 @@
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Changes Made
+1. Added Onhand and total sales summary report(botn inline and excel)
+2. Added Popup on negatie sales 
+3. Added individual search filter for every grid in column itself
+4. Added Voucher based search in total sales report itself.
+4. Changed Language into products in total sales summary screen
+
 # Credits
 
 This project is built by [Team Solutionize](http://solutionize.in/). Members who actively contributed to the project: Gorav Bhootra, Chandrasekhar N., Vasumathi N.
