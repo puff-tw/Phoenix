@@ -206,79 +206,79 @@ $(document).on('click', '#save_button', function (event) {
         return event.preventDefault();
     }
 
-    if (1) {
+   //  if (1) {
 
-        event.preventDefault();
+   //      event.preventDefault();
 
-        var values = {};
-        $.each($("#new_pos_invoice").serializeArray(), function (i, field) {
-            values[field.name] = field.value;
-        });
-        var getValue = function (valueName) {
-            return values[valueName];
-        };
+   //      var values = {};
+   //      $.each($("#new_pos_invoice").serializeArray(), function (i, field) {
+   //          values[field.name] = field.value;
+   //      });
+   //      var getValue = function (valueName) {
+   //          return values[valueName];
+   //      };
 
-        //console.log(JSON.stringify($(this).serializeObject()));
-        var result = $('#new_pos_invoice').serializeObject();
+   //      //console.log(JSON.stringify($(this).serializeObject()));
+   //      var result = $('#new_pos_invoice').serializeObject();
 
-        var postedData1 = {};
+   //      var postedData1 = {};
 
-        postedData1['location'] = result.pos_invoice.header_attributes.business_entity_location_id;
-        var quantity = [];
-        $.each(result.pos_invoice.line_items_attributes, function (i, field) {
-            if (field.sku != "") {
-                var postedData = {};
+   //      postedData1['location'] = result.pos_invoice.header_attributes.business_entity_location_id;
+   //      var quantity = [];
+   //      $.each(result.pos_invoice.line_items_attributes, function (i, field) {
+   //          if (field.sku != "") {
+   //              var postedData = {};
 
-                postedData['sku'] = field.sku;
-                postedData['quantity'] = field.quantity;
+   //              postedData['sku'] = field.sku;
+   //              postedData['quantity'] = field.quantity;
 
-                quantity.push(postedData);
-            }
+   //              quantity.push(postedData);
+   //          }
 
-        });
+   //      });
 
-        postedData1['items'] = quantity;
+   //      postedData1['items'] = quantity;
 
 
-        var myParams = JSON.stringify(postedData1);
-        var notAvailable = [];
-        var finalResult = true;
-        var mydata = null;
+   //      var myParams = JSON.stringify(postedData1);
+   //      var notAvailable = [];
+   //      var finalResult = true;
+   //      var mydata = null;
 
-        $.ajax({
-            url: '/total-sales-summary-validate.json',
-            data: {'data': myParams},
-            method: 'post',
-            cache: false
-        }).done(function (data) {
-            mydata = data;
-            $.each(mydata, function (i, field) {
-                if (field.available == false) {
-                    notAvailable.push(field.sku);
-                }
-            });
+   //      $.ajax({
+   //          url: '/total-sales-summary-validate.json',
+   //          data: {'data': myParams},
+   //          method: 'post',
+   //          cache: false
+   //      }).done(function (data) {
+   //          mydata = data;
+   //          $.each(mydata, function (i, field) {
+   //              if (field.available == false) {
+   //                  notAvailable.push(field.sku);
+   //              }
+   //          });
 
-            if (notAvailable.length > 0) {
+   //          if (notAvailable.length > 0) {
 
-                var textDisplay = "SKU: ";
-                $.each(notAvailable, function (i, field) {
+   //              var textDisplay = "SKU: ";
+   //              $.each(notAvailable, function (i, field) {
 
-					if(i == 0)
-                    	textDisplay = textDisplay +""+field;
-					else
-						textDisplay = textDisplay + "\nSKU :" + field;
+			// 		if(i == 0)
+   //                  	textDisplay = textDisplay +""+field;
+			// 		else
+			// 			textDisplay = textDisplay + "\nSKU :" + field;
 						
-                });
-                textDisplay = textDisplay + "\nStock not available(Negative sales) Update manually.";
+   //              });
+   //              textDisplay = textDisplay + "\nStock not available(Negative sales) Update manually.";
               
 
-                var r = confirm(textDisplay);
-                if (r == true)
-                    $('#new_pos_invoice').submit();
-            } else {
-				$('#new_pos_invoice').submit();
-			}
-        });
-    }
+   //              var r = confirm(textDisplay);
+   //              if (r == true)
+   //                  $('#new_pos_invoice').submit();
+   //          } else {
+			// 	$('#new_pos_invoice').submit();
+			// }
+   //      });
+   //  }
 });
 
