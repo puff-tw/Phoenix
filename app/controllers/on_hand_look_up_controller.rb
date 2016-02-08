@@ -6,7 +6,7 @@ class OnHandLookUpController < ApplicationController
                     .select('business_entity_locations.id,
                               business_entities.alias_name,
                               business_entity_locations.name')
-                    .where('business_entities.id = business_entity_locations.business_entity_id', 'business_entity_locations.active = TRUE')
+                    .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
     @products = Product.all.where('active' => true).order('sku');
   end
   

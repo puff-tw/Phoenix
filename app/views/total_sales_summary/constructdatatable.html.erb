@@ -15,10 +15,13 @@
       <th>PosSales</th>
       <th>InTransit</th>
       <th>AvailableStock</th>
+      <th>GrossAmount</th>
     </tr>
     </thead>
     <tbody>
-    <% @stock_summary.each do |product| %>
+    <% @stock_summary['result'].each do |product| %>
+
+
         <tr>
           <td><%= product['BusinessEntity'] %></td>
           <td><%= product['Location'] %></td>
@@ -32,10 +35,16 @@
           <td><%= product['PosSales'] %></td>
           <td><%= product['InTransit'] %></td>
           <td><%= product['AvailableStock'] %></td>
+          <td><%= product['GrossAmount'] %></td>
+          
         </tr>
     <% end %>
     </tbody>
   </table>
+
+  <div>
+    <h3>Total Amount of Sales : <%=@stock_summary['amount'] %></h3>
+  </div>
 </div>
 
 <script>

@@ -6,6 +6,7 @@ gem 'pg'
 # gem 'arel'#, '~> 6.0.0'
 # gem 'actionform'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'ancestry'
 gem 'active_type'
 gem 'font-awesome-rails'

@@ -1,0 +1,37 @@
+<form name="language_report" id="language_report" action="/calculate-sales-limit">
+  <div class="col-md-12">
+    <div class="col-md-3">
+      <label>Location : </label>
+
+      <select class="form-control select-box" name="location_id" id="location_id" required>
+        <option value="">Select one</option>
+        <% @location.each do |c| %>
+          <% if(c.id == GlobalSettings.current_bookstall_id)%>
+            <option value="<%= c.id %>" selected><%= c.alias_name %> :: <%= c.name %></option>
+          <% else %>
+            <option value="<%= c.id %>"><%= c.alias_name %> :: <%= c.name %></option>
+          <% end %>
+        <%end%>  
+      </select>
+    </div>
+
+     <div class="col-md-3">
+      <label>Limit : </label>
+      <input type='number' name='limit' id='limit' class='form-control' required>
+     </div>
+
+     <div class='col-md-3'>
+        <br/>
+        <input type='submit' value='Submit' class='btn btn-primary'/>
+        <input type='reset' name="limit_reset" value="Reset" class="btn btn-warning">
+     </div>
+
+  </div>
+</form>
+
+<script type="text/javascript">
+
+$(function() {
+	$('#location_id').select2();
+});
+</script>

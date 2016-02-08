@@ -5,8 +5,12 @@
       <select class="form-control select-box" name="location_id" id="location_id" required>
         <option value="">Select one</option>
         <% @location.each do |c| %>
+          <% if(c.id == GlobalSettings.current_bookstall_id)%>
+            <option value="<%= c.id %>" selected><%= c.alias_name %> :: <%= c.name %></option>
+          <% else %>
             <option value="<%= c.id %>"><%= c.alias_name %> :: <%= c.name %></option>
-        <% end %>
+          <% end %>
+        <%end%>  
       </select>
     </div>
     <div class="col-md-4">
@@ -38,9 +42,6 @@
 
        $('#lookup-form').attr('action','/on-hand-lookup-report');
        $('#lookup-form')[0].submit();
-
-
-
     });
 
     $('#export').click(function(event) {
@@ -53,9 +54,6 @@
 
        $('#lookup-form').attr('action','/on-hand-lookup-report.xls');
        $('#lookup-form')[0].submit();
-
-
-
     });
 
 

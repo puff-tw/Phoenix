@@ -9,7 +9,7 @@ class TotalSalesSummaryController < ApplicationController
                     .select('business_entity_locations.id,
                                         business_entities.alias_name,
                                         business_entity_locations.name')
-                    .where('business_entities.id = business_entity_locations.business_entity_id', 'business_entity_locations.active = TRUE')
+                    .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
 
      @stock_summary = Array.new
                     
@@ -80,6 +80,26 @@ class TotalSalesSummaryController < ApplicationController
     respond_to do |format|
       format.json { render json: a, status: :ok }
     end
+  end
+  def show_limit
+    
+    @location = BusinessEntity
+                    .joins(:locations)
+                    .select('business_entity_locations.id,
+                                        business_entities.alias_name,
+                                        business_entity_locations.name')
+                    .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
+
+  end
+
+  def calculate_sales_limit
+    filter_params = Hash.new
+    filter_params[:location_id] = params[:location_id]
+    filter_params[:limit] = params[:limit]
+    filter_params[:from_date] = params[:from_date] || '01/04/2015'
+    filter_params[:to_date] = params[:to_date] || Time.zone.now.strftime('%d/%m/%Y')
+    
+    @sales_result = TotalStockCalculation.calculate_sales({},filter_params)
   end
 
 end

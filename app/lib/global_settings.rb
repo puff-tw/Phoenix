@@ -29,4 +29,7 @@ class GlobalSettings
   def self.organisation_registration
     'TIN # 36217061270'
   end
+  def self.start_date
+    '01/02/2016'
+  end
 end

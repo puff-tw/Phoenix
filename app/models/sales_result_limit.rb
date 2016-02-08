@@ -1,17 +1,11 @@
-class LanguageReport < ActiveType::Object
-  # http://localhost:3000/stock-summary.xls?location_id=155&from_date='26/09/2015'&to_date='29/09/2015'
-
-  # attribute :from_date, :date
-  # attribute :to_date, :date
-  # attribute :location_id, :integer
-
-  def self.locationwise_stock_summary_table(options = {}, filter_params={})
+class SalesLimitResult < ActiveType::Object
+ 
+  def self.calculate_sales(options = {}, filter_params={})
 
     from_date = filter_params[:from_date]
     to_date = filter_params[:to_date]
     location_id = filter_params[:location_id]
-    product_id = filter_params[:product_id]
-    voucher_id = filter_params[:voucher_id]
+    limit = filter_params[:limit]
 
     master = Hash.new
     master, opening_stock_products = locationwise_opening_stock_vouchers_consolidated(master, from_date, location_id)
@@ -28,8 +22,6 @@ class LanguageReport < ActiveType::Object
     bus_ent_locs = bus_ent_locs.sort_by { |_, value| value }.to_h
 
     result = Array.new
-    result_map = Hash.new
-    totalAmount = 0;
 
     bus_ent_locs.keys.each do |loc| # Locations already in sorted order
       master[loc].keys.sort.each do |product|
@@ -40,23 +32,8 @@ class LanguageReport < ActiveType::Object
         available_stock -= master[loc][product]['pos_sales'].to_i
         available_stock -= master[loc][product]['in_transit'].to_i
 
-        if(master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i > 0)
-        if (product_id == '')
-
-          #
-          # csv << [bus_ent_locs[loc][0].gsub(",", ""),
-          #         bus_ent_locs[loc][1],
-          #         product, products[product][0],
-          #         products[product][1],
-          #         products[product][2],
-          #         #'My Lang',
-          #         master[loc][product]['opening_stock'],
-          #         master[loc][product]['inventory_in'],
-          #         master[loc][product]['inventory_out'],
-          #         master[loc][product]['pos_sales'],
-          #         (master[loc][product]['in_transit'].present? && master[loc][product]['in_transit'] != 0) ? master[loc][product]['in_transit'] : nil,
-          #         available_stock]
-
+      
+      	if(available_stock < limit)
           productmap = Hash.new
           productmap['BusinessEntity'] = bus_ent_locs[loc][0].gsub(",", "")
           productmap['Location'] = bus_ent_locs[loc][1]
@@ -67,46 +44,17 @@ class LanguageReport < ActiveType::Object
           productmap['OpStock'] = master[loc][product]['opening_stock']
           productmap['VoucherIn'] = master[loc][product]['inventory_in']
           productmap['VoucherOut'] = master[loc][product]['inventory_out']
-          productmap['PosSales'] = master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i
+          productmap['PosSales'] = master[loc][product]['pos_sales']
           productmap['InTransit'] = (master[loc][product]['in_transit'].present? && master[loc][product]['in_transit'] != 0) ? master[loc][product]['in_transit'] : nil
           productmap['AvailableStock'] = available_stock
-          #productmap['GrossAmount']= (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i )* (Product.where(:sku => product.to_i).limit(1)['selling_price'].to_i)
-          
-          productmap['GrossAmount']= (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)
-          totalAmount = totalAmount.to_i + (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)
-          result<<productmap
-        else
-          sku_id = Product.find(product_id.to_i)['sku']
-          if (product == sku_id)
-            productmap = Hash.new
-            productmap['BusinessEntity'] = bus_ent_locs[loc][0].gsub(",", "")
-            productmap['Location'] = bus_ent_locs[loc][1]
-            productmap['Sku'] =product
-            productmap['ProductName'] = products[product][0]
-            productmap['PCat'] = products[product][1]
-            productmap['Lang'] = products[product][2]
-            productmap['OpStock'] = master[loc][product]['opening_stock']
-            productmap['VoucherIn'] = master[loc][product]['inventory_in']
-            productmap['VoucherOut'] = master[loc][product]['inventory_out']
-            productmap['PosSales'] = master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i
-            productmap['InTransit'] = (master[loc][product]['in_transit'].present? && master[loc][product]['in_transit'] != 0) ? master[loc][product]['in_transit'] : nil
-            productmap['AvailableStock'] = available_stock
-            #productmap['GrossAmount']= master[loc][product]['pos_sales'].to_i * Product.where(:sku => product.to_i).limit(1)['selling_price']
-            #productmap['GrossAmount']= (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i )* (Product.where(:sku => product.to_i).first()['selling_price'].to_i)
-            productmap['GrossAmount']= (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)
-          
 
-          totalAmount = totalAmount.to_i + (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)
-            result<<productmap
-          end
+          result<<productmap
+        
         end
       end
     end
-    end
 
-    result_map['result'] = result;
-    result_map['amount'] = totalAmount;
-    return result_map
+    return result
 
   end
 
@@ -201,12 +149,12 @@ class LanguageReport < ActiveType::Object
     CSV.generate(options) do |csv|
 
       if (voucher_id == '')
-        csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher In', 'Inv. Voucher Out', 'POS Sales', 'In Transit', 'Avlbl Stk','Gross Amount']
+        csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher In', 'Inv. Voucher Out', 'POS Sales', 'In Transit', 'Avlbl Stk']
       else
         if (voucher_id == 'in')
-          csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher In','Gross Amount']
+          csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher In']
         else
-          csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher Out','Gross Amount']
+          csv << ['Bus. Entity', 'Location', 'SKU', 'Product Name', 'P. Cat', 'Lang', 'Op. Stk', 'Inv. Voucher Out']
         end
       end
       bus_ent_locs.keys.each do |loc| # Locations already in sorted order
@@ -233,8 +181,7 @@ class LanguageReport < ActiveType::Object
                       master[loc][product]['inventory_out'],
                       master[loc][product]['pos_sales'],
                       (master[loc][product]['in_transit'].present? && master[loc][product]['in_transit'] != 0) ? master[loc][product]['in_transit'] : nil,
-                      available_stock,
-                    (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)]
+                      available_stock]
             else
               sku_id = Product.find(product_id.to_i)['sku']
               if (product == sku_id)
@@ -250,8 +197,7 @@ class LanguageReport < ActiveType::Object
                         master[loc][product]['inventory_out'],
                         master[loc][product]['pos_sales'],
                         (master[loc][product]['in_transit'].present? && master[loc][product]['in_transit'] != 0) ? master[loc][product]['in_transit'] : nil,
-                        available_stock,
-                      (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)]
+                        available_stock]
               end
             end
           else
@@ -266,8 +212,7 @@ class LanguageReport < ActiveType::Object
                         products[product][2],
                         #'My Lang',
                         master[loc][product]['opening_stock'],
-                        master[loc][product]['inventory_in'],
-                      (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)]
+                        master[loc][product]['inventory_in']]
               else
                 sku_id = Product.find(product_id.to_i)['sku']
                 if (product == sku_id)
@@ -279,8 +224,7 @@ class LanguageReport < ActiveType::Object
                           products[product][2],
                           #'My Lang',
                           master[loc][product]['opening_stock'],
-                          master[loc][product]['inventory_out'],
-                        (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)]
+                          master[loc][product]['inventory_out']]
                 end
               end
             else
@@ -294,8 +238,7 @@ class LanguageReport < ActiveType::Object
                         products[product][2],
                         #'My Lang',
                         master[loc][product]['opening_stock'],
-                        master[loc][product]['inventory_out'],
-                      (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)]
+                        master[loc][product]['inventory_out']]
               else
                 sku_id = Product.find(product_id.to_i)['sku']
                 if (product == sku_id)
@@ -306,8 +249,7 @@ class LanguageReport < ActiveType::Object
                           products[product][2],
                           #'My Lang',
                           master[loc][product]['opening_stock'],
-                          master[loc][product]['inventory_out'],
-                        (master[loc][product]['pos_sales'] == '' ? 0 : master[loc][product]['pos_sales'].to_i ) * (Product.select('selling_price').where(:sku => product).limit(1).pluck(:selling_price)[0].to_i)]
+                          master[loc][product]['inventory_out']]
                 end
               end
 

@@ -55,6 +55,8 @@ Rails.application.routes.draw do
   post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
   get '/on-hand-lookup' => 'on_hand_look_up#show'
   get '/on-hand-lookup-report' =>'on_hand_look_up#calculate'
+  get '/calculate_limit' => 'total_sales_summary#show_limit'
+  get '/calculate-sales-limit' => 'total_sales_summary#calculate_sales_limit'
   # AWS health check
   get '/ping' => 'ping#show'
   # get '/sales' => 'reports#index'
