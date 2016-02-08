@@ -85,7 +85,7 @@ class InventoryOutVouchersController < ApplicationController
     end
 
     def set_inventory_out_voucher
-      @inventory_out_voucher = inventory_out_voucher_scope.includes(:line_items).find(params[:id])
+      @inventory_out_voucher = inventory_out_voucher_scope.includes(:line_items).order('inventory_txn_line_items.id').find(params[:id])
     end
 
     def populate_products

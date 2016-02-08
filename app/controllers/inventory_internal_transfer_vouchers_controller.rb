@@ -92,7 +92,7 @@ class InventoryInternalTransferVouchersController < ApplicationController
     end
 
     def set_inventory_internal_transfer_voucher
-      @inventory_internal_transfer_voucher = inventory_internal_transfer_voucher_scope.includes(:line_items).find(params[:id])
+      @inventory_internal_transfer_voucher = inventory_internal_transfer_voucher_scope.includes(:line_items).order('inventory_txn_line_items.id').find(params[:id])
     end
 
     def populate_products
