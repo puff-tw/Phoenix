@@ -57,6 +57,7 @@ Rails.application.routes.draw do
   get '/on-hand-lookup-report' =>'on_hand_look_up#calculate'
   get '/calculate_limit' => 'total_sales_summary#show_limit'
   get '/calculate-sales-limit' => 'total_sales_summary#calculate_sales_limit'
+  get '/pos-products' =>'total_sales_summary#pos_products'
   # AWS health check
   get '/ping' => 'ping#show'
   # get '/sales' => 'reports#index'

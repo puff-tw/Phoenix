@@ -12,9 +12,13 @@ class TotalSalesSummaryController < ApplicationController
                     .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
 
      @stock_summary = Array.new
+     @language = Language.all.where('active = true');
                     
   end
 
+  def pos_products
+    @products = Product.all.where('active=true').order('sku');
+  end
   # SELECT
   # business_entity_locations.id,
   #     business_entities.alias_name,
@@ -28,7 +32,7 @@ class TotalSalesSummaryController < ApplicationController
     filter_params = Hash.new
     filter_params[:location_id] = params[:location_id]
     filter_params[:product_id] = params[:product_id]
-    filter_params[:voucher_id] = params[:voucher_id]
+    filter_params[:language_id] = params[:language_id]
     filter_params[:from_date] = params[:from_date] || '01/04/2015'
 
     if (params[:to_date]=='')

@@ -1,0 +1,72 @@
+
+<div class="display responsive no-wrap voucher_line_items">
+  <table id='products' class='DataTable1 DataTable-line-items'>
+    <thead>
+    <tr>
+      <th class='text-center'>Sku</th>
+      <th class='text-center'>Name <br/><input type="text" id="name_search"></th>
+      <th class='text-center'>Language <br/><input type="text" id="language_search"></th>
+      <th class='text-center'>S. Price</th>
+      <th class='text-center'>Author <br/><input type="text" id="author_search"></th>
+      <th class='text-center'>P. Group</th>
+      <th class='text-center'>Category <br/><input type="text" id="category_search"></th>
+      <th class='text-center'>Core Lvl</th>
+      <th class='text-center'>Dist. Type <br/><input type="text" id="dist_search"></th>
+      <th class='text-center'>Active</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @products.each do |product| %>
+        <tr>
+          <td><%= product.sku %></td>
+          <td><%= product.name %></td>
+          <td><%= product.language.custom_object_label if product.language %></td>
+          <td><%= product.selling_price %></td>
+          <td><%= product.author.custom_object_label if product.author %></td>
+          <td><%= product.product_group.custom_object_label if product.product_group %></td>
+          <td><%= product.category.code if product.category %></td>
+          <td><%= product.core_level.custom_object_label if product.core_level %></td>
+          <td><%= product.distribution_type.custom_object_label if product.distribution_type %></td>
+          <td><%= product.active %></td>
+          <!-- <td><%#= link_to 'Show', product %></td> -->
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<script>
+  $(function () {
+    var dt = $('#products').DataTable({
+      "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+      "iDisplayLength": 20,
+      "order": [[0, "desc"], [1, "desc"]],
+      // ajax: ...,
+      // autoWidth: false,
+      pagingType: 'full_numbers',
+      "sPaginationType": "bootstrap",
+      // processing: true,
+      // serverSide: true,
+      responsive: true,
+      "bSort": false
+    });
+
+    $('#name_search').keyup(function () {
+      dt.column(1).search(this.value).draw();
+    });
+    $('#language_search').keyup(function () {
+      dt.column(2).search(this.value).draw();
+    });
+    $('#author_search').keyup(function () {
+      dt.column(4).search(this.value).draw();
+    });
+    $('#category_search').keyup(function () {
+      dt.column(6).search(this.value).draw();
+    });
+    $('#dist_search').keyup(function () {
+      dt.column(8).search(this.value).draw();
+    });
+
+
+  });
+</script>

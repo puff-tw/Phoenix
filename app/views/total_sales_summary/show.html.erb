@@ -15,7 +15,18 @@
       </select>
     </div>
 
-    <div class="col-md-3">
+    <div class='col-md-3'>
+      <label>Language : </label>
+      <select class='form-control select-box' name='language_id' id='language_id'>
+        <option value="">Select One</option>
+
+        <% @language.each do |c| %>
+          <option value='<%= c.name %>'><%= c.name %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="col-md-2">
       <label>Product : </label>
 
       <select class="form-control select-box" name="product_id" id="product_id">
@@ -26,7 +37,7 @@
       </select>
     </div>
 
-    <div class="col-md-2">
+    <!-- <div class="col-md-2">
       <label>Voucher : </label>
 
       <select class="form-control select-box" name="voucher_id">
@@ -34,11 +45,11 @@
         <option value="in"> Inventory vouchers In</option>
         <option value="out"> Inventory vouchers Out</option>
       </select>
-    </div>
+    </div> -->
 
     <div class="col-md-2">
       <label>StartDate : </label>
-      <input type="text" name="from_date" id="start_date" class="datetimepicker form-control">
+      <input type="text" name="from_date" id="start_date" value='<%= GlobalSettings.start_date %>' class="datetimepicker form-control">
     </div>
 
 
