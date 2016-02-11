@@ -59,3 +59,15 @@
 <%= link_to 'Edit', edit_pos_invoice_path(@pos_invoice) if current_power.updatable_pos_invoice?(@pos_invoice) %><br>
 <%= link_to 'Invoices Listing', pos_invoices_path %><br>
 <%= link_to 'Delete', @pos_invoice, method: :delete, data: { confirm: 'Are you sure?' } if current_power.destroyable_pos_invoice?(@pos_invoice) %><br>
+
+
+
+<script>
+
+$(function(){
+
+  shortcut.add("Alt+n",function() {
+    window.location = '/pos-invoices/new';
+  });
+});
+</script>

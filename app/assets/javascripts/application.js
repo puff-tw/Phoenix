@@ -19,6 +19,7 @@
 //= require datetime-moment
 //= require moment
 //= require bootstrap.min
+//= require shortcut
 // require best_in_place
 // require best_in_place.jquery-ui
 // require best_in_place.purr
