@@ -206,6 +206,10 @@ $(document).on('click', '#save_button', function (event) {
         return event.preventDefault();
     }
 
+    if (1) {
+        $('#save_button').attr('disabled','disabled');
+    }
+
    //  if (1) {
 
    //      event.preventDefault();
