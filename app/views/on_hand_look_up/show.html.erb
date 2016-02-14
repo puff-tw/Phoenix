@@ -18,13 +18,12 @@
       <select class="form-control select-box" name="product_id" id="product_id">
         <option value="">Select one</option>
         <% @products.each do |c| %>
-            <%  if(c.language_id == nil) %>
-              <option value="<%= c.id %>"><%= c.sku %> :: <%= c.name %> :: <%= c.alias_name %></option>
-            <% else %>
-
-              <option value="<%= c.id %>"><%= c.sku %> :: <%= c.name %> :: <%= c.alias_name %>:: <%=Language.find(c.language_id)['name']%></option>
-            <% end %>
-
+          <% if(c.language_id == nil) %>
+            <option value="<%= c.id %>"><%= c.sku %> :: <%= c.name %> :: <%= c.alias_name %></option>
+          <% else %>
+            <option value="<%= c.id %>"><%= c.sku %> :: <%= c.name %> :: <%= c.alias_name %>:: <%=Language.find(c.language_id)['name']%></option>
+          <% end %>
+             
         <% end %>
       </select>
     </div>

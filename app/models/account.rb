@@ -14,6 +14,6 @@ class Account < MyActiveRecord
   class_attribute :normal_credit_balance
 
   def self.cash_or_bank_type
-    where("(type = 'Account::CashAccount' OR type = 'Account::BankAccount') and active=true")
+    where("(type = 'Account::CashAccount' OR type = 'Account::BankAccount') AND active=true")
   end
 end

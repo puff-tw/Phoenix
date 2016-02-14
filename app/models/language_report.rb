@@ -1,8 +1,7 @@
 class LanguageReport < ActiveType::Object
   # http://localhost:3000/stock-summary.xls?location_id=155&from_date='26/09/2015'&to_date='29/09/2015'
 
-  # attribute :from_date, :dateclear
-
+  # attribute :from_date, :date
   # attribute :to_date, :date
   # attribute :location_id, :integer
 
