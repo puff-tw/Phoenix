@@ -15,32 +15,32 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
 
   def cols
     ['PosInvoice.txn_date',
-       'PosInvoice.number',
-       'BusinessEntityLocation.name',
-       'User.name'
-     ]
+     'PosInvoice.number',
+     'BusinessEntityLocation.name',
+     'User.name'
+    ]
   end
 
   def data
     records.map do |record|
       [
-        # comma separated list of the values for each cell of a table row
-        # example: record.attribute,
-        record.txn_date.strftime('%d/%m/%Y'),
-        record.number,
-        record.location_entity_name,
-        record.business_entity_location_name,
-        record.total_amount,
-        record.created_by.custom_object_label,
-        if current_power.destroyable_pos_invoice?(record)
-          "#{link_to('View', pos_invoice_url(record.id))} |
-                #{link_to('Edit', edit_pos_invoice_path(record.id))} | #{link_to('Delete', record, method: :delete, data: { confirm: 'Are you sure?' })}"
-        elsif current_power.updatable_pos_invoice?(record)
-          "#{link_to('View', pos_invoice_url(record.id))} |
+          # comma separated list of the values for each cell of a table row
+          # example: record.attribute,
+          record.txn_date.strftime('%d/%m/%Y'),
+          record.number,
+          record.location_entity_name,
+          record.business_entity_location_name,
+          record.total_amount,
+          record.created_by.custom_object_label,
+          if current_power.destroyable_pos_invoice?(record)
+            "#{link_to('View', pos_invoice_url(record.id))} |
+                #{link_to('Edit', edit_pos_invoice_path(record.id))} | #{link_to('Delete', record, method: :delete, data: {confirm: 'Are you sure?'})}"
+          elsif current_power.updatable_pos_invoice?(record)
+            "#{link_to('View', pos_invoice_url(record.id))} |
                 #{link_to('Edit', edit_pos_invoice_path(record.id))}"
-        else
-          "#{link_to('View', pos_invoice_url(record.id))}"
-        end
+          else
+            "#{link_to('View', pos_invoice_url(record.id))}"
+          end
       ]
     end
   end

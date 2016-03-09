@@ -12,11 +12,11 @@ class AccountTxn < MyActiveRecord
   validates :business_entity, presence: true
   validates :currency, :voucher_sequence_id, :created_by, presence: true
   validates :type, presence: true
-  validates :number_prefix, length: { maximum: 8 }
-  validates :number, presence: true, numericality: true, uniqueness: { scope: [:business_entity_id, :number_prefix], case_sensitive: false }
+  validates :number_prefix, length: {maximum: 8}
+  validates :number, presence: true, numericality: true, uniqueness: {scope: [:business_entity_id, :number_prefix], case_sensitive: false}
   validates :txn_date, presence: true
   validates :status, presence: true
-  validates :ref_number, length: { maximum: 30 }
+  validates :ref_number, length: {maximum: 30}
   validate :has_credit_entries?, unless: :cancelled?
   validate :has_debit_entries?, unless: :cancelled?
   validate :entries_cancel?, unless: :cancelled?
@@ -29,7 +29,7 @@ class AccountTxn < MyActiveRecord
   accepts_nested_attributes_for :debit_entries, allow_destroy: true, reject_if: :payment_mandatory_values_check
   accepts_nested_attributes_for :credit_entries, allow_destroy: true, reject_if: :payment_mandatory_values_check
 
-  enum status: { 'Active': 1, 'Cancelled': 2, 'Approval Required': 3 }
+  #enum status: {'Active' : 1, 'Cancelled' : 2, 'Approval Required' : 3}
 
   attr_accessor :current_user_id, :current_location, :current_business_entity
 

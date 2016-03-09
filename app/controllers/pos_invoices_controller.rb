@@ -84,21 +84,21 @@ class PosInvoicesController < ApplicationController
                                         :voucher_sequence_id, :created_by_id,
                                         :remarks, :txn_date, :status, :ref_number,
                                         debit_entries_attributes: [:id, :account_id, :amount,
-                                          :remarks, :bank_name, :card_last_digits,
-                                          :expiry_month, :expiry_year, :mobile_number,
-                                          :card_holder_name, :_destroy, :mode],
+                                                                   :remarks, :bank_name, :card_last_digits,
+                                                                   :expiry_month, :expiry_year, :mobile_number,
+                                                                   :card_holder_name,:transcation_id, :_destroy, :mode],
                                         credit_entries_attributes: [:id, :account_id, :amount,
-                                          :remarks, :bank_name, :card_last_digits,
-                                          :expiry_month, :expiry_year, :mobile_number,
-                                          :card_holder_name, :_destroy],
+                                                                    :remarks, :bank_name, :card_last_digits,
+                                                                    :expiry_month, :expiry_year, :mobile_number,
+                                                                    :card_holder_name,:transcation_id, :_destroy],
                                         header_attributes: [:id, :address, :legal_details,
-                                          :customer_membership_number,
-                                          :business_entity_location_id],
+                                                            :customer_membership_number,
+                                                            :business_entity_location_id],
                                         line_items_attributes: [:id, :product_id,
-                                          :quantity, :price, :goods_value, :tax_rate,
-                                            :tax_amount, :amount,:state_category_tax_rate_id,
-                                            :_destroy]
-                                         )
+                                                                :quantity, :price, :goods_value, :tax_rate,
+                                                                :tax_amount, :amount, :state_category_tax_rate_id,
+                                                                :_destroy]
+    )
     #:tax_amount is not included in pos_invoice or line_items as it will be calculated by server
   end
 
@@ -127,7 +127,7 @@ class PosInvoicesController < ApplicationController
 
     debit_payments = @pos_invoice.debit_entries.payment_entries
     if debit_payments.blank? || debit_payments.collect(&:mode).exclude?('Account::CashAccount')
-        @pos_invoice.debit_entries.build(account_id: current_user.cash_account_id, mode: current_user.cash_account.type) if current_user.cash_account_id.present?
+      @pos_invoice.debit_entries.build(account_id: current_user.cash_account_id, mode: current_user.cash_account.type) if current_user.cash_account_id.present?
     end
     if debit_payments.blank? || debit_payments.collect(&:mode).exclude?('Account::BankAccount')
       @pos_invoice.debit_entries.build(account_id: BusinessEntityLocation.find(GlobalSettings.current_bookstall_id).bank_account_id, mode: BusinessEntityLocation.find(GlobalSettings.current_bookstall_id).bank_account.type) if BusinessEntityLocation.find(GlobalSettings.current_bookstall_id).bank_account_id.present?
@@ -151,5 +151,8 @@ class PosInvoicesController < ApplicationController
     build_payment_children
   end
 
+  def pos_invoice_credit_card
+        
+  end
 
 end

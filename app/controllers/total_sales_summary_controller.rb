@@ -7,8 +7,8 @@ class TotalSalesSummaryController < ApplicationController
     @location = BusinessEntity
                     .joins(:locations)
                     .select('business_entity_locations.id,
-                                        business_entities.alias_name,
-                                        business_entity_locations.name')
+                             business_entities.alias_name,
+                             business_entity_locations.name')
                     .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
 
      @stock_summary = Array.new
