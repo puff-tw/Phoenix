@@ -22,6 +22,15 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
   end
 
   def data
+
+    myHash = Hash.new
+
+    mydata = AccountEntry.select('account_txn_id,mode').where("type='AccountEntry::Debit'")
+
+    mydata.each do |myrecords|
+      myHash[myrecords.account_txn_id] = myrecords.mode == 'Account::CashAccount' ? 'Cash' : 'Card'
+    end
+
     records.map do |record|
       [
           # comma separated list of the values for each cell of a table row
@@ -31,6 +40,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
           record.location_entity_name,
           record.business_entity_location_name,
           record.total_amount,
+          myHash.fetch(record.id),
           record.created_by.custom_object_label,
           if current_power.destroyable_pos_invoice?(record)
             "#{link_to('View', pos_invoice_url(record.id))} |

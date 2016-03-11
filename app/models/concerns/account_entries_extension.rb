@@ -3,6 +3,10 @@ module AccountEntriesExtension
     where(type: 'AccountEntry::Debit').sum(:amount) - where(type: 'AccountEntry::Credit').sum(:amount)
   end
 
+  def credit_balance
+    where("type='AccountEntry::Debit' and mode='Account::BankAccount'").sum(:amount)
+  end
+
   def total_amount
     reject(&:marked_for_destruction?).sum(&:amount)
   end

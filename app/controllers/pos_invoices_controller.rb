@@ -150,9 +150,4 @@ class PosInvoicesController < ApplicationController
     build_child_line_items
     build_payment_children
   end
-
-  def pos_invoice_credit_card
-        
-  end
-
 end
