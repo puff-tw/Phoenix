@@ -52,6 +52,10 @@ Rails.application.routes.draw do
 
   get '/total-sales-summary' => 'total_sales_summary#show'
   get '/total-sales-summary-report' => 'total_sales_summary#constructdatatable'
+  get '/create-user' => 'total_sales_summary#create_user'
+  get '/list-user' => 'total_sales_summary#list_user'
+  post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'
+
   post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
   get '/on-hand-lookup' => 'on_hand_look_up#show'
   get '/on-hand-lookup-report' =>'on_hand_look_up#calculate'

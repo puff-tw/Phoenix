@@ -1,4 +1,7 @@
 class TotalSalesSummaryController < ApplicationController
+
+  skip_before_action :verify_authenticity_token
+
   def total_sales_summary
   end
 
@@ -11,14 +14,15 @@ class TotalSalesSummaryController < ApplicationController
                              business_entity_locations.name')
                     .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
 
-     @stock_summary = Array.new
-     @language = Language.all.where('active = true');
-                    
+    @stock_summary = Array.new
+    @language = Language.all.where('active = true');
+
   end
 
   def pos_products
     @products = Product.all.where('active=true').order('sku');
   end
+
   # SELECT
   # business_entity_locations.id,
   #     business_entities.alias_name,
@@ -85,14 +89,16 @@ class TotalSalesSummaryController < ApplicationController
       format.json { render json: a, status: :ok }
     end
   end
+
   def show_limit
-    
+
     @location = BusinessEntity
                     .joins(:locations)
                     .select('business_entity_locations.id,
                                         business_entities.alias_name,
                                         business_entity_locations.name')
                     .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
+
 
   end
 
@@ -102,8 +108,44 @@ class TotalSalesSummaryController < ApplicationController
     filter_params[:limit] = params[:limit]
     filter_params[:from_date] = params[:from_date] || '01/04/2015'
     filter_params[:to_date] = params[:to_date] || Time.zone.now.strftime('%d/%m/%Y')
-    
-    @sales_result = TotalStockCalculation.calculate_sales({},filter_params)
+
+    @sales_result = TotalStockCalculation.calculate_sales({}, filter_params)
+  end
+
+
+  def create_user_with_account
+
+    name = params[:name]
+    idcard = params[:idcard]
+    mobile = params[:mobile]
+    membershipnumber = params[:memnumber]
+
+    begin
+
+      user = User.create!(name: name, city_id: 1, email: idcard+'@kanha.org', contact_number_primary: mobile, active: true, membership_number: membershipnumber)
+      userrole = UserRole.create!(user: user, role_id: 5, business_entity_location_id: GlobalSettings.current_bookstall_id, active: true)
+      account = Account::CashAccount.create!(business_entity_id: GlobalSettings.current_business_entitry_id, name: "Cash_#{user.id}", alias_name: "Cash - #{user.name}", reserved: true)
+      user.update_attributes!(cash_account_id: account.id)
+      user.update_attributes!(password: idcard, password_confirmation: idcard)
+
+      redirect_to :create_user, flash: {status: "User Created Succesfully..."}
+    rescue
+      redirect_to :create_user, flash: {status: "failed to create user..."}
+    end
+
+  end
+
+
+  def create_user
+
+  end
+
+  def list_user
+    @users = User
+                 .joins(:roles)
+                 .joins(:cash_account)
+                 .select('users.id,users.name,users.email,roles.name as role,accounts.name as accname,accounts.alias_name,users.active')
+
   end
 
 end

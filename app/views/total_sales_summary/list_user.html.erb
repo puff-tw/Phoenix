@@ -1,0 +1,54 @@
+<div class="display responsive no-wrap voucher_line_items">
+  <table id="user_lists_table" class='DataTable1 DataTable-line-items'>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Account Name</th>
+      <th>Alias</th>
+      <th>Operation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+
+
+        <tr>
+          <td><%= user['name'] %></td>
+          <td><%= user['email'] %></td>
+          <td><%= user['role'] %></td>
+          <td><%= user['accname'] %></td>
+          <td><%= user['alias_name'] %></td>
+          <td>
+            <%=user['active']%>
+            <% if user['active'] == 'true' %>
+                <a href="#">deactive</a>
+            <% else %>
+                <a href="#">active</a>
+            <% end %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+  $(function () {
+    var dt = $('#user_lists_table').DataTable({
+      "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+      "iDisplayLength": 20,
+      "order": [[0, "desc"], [1, "desc"]],
+      // ajax: ...,
+      // autoWidth: false,
+      pagingType: 'full_numbers',
+      "sPaginationType": "bootstrap",
+      // processing: true,
+      // serverSide: true,
+      responsive: true
+    });
+
+  });
+</script>

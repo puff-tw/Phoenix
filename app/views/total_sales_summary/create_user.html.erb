@@ -1,0 +1,39 @@
+<div class="container">
+  <center><label class="label-success"><% flash[:status] %></label></center>
+  <center><label class="label-warning"></label></center>
+
+  <form id="user-create-form" method="post" action="/create-user-accounts">
+    <div class="col-md-6 col-md-offset-3" style="margin-top: 100px;">
+      <table class="table table-condensed table-bordered">
+        <tr>
+          <td>Name</td>
+          <td><input type="text" name="name" id='name' class="form-control" required></td>
+        </tr>
+
+        <tr>
+          <td>Id Card Number</td>
+          <td><input type="text" name="idcard" id="idcard" class="form-control" required></td>
+        </tr>
+
+        <tr>
+          <td>Mobile Number</td>
+          <td><input type="text" name="mobile" id="mobile" class="form-control" required></td>
+        </tr>
+
+        <tr>
+          <td>Membership Number</td>
+          <td><input type="text" name="memnumber" id="memnumber" class="form-control" required></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <center>
+              <input type="submit" class="btn btn-primary" value="Save">
+              <input type="reset" class="btn btn-warning" value="Reset">
+            </center>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </form>
+</div>
