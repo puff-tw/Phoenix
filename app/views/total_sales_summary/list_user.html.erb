@@ -26,6 +26,10 @@
             <% else %>
                 <a href="/active-user/<%= user['id'] %>" id="<%= user['id'] %>" class="deactive_user">active</a>
             <% end %>
+            |
+            <a href="/users/<%= user['id'] %>/">View</a>
+            |
+            <a href="/users/<%= user['id'] %>/edit">Edit</a>
           </td>
         </tr>
     <% end %>

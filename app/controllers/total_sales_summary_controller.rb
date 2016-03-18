@@ -125,7 +125,7 @@ class TotalSalesSummaryController < ApplicationController
       user.update_attributes!(cash_account_id: account.id)
       user.update_attributes!(password: idcard, password_confirmation: idcard)
 
-      redirect_to :create_user, flash: {status: "User Created Succesfully..."}
+      redirect_to :create_user, flash: {success: "User Created Succesfully..."}
     rescue
       redirect_to :create_user, flash: {status: "failed to create user..."}
     end
@@ -143,6 +143,8 @@ class TotalSalesSummaryController < ApplicationController
                  .select('users.id,users.name,users.email,roles.name as role,accounts.name as accname,accounts.alias_name,users.active')
 
 
+
+
   end
 
 
@@ -154,7 +156,7 @@ class TotalSalesSummaryController < ApplicationController
     user.update(:active => true);
     Account::CashAccount.find(user.cash_account_id).update(:active => true);
 
-    redirect_to :list_user, flash: {status: "User activated Succesfully..."}
+    redirect_to :list_user, flash: {success: "User activated Succesfully..."}
 
   end
 
@@ -166,7 +168,7 @@ class TotalSalesSummaryController < ApplicationController
     user.update(:active => false);
     Account::CashAccount.find(user.cash_account_id).update(:active => false);
 
-    redirect_to :list_user, flash: {status: "User deactivated Succesfully..."}
+    redirect_to :list_user, flash: {success: "User deactivated Succesfully..."}
   end
 
 end
