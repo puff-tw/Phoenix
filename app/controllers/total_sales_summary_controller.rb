@@ -52,8 +52,6 @@ class TotalSalesSummaryController < ApplicationController
       format.html
     end
 
-    # show
-
   end
 
   def validate_negative_sales
@@ -61,7 +59,6 @@ class TotalSalesSummaryController < ApplicationController
     #parsed_json = J(params[:data])
 
     h = JSON.parse params[:data]
-
     location = h['location']
 
 
@@ -132,7 +129,6 @@ class TotalSalesSummaryController < ApplicationController
     rescue
       redirect_to :create_user, flash: {status: "failed to create user..."}
     end
-
   end
 
 
@@ -146,6 +142,31 @@ class TotalSalesSummaryController < ApplicationController
                  .joins(:cash_account)
                  .select('users.id,users.name,users.email,roles.name as role,accounts.name as accname,accounts.alias_name,users.active')
 
+
+  end
+
+
+  def active_user
+
+    id = params[:id]
+
+    user = User.find(id)
+    user.update(:active => true);
+    Account::CashAccount.find(user.cash_account_id).update(:active => true);
+
+    redirect_to :list_user, flash: {status: "User activated Succesfully..."}
+
+  end
+
+  def deactive_user
+
+    id = params[:id]
+
+    user = User.find(id)
+    user.update(:active => false);
+    Account::CashAccount.find(user.cash_account_id).update(:active => false);
+
+    redirect_to :list_user, flash: {status: "User deactivated Succesfully..."}
   end
 
 end

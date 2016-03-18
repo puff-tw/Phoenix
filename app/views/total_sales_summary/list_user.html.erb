@@ -21,11 +21,10 @@
           <td><%= user['accname'] %></td>
           <td><%= user['alias_name'] %></td>
           <td>
-            <%=user['active']%>
-            <% if user['active'] == 'true' %>
-                <a href="#">deactive</a>
+            <% if user['active'] %>
+                <a href="/deactive-user/<%= user['id'] %>" id="<%= user['id'] %>" class="active_user">deactive</a>
             <% else %>
-                <a href="#">active</a>
+                <a href="/active-user/<%= user['id'] %>" id="<%= user['id'] %>" class="deactive_user">active</a>
             <% end %>
           </td>
         </tr>
@@ -51,4 +50,6 @@
     });
 
   });
+
+
 </script>

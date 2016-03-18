@@ -54,6 +54,9 @@ Rails.application.routes.draw do
   get '/total-sales-summary-report' => 'total_sales_summary#constructdatatable'
   get '/create-user' => 'total_sales_summary#create_user'
   get '/list-user' => 'total_sales_summary#list_user'
+  get '/active-user/:id' => 'total_sales_summary#active_user'
+  get '/deactive-user/:id' => 'total_sales_summary#deactive_user'
+
   post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'
 
   post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
