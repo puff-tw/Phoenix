@@ -28,7 +28,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
     mydata = AccountEntry.select('account_txn_id,mode').where("type='AccountEntry::Debit'")
 
     mydata.each do |myrecords|
-      myHash[myrecords.account_txn_id] = myrecords.mode == 'Account::CashAccount' ? 'Cash' : 'Card'
+      myHash[myrecords.account_txn_id] = myrecords.mode == 'Account::CashAccount' ? 'Cash' : 'Credit/Debit Card'
     end
 
     records.map do |record|

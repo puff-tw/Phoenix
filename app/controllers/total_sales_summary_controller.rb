@@ -17,6 +17,7 @@ class TotalSalesSummaryController < ApplicationController
     @stock_summary = Array.new
     @language = Language.all.where('active = true');
 
+
   end
 
   def pos_products
@@ -127,7 +128,7 @@ class TotalSalesSummaryController < ApplicationController
 
       redirect_to :create_user, flash: {success: "User Created Succesfully..."}
     rescue
-      redirect_to :create_user, flash: {status: "failed to create user..."}
+      redirect_to :create_user, flash: {status: "Failed to Create user..."}
     end
   end
 
@@ -141,9 +142,6 @@ class TotalSalesSummaryController < ApplicationController
                  .joins(:roles)
                  .joins(:cash_account)
                  .select('users.id,users.name,users.email,roles.name as role,accounts.name as accname,accounts.alias_name,users.active')
-
-
-
 
   end
 
