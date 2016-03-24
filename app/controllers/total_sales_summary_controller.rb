@@ -116,12 +116,12 @@ class TotalSalesSummaryController < ApplicationController
     name = params[:name]
     idcard = params[:idcard]
     mobile = params[:mobile]
-    membershipnumber = params[:memnumber]
+    role = params[:role]
 
     begin
 
-      user = User.create!(name: name, city_id: 1, email: idcard+'@kanha.org', contact_number_primary: mobile, active: true, membership_number: membershipnumber)
-      userrole = UserRole.create!(user: user, role_id: 5, business_entity_location_id: GlobalSettings.current_bookstall_id, active: true)
+      user = User.create!(name: name, city_id: 1, email: idcard+'@kanha.org', contact_number_primary: mobile, active: true, membership_number: idcard)
+      userrole = UserRole.create!(user: user, role_id: role.to_i, business_entity_location_id: GlobalSettings.current_bookstall_id, active: true)
       account = Account::CashAccount.create!(business_entity_id: GlobalSettings.current_business_entitry_id, name: "Cash_#{user.id}", alias_name: "Cash - #{user.name}", reserved: true)
       user.update_attributes!(cash_account_id: account.id)
       user.update_attributes!(password: idcard, password_confirmation: idcard)
@@ -134,6 +134,7 @@ class TotalSalesSummaryController < ApplicationController
 
 
   def create_user
+    @roles = Role.all().where(:active => true)
 
   end
 

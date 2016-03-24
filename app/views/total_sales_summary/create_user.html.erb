@@ -21,8 +21,15 @@
         </tr>
 
         <tr>
-          <td>Membership Number</td>
-          <td><input type="text" name="memnumber" id="memnumber" class="form-control" required></td>
+          <td>Role</td>
+          <td>
+            <select class="form-control" name="role" id="role">
+              <option value="">Select one</option>
+              <% @roles.each do |c| %>
+                  <option value="<%= c.id %>"><%= c.name %></option>
+              <% end %>
+            </select>
+          </td>
         </tr>
         <tr>
           <td colspan="2">
