@@ -11,6 +11,19 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
     @searchable_columns ||= cols
   end
 
+  def from
+    @from = options[:from].to_date.beginning_of_day
+  end
+
+  def to
+    @to ||= options[:to].to_date.end_of_day
+  end
+
+  def ttype
+    @ttype ||=options[:ttype].to_i
+  end
+
+
   private
 
   def cols
@@ -28,7 +41,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
     mydata = AccountEntry.select('account_txn_id,mode').where("type='AccountEntry::Debit'")
 
     mydata.each do |myrecords|
-      myHash[myrecords.account_txn_id] = myrecords.mode == 'Account::CashAccount' ? 'Cash' : 'Credit/Debit Card'
+      myHash[myrecords.account_txn_id] = myrecords.mode == 'Account::CashAccount' ? 'Cash' : 'Card'
     end
 
     records.map do |record|
@@ -55,10 +68,37 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
     end
   end
 
+
   def get_raw_records
-    current_power.view_pos_invoices.includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by).select("account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount").references(:line_items, :header, :created_by)
+
+    case ttype
+      when 0
+        current_power
+            .view_pos_invoices
+            .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
+            .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
+            .where(:txn_date => from..to)
+            .references(:line_items, :header, :created_by)
+      when 1
+        current_power
+            .view_pos_invoices
+            .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
+            .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
+            .where(:txn_date => from..to)
+            .where("mode = ?", ['Account::CashAccount'])
+            .references(:line_items, :header, :created_by)
+      when 2
+        current_power
+            .view_pos_invoices
+            .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
+            .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
+            .where(:txn_date => from..to)
+            .where("mode = ?", ['Account::BankAccount'])
+            .references(:line_items, :header, :created_by)
+
+    end
   end
 
-  # ==== Insert 'presenter'-like methods below if necessary
+# ==== Insert 'presenter'-like methods below if necessary
   def_delegators :@view, :link_to, :h, :pos_invoice_url, :edit_pos_invoice_path, :current_power
 end

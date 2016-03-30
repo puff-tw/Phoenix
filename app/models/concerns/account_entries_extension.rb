@@ -15,6 +15,11 @@ module AccountEntriesExtension
     where("type='AccountEntry::Debit' and mode='Account::BankAccount'").sum(:amount)
   end
 
+  def list_full_debit
+    where(type: 'AccountEntry::Debit')
+  end
+
+
   def total_amount
     reject(&:marked_for_destruction?).sum(&:amount)
   end

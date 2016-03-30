@@ -100,6 +100,11 @@ class TotalSalesSummaryController < ApplicationController
 
   end
 
+  def pos_display
+
+  end
+
+
   def calculate_sales_limit
     filter_params = Hash.new
     filter_params[:location_id] = params[:location_id]
@@ -132,6 +137,16 @@ class TotalSalesSummaryController < ApplicationController
     end
   end
 
+  def stock_reconciliation
+    @location = BusinessEntity
+                    .joins(:locations)
+                    .select('business_entity_locations.id,
+                                        business_entities.alias_name,
+                                        business_entity_locations.name')
+                    .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
+
+
+  end
 
   def create_user
     @roles = Role.all().where(:active => true)
@@ -170,4 +185,18 @@ class TotalSalesSummaryController < ApplicationController
     redirect_to :list_user, flash: {success: "User deactivated Succesfully..."}
   end
 
+  def stock_pdf
+    filter_params = Hash.new
+    filter_params[:location_id] = GlobalSettings.current_bookstall_id
+    @stock = StockReconciliationReport.locationwise_stock_summary_table({},filter_params)
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = StockReconciliationPdf.new(@stock)
+        send_data pdf.render, filename: "payment_collection_report",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
+    end
+  end
 end

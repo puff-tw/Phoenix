@@ -56,6 +56,9 @@ Rails.application.routes.draw do
   get '/list-user' => 'total_sales_summary#list_user'
   get '/active-user/:id' => 'total_sales_summary#active_user'
   get '/deactive-user/:id' => 'total_sales_summary#deactive_user'
+  get '/posdisplay' => 'total_sales_summary#pos_display'
+  get '/reconciliation' => 'total_sales_summary#stock_reconciliation'
+
 
   post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'
 
@@ -65,6 +68,7 @@ Rails.application.routes.draw do
   get '/calculate_limit' => 'total_sales_summary#show_limit'
   get '/calculate-sales-limit' => 'total_sales_summary#calculate_sales_limit'
   get '/pos-products' =>'total_sales_summary#pos_products'
+  get '/stock-pdf' =>'total_sales_summary#stock_pdf'
   # AWS health check
   get '/ping' => 'ping#show'
   # get '/sales' => 'reports#index'

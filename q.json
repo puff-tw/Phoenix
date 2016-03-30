@@ -1,0 +1,107 @@
+{
+  "draw": 0,
+  "recordsTotal": 27708,
+  "recordsFiltered": 27708,
+  "data": [
+    [
+      "29/04/2015",
+      1,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "10.0",
+      "Cash",
+      "Abhishek Guha",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/1\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/1/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/1\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      2,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "10.0",
+      "Cash",
+      "Hardik Shah",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/2\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/2/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/2\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      3,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "300.0",
+      "Cash",
+      "Hardik Shah",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/3\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/3/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/3\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      4,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "102.0",
+      "Cash",
+      "Ajay Chinta",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/4\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/4/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/4\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      5,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "250.0",
+      "Cash",
+      "Abhishek Guha",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/5\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/5/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/5\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      6,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "700.0",
+      "Cash",
+      "R. Pushparaj",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/6\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/6/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/6\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      7,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "150.0",
+      "Cash",
+      "Hardik Shah",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/7\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/7/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/7\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      8,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "150.0",
+      "Cash",
+      "Ajay Chinta",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/8\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/8/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/8\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      9,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "150.0",
+      "Cash",
+      "Malathi",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/9\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/9/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/9\"\u003eDelete\u003c/a\u003e"
+    ],
+    [
+      "29/04/2015",
+      10,
+      "SHPT, Lucknow",
+      "Cel201504-Bookstall",
+      "350.0",
+      "Cash",
+      "Abhishek Guha",
+      "\u003ca href=\"http://localhost:3000/pos-invoices/10\"\u003eView\u003c/a\u003e |\n                \u003ca href=\"/pos-invoices/10/edit\"\u003eEdit\u003c/a\u003e | \u003ca data-confirm=\"Are you sure?\" rel=\"nofollow\" data-method=\"delete\" href=\"/pos-invoices/10\"\u003eDelete\u003c/a\u003e"
+    ]
+  ]
+}

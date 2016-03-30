@@ -1,5 +1,6 @@
 <div class="container">
-  <center><label class="label-success"><% flash[:status] %></label></center>
+  <center><label class="label-success">
+    <% flash[:status] %></label></center>
   <center><label class="label-warning"></label></center>
 
   <form id="user-create-form" method="post" action="/create-user-accounts">
@@ -23,7 +24,7 @@
         <tr>
           <td>Role</td>
           <td>
-            <select class="form-control" name="role" id="role">
+            <select class="form-control" name="role" id="role" required multiple>
               <option value="">Select one</option>
               <% @roles.each do |c| %>
                   <option value="<%= c.id %>"><%= c.name %></option>
@@ -40,7 +41,6 @@
           </td>
         </tr>
       </table>
-
     </div>
   </form>
 </div>

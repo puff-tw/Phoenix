@@ -72,7 +72,6 @@
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.2.2, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bullet (v4.14.10, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundle (v0.0.1, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.11.2, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="byebug (v8.2.0, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="cancancan (v1.13.1, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="capistrano (v3.4.0, RVM: ruby-2.2.3 [shpt]) [gem]" level="application" />
