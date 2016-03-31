@@ -24,7 +24,7 @@
         <tr>
           <td>Role</td>
           <td>
-            <select class="form-control" name="role" id="role" required multiple>
+            <select class="form-control" name="role" id="role" required>
               <option value="">Select one</option>
               <% @roles.each do |c| %>
                   <option value="<%= c.id %>"><%= c.name %></option>

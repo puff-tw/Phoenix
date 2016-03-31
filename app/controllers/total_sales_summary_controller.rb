@@ -188,7 +188,7 @@ class TotalSalesSummaryController < ApplicationController
   def stock_pdf
     filter_params = Hash.new
     filter_params[:location_id] = GlobalSettings.current_bookstall_id
-    @stock = StockReconciliationReport.locationwise_stock_summary_table({},filter_params)
+    @stock = StockReconciliationReport.locationwise_stock_summary_table({}, filter_params)
     respond_to do |format|
       format.html
       format.pdf do
