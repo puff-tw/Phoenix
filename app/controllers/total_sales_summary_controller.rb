@@ -17,7 +17,6 @@ class TotalSalesSummaryController < ApplicationController
     @stock_summary = Array.new
     @language = Language.all.where('active = true');
 
-
   end
 
   def pos_products
@@ -52,7 +51,6 @@ class TotalSalesSummaryController < ApplicationController
       format.xls { send_data LanguageReport.locationwise_stock_summary({col_sep: "\t"}, filter_params), filename: "total_sales_summary_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }
       format.html
     end
-
   end
 
   def validate_negative_sales
@@ -88,6 +86,7 @@ class TotalSalesSummaryController < ApplicationController
     end
   end
 
+  #showing sales limit screen
   def show_limit
 
     @location = BusinessEntity
@@ -105,6 +104,7 @@ class TotalSalesSummaryController < ApplicationController
   end
 
 
+  #calculates sales limit
   def calculate_sales_limit
     filter_params = Hash.new
     filter_params[:location_id] = params[:location_id]
@@ -116,6 +116,7 @@ class TotalSalesSummaryController < ApplicationController
   end
 
 
+  #creates new account with cash accounts
   def create_user_with_account
 
     name = params[:name]
@@ -125,9 +126,27 @@ class TotalSalesSummaryController < ApplicationController
 
     begin
 
-      user = User.create!(name: name, city_id: 1, email: idcard+'@kanha.org', contact_number_primary: mobile, active: true, membership_number: idcard)
-      userrole = UserRole.create!(user: user, role_id: role.to_i, business_entity_location_id: GlobalSettings.current_bookstall_id, active: true)
-      account = Account::CashAccount.create!(business_entity_id: GlobalSettings.current_business_entitry_id, name: "Cash_#{user.id}", alias_name: "Cash - #{user.name}", reserved: true)
+      user = User.create!(
+          name: name,
+          city_id: 1,
+          email: idcard+'@kanha.org',
+          contact_number_primary: mobile,
+          active: true,
+          membership_number: idcard
+      )
+
+      userrole = UserRole.create!(
+          user: user,
+          role_id: role.to_i,
+          business_entity_location_id: GlobalSettings.current_bookstall_id,
+          active: true
+      )
+      account = Account::CashAccount.create!(
+          business_entity_id: GlobalSettings.current_business_entitry_id,
+          name: "Cash_#{user.id}",
+          alias_name: "Cash - #{user.name}",
+          reserved: true
+      )
       user.update_attributes!(cash_account_id: account.id)
       user.update_attributes!(password: idcard, password_confirmation: idcard)
 
@@ -137,18 +156,22 @@ class TotalSalesSummaryController < ApplicationController
     end
   end
 
+  #route for stock reconsilation screen
   def stock_reconciliation
     @location = BusinessEntity
                     .joins(:locations)
                     .select('business_entity_locations.id,
-                                        business_entities.alias_name,
-                                        business_entity_locations.name')
+                             business_entities.alias_name,
+                             business_entity_locations.name')
                     .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
-
 
   end
 
+  #createuser page route
+  #displays only  the page
   def create_user
+
+    # For displaying Roles dropdown in the create user page
     @roles = Role.all().where(:active => true)
 
   end
@@ -162,6 +185,8 @@ class TotalSalesSummaryController < ApplicationController
   end
 
 
+  #make user active
+  #make account active
   def active_user
 
     id = params[:id]
@@ -174,6 +199,8 @@ class TotalSalesSummaryController < ApplicationController
 
   end
 
+  #make user deactive
+  #make account deactive
   def deactive_user
 
     id = params[:id]
@@ -185,6 +212,7 @@ class TotalSalesSummaryController < ApplicationController
     redirect_to :list_user, flash: {success: "User deactivated Succesfully..."}
   end
 
+  #displays whole stock based on language order in pdf
   def stock_pdf
     filter_params = Hash.new
     filter_params[:location_id] = GlobalSettings.current_bookstall_id

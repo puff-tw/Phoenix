@@ -1,7 +1,6 @@
 <% provide(:title, 'My Account') %>
 <h2 class='text-center'>
-  <%= "My Account       : #{sprintf '%.0f', @current_user.cash_account.entries.debit_balance}" %><br/>
-  <hr/>
+  <%= "My Account       : #{sprintf '%.0f', @current_user.cash_account.entries.debit_balance}" %><br/><hr/>
   <%= "Total Cash       : #{sprintf '%.0f', @current_user.cash_account.entries.full_amount}" %><br/>
   <%= "Cashier Received : #{sprintf '%.0f', @current_user.cash_account.entries.full_due_amount}" %><br/>
 </h2>
