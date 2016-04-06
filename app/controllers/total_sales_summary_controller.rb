@@ -134,7 +134,6 @@ class TotalSalesSummaryController < ApplicationController
           active: true,
           membership_number: idcard
       )
-
       userrole = UserRole.create!(
           user: user,
           role_id: role.to_i,

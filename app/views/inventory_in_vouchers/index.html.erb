@@ -1,21 +1,24 @@
 <% provide(:title, 'InventoryIn Vouchers listing') %>
-<%= link_to 'New InventoryIn Voucher', new_inventory_in_voucher_path, class: 'pull-right' %>
+<span class="pull-right">
+  <%= link_to 'New InventoryIn Voucher', new_inventory_in_voucher_path, class: 'btn btn-primary' %>
+  <a href="/inventory-in-vouchers.pdf" class="btn btn-info">Pdf</a>
+</span>
 <div class="display responsive no-wrap voucher_line_items">
   <table id='voucher_line_items' class='DataTable2 DataTable-line-items'>
     <thead>
-      <tr>
-        <th class='col-md-1 text-center'>Date <br/><input type="text" id="date_search"></th>
-        <th class='col-md-1 text-center'>Invoice # </th>
-        <th class='col-md-1 text-center'>Vendor/Source <br/><input type="text" id="vendor_search"></th>
-        <th class='col-md-3 text-center'>Entity Location <br/><input type="text" id="entity_search"></th>
-        <th class='col-md-1 text-center'>Amount</th>
-        <th class='col-md-2 text-center'>Remarks</th>
-        <th class='col-md-1 text-center'>Created by <br/><input type="text" id="createdby_search"></th>
-        <th class='col-md-1 text-center'>Operations</th>
-      </tr>
+    <tr>
+      <th class='col-md-1 text-center'>Date <br/><input type="text" id="date_search"></th>
+      <th class='col-md-1 text-center'>Invoice #</th>
+      <th class='col-md-1 text-center'>Vendor/Source <br/><input type="text" id="vendor_search"></th>
+      <th class='col-md-3 text-center'>Entity Location <br/><input type="text" id="entity_search"></th>
+      <th class='col-md-1 text-center'>Amount</th>
+      <th class='col-md-2 text-center'>Remarks</th>
+      <th class='col-md-1 text-center'>Created by <br/><input type="text" id="createdby_search"></th>
+      <th class='col-md-1 text-center'>Operations</th>
+    </tr>
     </thead>
     <tbody>
-      <% @inventory_in_vouchers.each do |inventory_in_voucher| %>
+    <% @inventory_in_vouchers.each do |inventory_in_voucher| %>
         <tr>
           <td class='text-center'><%= inventory_in_voucher.voucher_date.strftime('%d/%m/%Y') %></td>
           <td class='text-center'><%= inventory_in_voucher.voucher_number %></td>
@@ -25,45 +28,44 @@
           <td><%= inventory_in_voucher.remarks %></td>
           <td class='text-center'><%= inventory_in_voucher.created_by.custom_object_label %></td>
           <td class='text-center'>
-            <%= link_to 'View', inventory_in_voucher %> | <%= link_to 'Edit', edit_inventory_in_voucher_path(inventory_in_voucher) %> | <%= link_to 'Delete', inventory_in_voucher, method: :delete, data: { confirm: 'Are you sure?' } if current_power.destroyable_inventory_in_vouchers? %>
+            <%= link_to 'View', inventory_in_voucher %>
+            | <%= link_to 'Edit', edit_inventory_in_voucher_path(inventory_in_voucher) %>
+            | <%= link_to 'Delete', inventory_in_voucher, method: :delete, data: {confirm: 'Are you sure?'} if current_power.destroyable_inventory_in_vouchers? %>
           </td>
         </tr>
-      <% end %>
+    <% end %>
     </tbody>
   </table>
 </div>
 
 <script>
 
-  $(function () {
-    var dt = $('#voucher_line_items').DataTable({
-      "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
-      "iDisplayLength": 20,
-      "order": [[0, "desc"], [1, "desc"]],
-      // ajax: ...,
-      // autoWidth: false,
-      pagingType: 'full_numbers',
-      "sPaginationType": "bootstrap",
-      // processing: true,
-      // serverSide: true,
-      responsive: true,
-      "bSort": false
-    });
+    $(function () {
+        var dt = $('#voucher_line_items').DataTable({
 
-    $('#date_search').keyup(function () {
-      dt.column(0).search(this.value).draw();
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            responsive: true,
+            "bSort": false,
+        });
+
+        $('#date_search').keyup(function () {
+            dt.column(0).search(this.value).draw();
+        });
+        $('#invoice_search').keyup(function () {
+            dt.column(1).search(this.value).draw();
+        });
+        $('#vendor_search').keyup(function () {
+            dt.column(2).search(this.value).draw();
+        });
+        $('#entity_search').keyup(function () {
+            dt.column(3).search(this.value).draw();
+        });
+        $('#createdby_search').keyup(function () {
+            dt.column(6).search(this.value).draw();
+        });
     });
-    $('#invoice_search').keyup(function () {
-      dt.column(1).search(this.value).draw();
-    });
-    $('#vendor_search').keyup(function () {
-      dt.column(2).search(this.value).draw();
-    });
-    $('#entity_search').keyup(function () {
-      dt.column(3).search(this.value).draw();
-    });
-    $('#createdby_search').keyup(function () {
-      dt.column(6).search(this.value).draw();
-    });
-  });
 </script>

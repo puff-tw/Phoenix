@@ -17,6 +17,13 @@ class InventoryOutVouchersController < ApplicationController
       format.html
       format.csv { send_data @inventory_out_vouchers.to_csv, filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.csv" }
       format.xls { send_data @inventory_out_vouchers.to_csv(col_sep: "\t"), filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }
+
+      format.pdf do
+        pdf = InventoryOutVoucherPdf.new(@inventory_out_vouchers)
+        send_data pdf.render, filename: "inventor_in_report",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
     end
   end
 
