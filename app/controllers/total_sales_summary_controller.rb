@@ -198,6 +198,8 @@ class TotalSalesSummaryController < ApplicationController
 
   end
 
+
+  #510312205001
   #make user deactive
   #make account deactive
   def deactive_user
