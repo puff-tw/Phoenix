@@ -2,6 +2,15 @@
 
 <%= render 'total_sales_summary/pos_display' %>
 
+<hr/>
+<center>
+  <h2>Filters</h2>
+  <label>Start-Date : </label><%= @start  %>&nbsp;&nbsp;&nbsp;
+  <label>End-Date : </label><%= @end %>&nbsp;&nbsp;&nbsp;
+  <label>Transcation Type : </label><%= @trtype %>&nbsp;&nbsp;&nbsp;
+</center>
+
+<hr/>
 <%= link_to 'New Sale invoice', new_pos_invoice_path, class: 'pull-right' %>
 <div class="display responsive no-wrap voucher_line_items">
   <table id='pos_invoice_index' data-source="<%= pos_invoices_url(format: :json) %>" class='DataTable-line-items'>
@@ -38,69 +47,69 @@
 
 
 <script>
-  $(function () {
-    $('.datetimepickerfrom').datetimepicker({
-      format: 'DD/MM/YYYY',
-      extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
-      showTodayButton: true,
-      showClose: true
-    });
-    $('.datetimepickerto').datetimepicker({
-      format: 'DD/MM/YYYY',
-      extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
-      showTodayButton: true,
-      showClose: true
-    });
-    $(".datetimepickerfrom").on("dp.change", function (e) {
-      $('.datetimepickerto').data("DateTimePicker").minDate(e.date);
-    });
-    $(".datetimepickerto").on("dp.change", function (e) {
-      $('.datetimepickerfrom').data("DateTimePicker").maxDate(e.date);
-    });
+    $(function () {
+        $('.datetimepickerfrom').datetimepicker({
+            format: 'DD/MM/YYYY',
+            extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
+            showTodayButton: true,
+            showClose: true
+        });
+        $('.datetimepickerto').datetimepicker({
+            format: 'DD/MM/YYYY',
+            extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
+            showTodayButton: true,
+            showClose: true
+        });
+        $(".datetimepickerfrom").on("dp.change", function (e) {
+            $('.datetimepickerto').data("DateTimePicker").minDate(e.date);
+        });
+        $(".datetimepickerto").on("dp.change", function (e) {
+            $('.datetimepickerfrom').data("DateTimePicker").maxDate(e.date);
+        });
 
 
-    var dt = $('#pos_invoice_index').dataTable({
-      processing: true,
-      serverSide: true,
-      ajax: $('#pos_invoice_index').data('sourc'),
-      aLengthMenu: [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]],
-      pagingType: 'full_numbers',
-      order: [[0, "desc"], [1, "desc"]],
-      sPaginationType: "bootstrap",
-      data: {
-        "fromdate": $('#fromdate').val(),
-        "todate": $("#todate").val(),
-        "transcation_type": $("#todate").val()
-      },
-      columns: [
-        {"sClass": "text-center"},
-        {"sClass": "text-center"},
-        {"sClass": "text-center", "sortable": false},
-        {"sClass": "text-center"},
-        {"sClass": "text-right", "sortable": false},
-        {"sClass": "text-center"},
-        {"sClass": "text-center"},
-        {"sClass": "text-center", "sortable": false}
-      ]
-    });
+        var dt = $('#pos_invoice_index').dataTable({
+            processing: true,
+            serverSide: true,
+            ajax: $('#pos_invoice_index').data('sourc'),
+            aLengthMenu: [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]],
+            pagingType: 'full_numbers',
+            order: [[0, "desc"], [1, "desc"]],
+            sPaginationType: "bootstrap",
+            data: {
+                "fromdate": $('#fromdate').val(),
+                "todate": $("#todate").val(),
+                "transcation_type": $("#todate").val()
+            },
+            columns: [
+                {"sClass": "text-center"},
+                {"sClass": "text-center"},
+                {"sClass": "text-center", "sortable": false},
+                {"sClass": "text-center"},
+                {"sClass": "text-right", "sortable": false},
+                {"sClass": "text-center"},
+                {"sClass": "text-center"},
+                {"sClass": "text-center", "sortable": false}
+            ]
+        });
 
-    $('#date_search').keyup(function () {
-      dt.column(0).search(this.value).draw();
-    });
-    $('#entity_search').keyup(function () {
-      dt.column(2).search(this.value).draw();
-    });
-    $('#location_search').keyup(function () {
-      dt.column(3).search(this.value).draw();
-    });
-    $('#invoice_search').keyup(function () {
-      dt.column(1).search(this.value).draw();
-    });
+        $('#date_search').keyup(function () {
+            dt.column(0).search(this.value).draw();
+        });
+        $('#entity_search').keyup(function () {
+            dt.column(2).search(this.value).draw();
+        });
+        $('#location_search').keyup(function () {
+            dt.column(3).search(this.value).draw();
+        });
+        $('#invoice_search').keyup(function () {
+            dt.column(1).search(this.value).draw();
+        });
 
-    $('#created_search').keyup(function () {
-      dt.column(5).search(this.value).draw();
+        $('#created_search').keyup(function () {
+            dt.column(5).search(this.value).draw();
+        });
+
+
     });
-
-
-  });
 </script>

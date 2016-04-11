@@ -17,6 +17,10 @@ class PosInvoicesController < ApplicationController
       todate = params[:todate]|| Date.today
       ttype = params[:ttype] || 0
 
+      @start = fromdate
+      @end = todate
+      @trtype = ttype.to_i == 0 ? "All" : ttype.to_i == 1 ? "Cash" : "Card"
+
       format.html
       # format.csv { send_data @pos_invoices.to_csv, filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.csv" }
       format.xls #{ send_data @pos_invoices.to_csv(col_sep: "\t"), filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }
