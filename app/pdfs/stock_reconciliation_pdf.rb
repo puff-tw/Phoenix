@@ -9,10 +9,10 @@ class StockReconciliationPdf < Prawn::Document
   def line_items
 
     @stock_location.each do |stockitem|
-      result = [['SKU', "Product", "Location", "Category", "Language", "AvailableQuantity"]]
+      result = [['SKU', "Language", "Category", "Location", "Product", "AvailableQuantity"]]
 
       stockitem[1].each do |item|
-        result += [[item['Sku'], item['ProductName'], item['Location'], item['PCat'], item['Lang'], item['AvailableStock']]]
+        result += [[item['Sku'], item['Lang'], item['PCat'], item['Location'], item['ProductName'], item['AvailableStock']]]
       end
 
 
@@ -24,13 +24,13 @@ class StockReconciliationPdf < Prawn::Document
         columns(0).align = :center
         columns(0).width = 60
         columns(1).align = :left
-        columns(1).width = 200
+        columns(1).width = 80
         columns(2..3).align = :center
         columns(2).width = 70
-        columns(3).width = 75
-        column(4).align = :right
-        columns(4).width = 80
-        column(5).align = :right
+        columns(3).width = 95
+        column(4).align = :left
+        columns(4).width = 180
+        column(5).align = :center
         columns(5).width = 75
         row(0).align = :center
         # self.row_colors = ["DDDDDD", "FFFFFF"]
