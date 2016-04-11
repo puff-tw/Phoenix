@@ -218,10 +218,23 @@ class TotalSalesSummaryController < ApplicationController
     filter_params = Hash.new
     filter_params[:location_id] = GlobalSettings.current_bookstall_id
     @stock = StockReconciliationReport.locationwise_stock_summary_table({}, filter_params)
+
+    @arrs = @stock.dup
+    output_hash = Hash.new
+    uniq_values = @stock.uniq! { |e| e['Lang'] }
+
+    @eng = @arrs.select { |arrs| arrs["Lang"].to_s == "English" }
+
+
+    uniq_values.each do |lang|
+      output_hash[lang['Lang']] = @arrs.select { |arrs| arrs["Lang"].to_s == lang['Lang'] }
+    end
+
+
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = StockReconciliationPdf.new(@stock)
+        pdf = StockReconciliationPdf.new(output_hash)
         send_data pdf.render, filename: "payment_collection_report",
                   type: "application/pdf",
                   disposition: 'inline'

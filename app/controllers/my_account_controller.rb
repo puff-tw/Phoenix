@@ -5,6 +5,6 @@ class MyAccountController < ApplicationController
     @amount_given_to_cashier = AccountEntry
                                    .where(:type => 'AccountEntry::Credit')
                                    .where(:account_id => id)
-                                   .order("created_at")
+                                   .order("created_at DESC")
   end
 end
