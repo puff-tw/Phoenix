@@ -61,6 +61,8 @@ Rails.application.routes.draw do
   get '/invoice-list-with-payment'=>'total_sales_summary#invoice_list_with_payment'
   get '/line-item-extract'=>'total_sales_summary#line_item_extract'
   get '/voucher-line-item-extract'=>'total_sales_summary#voucher_line_item_extract'
+  get '/sku-lookup'=>'total_sales_summary#sku_lookup'
+  get '/edit-threshold'=>'total_sales_summary#edit_threshold'
 
 
   post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'

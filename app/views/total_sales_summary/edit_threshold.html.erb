@@ -1,0 +1,80 @@
+<center><h3>Please Select any one of the option to set threshold</h3></center>
+<hr/>
+<br/>
+<div>
+  <div class="col-md-12">
+    <div class="col-md-offset-1">
+      <div class="col-md-3">
+        <label>Category</label>
+        <select class="select" id="category">
+          <option value="" data-value="">Select One</option>
+          <% @category.each do |category| %>
+              <option value="<%= category.id %>" data-value="<%= category.name %>"><%= category.name %></option>
+
+          <% end %>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label>Language</label>
+        <select class="select" id="language">
+          <option value="" data-value="">Select One</option>
+          <% @language.each do |language| %>
+              <option value="<%= language.id %>" data-value="<%= language.name %>"><%= language.name %></option>
+          <% end %>
+        </select>
+
+      </div>
+      <div class="col-md-4">
+        <label>Products</label>
+        <select class="select" id="product">
+          <option value="" data-value="">Select One</option>
+          <% @products.each do |product| %>
+              <option value="<%= product.sku %>" data-value="<%= product.name %>"><%= product.name %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<br/>
+
+<div style="margin: 30px;">
+  <center>
+    <h3>Threshold is applied to :</h3><br/>
+    <span id="filter-param"></span>
+  </center>
+</div>
+<hr/>
+<div class="col-md-12" style="margin-top: 20px;">
+  <div class="col-md-4 col-md-offset-4">
+
+    <input type="number" id="thresholdvalue" class="form-control">
+    <input type="button" id="savevalue" class="btn btn-primary">
+  </div>
+</div>
+
+<script>
+    $(function () {
+        $('.select').select2({width: 'resolve'});
+        language
+        $('#category').on('change', function (e) {
+            $("#language").select2("val", "");
+            $("#product").select2("val", "");
+            $('#filter-param').html("Category : " + "<b class='label label-primary'>" + $(this).select2('data').text + "</b>" + "<br/>");
+        });
+
+        $('#language').on('change', function (e) {
+            $("#category").select2("val", "");
+            $("#product").select2("val", "");
+            $('#filter-param').html("language : " + "<b class='label label-primary'>" + $(this).select2('data').text + "</b>" + "<br/>");
+        });
+
+        $('#product').on('change', function (e) {
+            $("#category").select2("val", "");
+            $("#language").select2("val", "");
+            $('#filter-param').html("Product : " + "<b class='label label-primary'>" + $(this).select2('data').text + "</b>" + "<br/>");
+        });
+
+    });
+</script>

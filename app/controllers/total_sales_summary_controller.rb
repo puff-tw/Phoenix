@@ -258,4 +258,85 @@ class TotalSalesSummaryController < ApplicationController
     @report = InventoryTxnVouchersReport.inventory_internal_transfer_vouchers_line_items()
 
   end
+
+  def sku_lookup
+
+  end
+
+  def edit_threshold
+
+    @category = Category.where(:active => true)
+    @language = Language.where(:active => true)
+    @products = Product.where(:active => true)
+  end
+
+  def save_threshold
+
+    product_sku = params[:sku]
+    category_id = params[:catid]
+    language_id = params[:langid]
+
+    if (product_sku=="")
+      if category_id==""
+        if language_id==""
+          obj = ThresholdCapture.new(:language_id => language_id.to_i)
+          obj.save
+        end
+      else
+        obj = ThresholdCapture.new(:category_id => category_id.to_i)
+        obj.save
+      end
+    else
+      obj = ThresholdCapture.new(:product_sku => product_sku.to_i)
+      obj.save
+    end
+
+    Threshold.delete_all
+    init_threshold
+
+  end
+
+
+  def init_threshold
+    @products = Product.all
+
+    @products.each do |product|
+      obj = Threshold.new(:sku => product.sku)
+      obj.save
+    end
+
+    @threshold = ThresholdCapture.all
+    @threshold.each do |threshold|
+
+      if threshold.category_id !=0
+        #category
+        @prod = Product.where(:category_id => threshold.category_id)
+        @prod.each do |prod|
+          thersh = Threshold.where(:sku => prod.sku)
+          thersh.threshold_val = threshold.threshold_value
+          thersh.save
+        end
+      end
+
+      if threshold.language_id !=0
+        #language
+        @prod = Product.where(:language_id => threshold.language_id)
+        @prod.each do |prod|
+          thersh = Threshold.where(:sku => prod.sku)
+          thersh.threshold_val = threshold.threshold_value
+          thersh.save
+        end
+      end
+
+      if threshold.product_sku !=0
+        #product
+        @prod = Product.where(:sku => threshold.product_sku)
+        @prod.each do |prod|
+          thersh = Threshold.where(:sku => prod.sku)
+          thersh.threshold_val = threshold.threshold_value
+          thersh.save
+        end
+      end
+    end
+  end
 end
