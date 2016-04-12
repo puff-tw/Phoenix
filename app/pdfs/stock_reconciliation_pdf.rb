@@ -9,10 +9,10 @@ class StockReconciliationPdf < Prawn::Document
   def line_items
 
     @stock_location.each do |stockitem|
-      result = [['SKU', "Language", "Category", "Location", "Product", "AvailableQuantity"]]
+      result = [['SKU', "Language", "Category", "Location", "Product", "Expected On-Hand Quantity","Actual On-Hand Quantity"]]
 
       stockitem[1].each do |item|
-        result += [[item['Sku'], item['Lang'], item['PCat'], item['Location'], item['ProductName'], item['AvailableStock']]]
+        result += [[item['Sku'], item['Lang'], item['PCat'], item['Location'], item['ProductName'], item['AvailableStock'],""]]
       end
 
 
@@ -22,20 +22,22 @@ class StockReconciliationPdf < Prawn::Document
       table result do
         row(0).font_style = :bold
         columns(0).align = :center
-        columns(0).width = 60
+        columns(0).width = 50
         columns(1).align = :left
         columns(1).width = 80
         columns(2..3).align = :center
-        columns(2).width = 70
-        columns(3).width = 95
+        columns(2).width = 60
+        columns(3).width = 75
         column(4).align = :left
-        columns(4).width = 180
+        columns(4).width = 170
         column(5).align = :center
         columns(5).width = 75
+        column(6).align = :center
+        columns(6).width = 50
         row(0).align = :center
         # self.row_colors = ["DDDDDD", "FFFFFF"]
         self.width = 560
-        self.cell_style = {size: 11, padding_left: 10, padding_right: 10}
+        self.cell_style = {size: 10, padding_left: 5, padding_right: 5}
         self.header = true
       end
 
