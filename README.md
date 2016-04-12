@@ -31,3 +31,28 @@ This project is built by [Team Solutionize](http://solutionize.in/). Members who
 # License
 
 Phoenix ERP is released under the [GPL v3](http://www.gnu.org/licenses/quick-guide-gplv3.html)
+
+#script for Threshold
+
+```sql
+
+CREATE TABLE threshold_captures
+(
+  id SERIAL PRIMARY KEY NOT NULL,
+  category_id INT,
+  language_id INT,
+  product_sku INT,
+  threshold_value INT
+);
+
+CREATE TABLE thresholds
+(
+  id SERIAL PRIMARY KEY NOT NULL,
+  sku INT,
+  threshold_val INT DEFAULT 5,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+
+```
