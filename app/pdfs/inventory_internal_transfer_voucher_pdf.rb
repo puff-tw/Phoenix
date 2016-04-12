@@ -2,9 +2,18 @@ class InventoryInternalTransferVoucherPdf < Prawn::Document
   def initialize(inventory_internal_transfer_voucher)
     super({top_margin: 20, left_margin: 35, right_margin: 25, bottom_margin: 20})
     @inventory_internal_transfer_voucher = inventory_internal_transfer_voucher
+    text GlobalSettings.organisation_name, size: 15, style: :bold, align: :center
+    move_down 10
+    generated_date
+    stroke_horizontal_rule
+    move_down 10
     line_items
   end
 
+  def generated_date
+    move_down 10
+    text "Generated at: #{ Time.zone.now.to_formatted_s(:long) }", size: 12
+  end
 
   def line_items
     move_down 10

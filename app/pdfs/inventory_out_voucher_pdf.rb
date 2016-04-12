@@ -3,9 +3,18 @@ class InventoryOutVoucherPdf < Prawn::Document
   def initialize(inventory_in_voucher)
     super({top_margin: 20, left_margin: 35, right_margin: 25, bottom_margin: 20})
     @inventory_out = inventory_in_voucher
+    text GlobalSettings.organisation_name, size: 15, style: :bold, align: :center
+    move_down 10
+    generated_date
+    stroke_horizontal_rule
+    move_down 10
     line_items
   end
 
+  def generated_date
+    move_down 10
+    text "Generated at: #{ Time.zone.now.to_formatted_s(:long) }", size: 12
+  end
   def line_items
     table fetch_records do
       row(0).font_style = :bold
