@@ -241,4 +241,21 @@ class TotalSalesSummaryController < ApplicationController
       end
     end
   end
+
+  def invoice_list_with_payment
+
+    @report = PosInvoicesReport.invoice_list_with_payments()
+
+  end
+
+
+  def line_item_extract
+    @report = PosInvoicesReport.pos_invoice_line_items();
+  end
+
+
+  def voucher_line_item_extract
+    @report = InventoryTxnVouchersReport.inventory_internal_transfer_vouchers_line_items()
+
+  end
 end

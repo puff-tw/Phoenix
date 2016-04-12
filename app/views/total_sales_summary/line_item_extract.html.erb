@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="pull-right" style="margin: 10px;">
+    <a class="btn btn-primary" href="/pos-invoices-line-items.xls">Export</a>
+  </div>
+</div>
+<div class="display responsive no-wrap voucher_line_items">
+  <table id="lineitemextract" class='DataTable1 DataTable-line-items'>
+    <thead>
+    <tr>
+      <th>InvoiceDate</th>
+      <th>InvoiceNumber</th>
+      <th>SKU</th>
+      <TH>ProductName</TH>
+      <TH>Category</TH>
+      <TH>Language</TH>
+      <TH>Quantity</TH>
+      <TH>Price</TH>
+      <TH>Amount</TH>
+      <TH>CreatedAt</TH>
+    </tr>
+    </thead>
+    <tbody>
+    <% @report.each do |rep| %>
+        <tr>
+          <td><%= rep['InvoiceDate'] %></td>
+          <td><%= rep['InvoiceNumber'] %></td>
+          <td><%= rep['SKU'] %></td>
+          <td><%= rep['ProductName'] %></td>
+          <td><%= rep['Category'] %></td>
+          <td><%= rep['Language'] %></td>
+          <td><%= rep['Quantity'] %></td>
+          <td><%= rep['Price'] %></td>
+          <td><%= rep['Amount'] %></td>
+          <td><%= rep['CreatedAt'] %></td>
+        </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>
+
+<script>
+    $(function () {
+        var dt = $('#lineitemextract').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            responsive: true,
+            "bSort": false
+        });
+
+    });
+</script>

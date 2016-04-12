@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="pull-right" style="margin: 10px;">
+    <a class="btn btn-primary" href="/pos-invoices-list-with-payment.xls">Export</a>
+  </div>
+</div>
+<div class="display responsive no-wrap voucher_line_items">
+  <table id="posinvoicewithpayment" class='DataTable1 DataTable-line-items'>
+    <thead>
+    <tr>
+      <th>invoice_date</th>
+      <th>invoice_number</th>
+      <th># of line items</th>
+      <TH># OF PRODUCTS</TH>
+      <TH>TOTAL_AMOUNT</TH>
+      <TH>PMT_CASH</TH>
+      <TH>PMT_CREDIT_CARD</TH>
+      <TH>CREATED_BY</TH>
+      <TH>CARD_LAST_DIGITS</TH>
+      <TH>BANK_NAME</TH>
+      <TH>CARD_HOLDER_NAME</TH>
+      <!--&lt;!&ndash;<TH>ABHYASI_MOBILE</TH>&ndash;&gt;-->
+      <!--<TH>CARD_EXPIRY</TH>-->
+      <TH>TRANS_ID</TH>
+      <!--<TH>CREATED_AT</TH>-->
+    </tr>
+    </thead>
+    <tbody>
+    <% @report.each do |rep| %>
+        <tr>
+          <td><%= rep['created_at'].strftime("%H-%M-%Y %H:%M:%S") %></td>
+          <td><%= rep['invoice_number'] %></td>
+          <td><%= rep['items_size'] %></td>
+          <td><%= rep['item_quantity'] %></td>
+          <td><%= rep['total_amount'] %></td>
+          <td><%= rep['pmt_cash'] %></td>
+          <td><%= rep['pmt_credit_card'] %></td>
+          <td><%= rep['created_by'] %></td>
+          <td><%= rep['card_last_digits'] %></td>
+          <td><%= rep['bank_name'] %></td>
+          <td><%= rep['card_holder_name'] %></td>
+          <!--<td><%= rep['abhyasi_mobile'] %></td>-->
+          <!--<td><%= rep['card_expiry'] %></td>-->
+          <td><%= rep['transcation_number'] %></td>
+
+        </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>
+
+<script>
+    $(function () {
+        var dt = $('#posinvoicewithpayment').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            responsive: true,
+            "bSort": false
+        });
+
+        $('#name_search').keyup(function () {
+            dt.column(1).search(this.value).draw();
+        });
+        $('#language_search').keyup(function () {
+            dt.column(2).search(this.value).draw();
+        });
+        $('#author_search').keyup(function () {
+            dt.column(4).search(this.value).draw();
+        });
+        $('#category_search').keyup(function () {
+            dt.column(6).search(this.value).draw();
+        });
+        $('#dist_search').keyup(function () {
+            dt.column(8).search(this.value).draw();
+        });
+
+
+    });
+</script>
