@@ -3,7 +3,7 @@
 <div class="row">
   <div class="pull-right" style="margin-right: 20px;">
     <a href="/edit-threshold" class="btn btn-info"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit Threshold</a>
-    <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Threshold</a>
+    <a href="#" class="btn btn-primary" id="viewthreshold"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Threshold</a>
   </div>
 </div>
 
@@ -71,6 +71,9 @@
             dt.column(8).search(this.value).draw();
         });
 
+        $('#viewthreshold').click(function () {
+            alert("Im working on this");
+        })
 
     });
 </script>
