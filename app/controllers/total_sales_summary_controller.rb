@@ -297,7 +297,7 @@ class TotalSalesSummaryController < ApplicationController
 
     @category = Category.where(:active => true)
     @language = Language.where(:active => true)
-    @products = Product.where(:active => true)
+    @products = Product.includes(:language).where(:active => true)
   end
 
   def save_threshold
@@ -334,14 +334,10 @@ class TotalSalesSummaryController < ApplicationController
     @products = Product.all
 
 
-    Threshold.connection.insert("INSERT INTO thresholds (sku,created_at,updated_at)
+    #inserting products from products table
+    Threshold.connection.insert('INSERT INTO thresholds (sku,created_at,updated_at)
                                         SELECT sku,current_timestamp,current_timestamp
-                                        FROM products where active=true")
-    #
-    # @products.each do |product|
-    #   obj = Threshold.new(:sku => product.sku)
-    #   obj.save
-    # end
+                                        FROM products where active=true')
 
     @threshold = ThresholdCapture.all
     @threshold.each do |threshold|

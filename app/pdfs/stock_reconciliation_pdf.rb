@@ -33,7 +33,7 @@ class StockReconciliationPdf < Prawn::Document
         columns(0).align = :center
         columns(0).width = 50
         columns(1).align = :center
-        columns(1).width = 80
+        columns(1).width = 70
         columns(2..3).align = :center
         columns(2).width = 60
         columns(3).width = 75
@@ -42,7 +42,7 @@ class StockReconciliationPdf < Prawn::Document
         column(5).align = :center
         columns(5).width = 75
         column(6).align = :center
-        columns(6).width = 50
+        columns(6).width = 60
         row(0).align = :center
         self.row_colors = ["DDDDDD", "FFFFFF"]
         self.width = 560
