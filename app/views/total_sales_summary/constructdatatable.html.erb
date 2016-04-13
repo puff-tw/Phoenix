@@ -9,18 +9,13 @@
       <th>ProductName</th>
       <th>PCat</th>
       <th>Lang</th>
-      
-      <!-- <th>VoucherOut</th> -->
       <th>PosSales</th>
-    
       <th>AvailableStock</th>
       <th>GrossAmount</th>
     </tr>
     </thead>
     <tbody>
     <% @stock_summary['result'].each do |product| %>
-
-
         <tr>
           <td><%= product['BusinessEntity'] %></td>
           <td><%= product['Location'] %></td>
@@ -31,7 +26,6 @@
           <td><%= product['PosSales'] %></td>
           <td><%= product['AvailableStock'] %></td>
           <td><%= product['GrossAmount'] %></td>
-          
         </tr>
     <% end %>
     </tbody>

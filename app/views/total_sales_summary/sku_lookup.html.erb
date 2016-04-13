@@ -2,6 +2,75 @@
 <hr/>
 <div class="row">
   <div class="pull-right" style="margin-right: 20px;">
-    <a href="/edit-threshold" class="btn btn-info"><i class="fa fa-pencil"></i>&nbsp;&nbsp;View/Edit Threshold</a>
+    <a href="/edit-threshold" class="btn btn-info"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit Threshold</a>
+    <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Threshold</a>
   </div>
 </div>
+
+<hr/>
+<div class="display responsive no-wrap voucher_line_items">
+  <table id="product_lists_table" class='DataTable1 DataTable-line-items'>
+    <thead>
+    <tr>
+      <th>Business Entity</th>
+      <th>Location</th>
+      <th>Sku</th>
+      <th>ProductName</th>
+      <th>PCat</th>
+      <th>Lang</th>
+      <th>PosSales</th>
+      <th>AvailableStock</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @skulookup.each do |product| %>
+        <tr>
+          <td><%= product['BusinessEntity'] %></td>
+          <td><%= product['Location'] %></td>
+          <td><%= product['Sku'] %></td>
+          <td><%= product['ProductName'] %></td>
+          <td><%= product['PCat'] %></td>
+          <td><%= product['Lang'] %></td>
+          <td><%= product['PosSales'] %></td>
+          <td><%= product['AvailableStock'] %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+    $(function () {
+        var dt = $('#product_lists_table').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            // ajax: ...,
+            // autoWidth: false,
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            // processing: true,
+            // serverSide: true,
+            responsive: true,
+            "bSort": false
+        });
+
+        $('#name_search').keyup(function () {
+            dt.column(1).search(this.value).draw();
+        });
+        $('#language_search').keyup(function () {
+            dt.column(2).search(this.value).draw();
+        });
+        $('#author_search').keyup(function () {
+            dt.column(4).search(this.value).draw();
+        });
+        $('#category_search').keyup(function () {
+            dt.column(6).search(this.value).draw();
+        });
+        $('#dist_search').keyup(function () {
+            dt.column(8).search(this.value).draw();
+        });
+
+
+    });
+</script>

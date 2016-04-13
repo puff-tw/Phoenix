@@ -261,7 +261,37 @@ class TotalSalesSummaryController < ApplicationController
 
   def sku_lookup
 
+    @skulookup = cal_sku_lookup
+
+    arr = ""
   end
+
+  def cal_sku_lookup
+
+    filter_params = Hash.new
+    filter_params[:location_id] = GlobalSettings.current_bookstall_id
+    filter_params[:from_date] = params[:from_date] || GlobalSettings.start_date
+    filter_params[:to_date] = params[:to_date] || Time.zone.now.strftime('%d/%m/%Y')
+
+    result = Array.new
+
+    @available_stock = TotalStockCalculation.calculate_sales_without_limit({}, filter_params)
+    @threshold=Threshold.all
+
+    @available_stock.each do |available_stock|
+      @threshold.each do |threshold|
+        if threshold.sku.to_i == available_stock['Sku'].to_i
+          if threshold.threshold_val > available_stock['AvailableStock']
+            myHash = available_stock
+            result << myHash
+          end
+        end
+      end
+    end
+
+    result
+  end
+
 
   def edit_threshold
 
@@ -272,38 +302,46 @@ class TotalSalesSummaryController < ApplicationController
 
   def save_threshold
 
-    product_sku = params[:sku]
-    category_id = params[:catid]
-    language_id = params[:langid]
+    product_sku = params[:product]
+    category_id = params[:category]
+    language_id = params[:language]
+    thershold_value = params[:thresholdvalue].to_i
+
+
+    success_value=""
 
     if (product_sku=="")
       if category_id==""
-        if language_id==""
-          obj = ThresholdCapture.new(:language_id => language_id.to_i)
-          obj.save
-        end
+        obj = ThresholdCapture.new(:language_id => language_id.to_i, :threshold_value => thershold_value)
+        obj.save
       else
-        obj = ThresholdCapture.new(:category_id => category_id.to_i)
+        obj = ThresholdCapture.new(:category_id => category_id.to_i, :threshold_value => thershold_value)
         obj.save
       end
     else
-      obj = ThresholdCapture.new(:product_sku => product_sku.to_i)
+      obj = ThresholdCapture.new(:product_sku => product_sku.to_i, :threshold_value => thershold_value)
       obj.save
     end
 
     Threshold.delete_all
     init_threshold
 
+    redirect_to :edit_threshold, flash: {success: "Threshold limit made succesfully..."}
   end
 
 
   def init_threshold
     @products = Product.all
 
-    @products.each do |product|
-      obj = Threshold.new(:sku => product.sku)
-      obj.save
-    end
+
+    Threshold.connection.insert("INSERT INTO thresholds (sku,created_at,updated_at)
+                                        SELECT sku,current_timestamp,current_timestamp
+                                        FROM products where active=true")
+    #
+    # @products.each do |product|
+    #   obj = Threshold.new(:sku => product.sku)
+    #   obj.save
+    # end
 
     @threshold = ThresholdCapture.all
     @threshold.each do |threshold|
@@ -312,9 +350,7 @@ class TotalSalesSummaryController < ApplicationController
         #category
         @prod = Product.where(:category_id => threshold.category_id)
         @prod.each do |prod|
-          thersh = Threshold.where(:sku => prod.sku)
-          thersh.threshold_val = threshold.threshold_value
-          thersh.save
+          thersh = Threshold.where(:sku => prod.sku).update_all(threshold_val: threshold.threshold_value)
         end
       end
 
@@ -322,9 +358,7 @@ class TotalSalesSummaryController < ApplicationController
         #language
         @prod = Product.where(:language_id => threshold.language_id)
         @prod.each do |prod|
-          thersh = Threshold.where(:sku => prod.sku)
-          thersh.threshold_val = threshold.threshold_value
-          thersh.save
+          thersh = Threshold.where(:sku => prod.sku).update_all(threshold_val: threshold.threshold_value)
         end
       end
 
@@ -332,9 +366,8 @@ class TotalSalesSummaryController < ApplicationController
         #product
         @prod = Product.where(:sku => threshold.product_sku)
         @prod.each do |prod|
-          thersh = Threshold.where(:sku => prod.sku)
-          thersh.threshold_val = threshold.threshold_value
-          thersh.save
+          thersh = Threshold.where(:sku => prod.sku).update_all(threshold_val: threshold.threshold_value)
+          # thersh.save
         end
       end
     end

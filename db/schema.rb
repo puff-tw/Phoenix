@@ -482,9 +482,9 @@ ActiveRecord::Schema.define(version: 20160412105821) do
   add_index "states", ["name", "region_id"], name: "index_states_on_name_and_region_id", unique: true, using: :btree
 
   create_table "threshold_captures", force: :cascade do |t|
-    t.integer "category_id"
-    t.integer "language_id"
-    t.integer "product_sku"
+    t.integer "category_id",     default: 0
+    t.integer "language_id",     default: 0
+    t.integer "product_sku",     default: 0
     t.integer "threshold_value"
   end
 
