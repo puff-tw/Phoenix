@@ -1,0 +1,28 @@
+134 - SHPT, Hyderabad (Business Entity), voucher sequence id 465?
+158 - Kanha Bookstall (Business Entity Location)
+    bank_account_id=51
+    sales_account_id=53
+
+Test POS User: 76
+Cash Account: 52
+
+
+#Sales account setup
+Account::SalesAccount.create!(business_entity_id: 134, name: "Cel201602-Sales", alias_name: "Sales Cel201602", contra: false, reserved: true, active: true)
+
+#Map the sales account to the Business Entity Location
+BusinessEntityLocation.find(158).update_attributes(sales_account_id: 53)
+
+#Reducing the Business Entities
+update business_entities set active=false ;
+update business_entities set active=true where id in (1, 134, 129, 130, 128);
+
+#Reducing the Business Entity Location;
+update business_entity_locations set active=false;
+udpate business_entity_locations set active=true where business_entity_id in (1, 134);
+
+#creation of Users
+user = User.create!(name: 'Aravind Kulkarni', city_id: 1, email: 'nagadeesh@gmail.com', contact_number_primary: '9966451161', active: true, membership_number: 'INNTAE044')
+userrole = UserRole.create!(user: user, role_id: 5, business_entity_location_id: 154, active: true)
+account = Account::CashAccount.create!(business_entity_id: 1, name: "Cash_#{user.id}", alias_name: 'Cash - Nagarjuna T.', reserved: true)
+user.update_attributes!(cash_account_id: account.id)
