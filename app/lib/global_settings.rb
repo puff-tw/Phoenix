@@ -30,6 +30,10 @@ class GlobalSettings
     'TIN # 36217061270'
   end
   def self.start_date
-    '01/02/2016'
+    '01/04/2016'
+  end
+
+  def self.threshold_default
+    5
   end
 end

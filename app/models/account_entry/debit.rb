@@ -1,7 +1,7 @@
 class AccountEntry::Debit < AccountEntry
   belongs_to :debit_account_txn, class_name: 'AccountTxn', foreign_key: 'account_txn_id', inverse_of: :debit_entries, touch: true
 
-  attr_accessor :bank_name, :card_last_digits, :expiry_month, :expiry_year, :mobile_number, :card_holder_name
+  attr_accessor :bank_name, :card_last_digits, :expiry_month, :expiry_year, :mobile_number, :card_holder_name, :transcation_id
 
   validates :debit_account_txn, presence: true
   validates :bank_name, presence: true, if: :pos_invoice_with_credit_card_payment?
@@ -10,6 +10,7 @@ class AccountEntry::Debit < AccountEntry
   validates :expiry_year, numericality: { only_integer: true, greater_than_or_equal_to: 2015, less_than_or_equal_to: 2050 }, presence: true, if: :pos_invoice_with_credit_card_payment?
   validates :mobile_number, numericality: { greater_than_or_equal_to: 999999999, less_than_or_equal_to: 9999999999 }, presence: true, if: :pos_invoice_with_credit_card_payment?
   validates :card_holder_name, presence: true, if: :pos_invoice_with_credit_card_payment?
+  validates :transcation_id, presence: true, if: :pos_invoice_with_credit_card_payment?
 
   before_validation :populate_credit_card_information
 
@@ -27,6 +28,7 @@ class AccountEntry::Debit < AccountEntry
       additional_info['expiry_year'] = self.expiry_year
       additional_info['mobile_number'] = self.mobile_number
       additional_info['card_holder_name'] = self.card_holder_name
+      additional_info['transcation_id'] = self.card_holder_name
     end
   end
 end

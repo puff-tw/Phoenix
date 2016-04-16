@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="pull-right" style="margin: 10px;">
+    <a class="btn btn-primary" href="/inventory-internal-transfer-vouchers-line-items.xls">Export</a>
+  </div>
+</div>
+<div class="display responsive no-wrap voucher_line_items">
+  <table id="voucherlineitemextract" class='DataTable1 DataTable-line-items'>
+    <thead>
+    <tr>
+      <th>VoucherDate</th>
+      <th>VoucherName</th>
+      <th>VoucherType</th>
+      <TH>SKU</TH>
+      <TH>ProductName</TH>
+      <TH>Category</TH>
+      <TH>Language</TH>
+      <TH>Location</TH>
+      <TH>QuantitySent</TH>
+      <TH>SecondaryLocation</TH>
+      <TH>QuantityReceived</TH>
+      <TH>CreatedBy</TH>
+    </tr>
+    </thead>
+    <tbody>
+    <% @report.each do |rep| %>
+        <tr>
+          <td><%= rep['VoucherDate'] %></td>
+          <td><%= rep['VoucherName'] %></td>
+          <td><%= rep['VoucherType'] %></td>
+          <td><%= rep['SKU'] %></td>
+          <td><%= rep['ProductName'] %></td>
+          <td><%= rep['Category'] %></td>
+          <td><%= rep['Language'] %></td>
+          <td><%= rep['Location'] %></td>
+          <td><%= rep['QuantitySent'] %></td>
+          <td><%= rep['SecondaryLocation'] %></td>
+          <td><%= rep['QuantityReceived'] %></td>
+          <td><%= rep['CreatedBy'] %></td>
+        </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>
+
+<script>
+    $(function () {
+        var dt = $('#voucherlineitemextract').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            responsive: true,
+            "bSort": true
+        });
+
+    });
+</script>

@@ -46,6 +46,7 @@
                   </div>
                 </div>
                   <%= fde.text_field :card_holder_name, value: (fde.object.additional_info['card_holder_name'] if fde.object.additional_info.present? && fde.object.additional_info['card_holder_name'].present?), class: 'form-control', placeholder: "Card Holder's Name" %>
+                  <%= fde.text_field :transcation_id, value: (fde.object.additional_info['transcation_id'] if fde.object.additional_info.present? && fde.object.additional_info['transcation_id'].present?), class: 'form-control', placeholder: "Transcation Id" %>
               </div>
             </td>
           </tr>

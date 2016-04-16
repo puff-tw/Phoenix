@@ -52,12 +52,29 @@ Rails.application.routes.draw do
 
   get '/total-sales-summary' => 'total_sales_summary#show'
   get '/total-sales-summary-report' => 'total_sales_summary#constructdatatable'
+  get '/create-user' => 'total_sales_summary#create_user'
+  get '/list-user' => 'total_sales_summary#list_user'
+  get '/active-user/:id' => 'total_sales_summary#active_user'
+  get '/deactive-user/:id' => 'total_sales_summary#deactive_user'
+  get '/posdisplay' => 'total_sales_summary#pos_display'
+  get '/reconciliation' => 'total_sales_summary#stock_reconciliation'
+  get '/invoice-list-with-payment' => 'total_sales_summary#invoice_list_with_payment'
+  get '/line-item-extract' => 'total_sales_summary#line_item_extract'
+  get '/voucher-line-item-extract' => 'total_sales_summary#voucher_line_item_extract'
+  get '/sku-lookup' => 'total_sales_summary#sku_lookup'
+  get '/edit-threshold' => 'total_sales_summary#edit_threshold'
+  post '/save-threshold' => 'total_sales_summary#save_threshold'
+
+
+  post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'
+
   post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
   get '/on-hand-lookup' => 'on_hand_look_up#show'
-  get '/on-hand-lookup-report' =>'on_hand_look_up#calculate'
+  get '/on-hand-lookup-report' => 'on_hand_look_up#calculate'
   get '/calculate_limit' => 'total_sales_summary#show_limit'
   get '/calculate-sales-limit' => 'total_sales_summary#calculate_sales_limit'
-  get '/pos-products' =>'total_sales_summary#pos_products'
+  get '/pos-products' => 'total_sales_summary#pos_products'
+  get '/stock-pdf' => 'total_sales_summary#stock_pdf'
   # AWS health check
   get '/ping' => 'ping#show'
   # get '/sales' => 'reports#index'

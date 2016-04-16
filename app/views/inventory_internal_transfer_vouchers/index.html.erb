@@ -1,21 +1,25 @@
 <% provide(:title, 'Inventory Internal Transfer Vouchers listing') %>
-<%= link_to 'New Inventory Internal Transfer Voucher', new_inventory_internal_transfer_voucher_path, class: 'pull-right' %>
-<div class="display responsive no-wrap voucher_line_items">
+<div class="pull-right">
+  <%= link_to 'New Inventory Internal Transfer Voucher', new_inventory_internal_transfer_voucher_path,class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;
+  <a target="_blank" href="/inventory-internal-transfer-vouchers.pdf" class="btn btn-info">Print</a>
+</div>
+
+<div class="display responsive no-wrap voucher_line_items" style="margin-top: 20px;">
   <table id='voucher_line_items' class='DataTable2 DataTable-line-items'>
     <thead>
-      <tr>
-        <th class='col-md-1 text-center'>Date <br/><input type="text" id="date_search"></th>
-        <th class='col-md-1 text-center'>Invoice #</th>
-        <th class='col-md-2 text-center'>From Location<br/><input type="text" id="from_location__search"></th>
-        <th class='col-md-2 text-center'>To Location<br/><input type="text" id="to_location_search"></th>
-        <th class='col-md-1 text-center'>Amount</th>
-        <th class='col-md-2 text-center'>Remarks</th>
-        <th class='col-md-1 text-center'>Created by<br/><input type="text" id="created_by_search"></th>
-        <th class='col-md-2 text-center'>Operations</th>
-      </tr>
+    <tr>
+      <th class='col-md-1 text-center'>Date <br/><input type="text" id="date_search"></th>
+      <th class='col-md-1 text-center'>Invoice #</th>
+      <th class='col-md-2 text-center'>From Location<br/><input type="text" id="from_location__search"></th>
+      <th class='col-md-2 text-center'>To Location<br/><input type="text" id="to_location_search"></th>
+      <th class='col-md-1 text-center'>Amount</th>
+      <th class='col-md-2 text-center'>Remarks</th>
+      <th class='col-md-1 text-center'>Created by<br/><input type="text" id="created_by_search"></th>
+      <th class='col-md-2 text-center'>Operations</th>
+    </tr>
     </thead>
     <tbody>
-      <% @inventory_internal_transfer_vouchers.each do |inventory_internal_transfer_voucher| %>
+    <% @inventory_internal_transfer_vouchers.each do |inventory_internal_transfer_voucher| %>
         <tr>
           <td class='text-center'><%= inventory_internal_transfer_voucher.voucher_date.strftime('%d/%m/%Y') %></td>
           <td class='text-center'><%= inventory_internal_transfer_voucher.voucher_number %></td>
@@ -25,41 +29,43 @@
           <td><%= inventory_internal_transfer_voucher.remarks %></td>
           <td><%= inventory_internal_transfer_voucher.created_by.custom_object_label %></td>
           <td class='text-center'>
-            <%= link_to 'Edit', edit_inventory_internal_transfer_voucher_path(inventory_internal_transfer_voucher) %> | <%= link_to "PDF", inventory_internal_transfer_voucher_url(inventory_internal_transfer_voucher.id, format: "pdf"), target: :_blank %> | <%= link_to 'Delete', inventory_internal_transfer_voucher, method: :delete, data: { confirm: 'Are you sure?' } if current_power.destroyable_inventory_internal_transfer_vouchers? %>
+            <%= link_to 'Edit', edit_inventory_internal_transfer_voucher_path(inventory_internal_transfer_voucher) %>
+            | <%= link_to "PDF", inventory_internal_transfer_voucher_url(inventory_internal_transfer_voucher.id, format: "pdf"), target: :_blank %>
+            | <%= link_to 'Delete', inventory_internal_transfer_voucher, method: :delete, data: {confirm: 'Are you sure?'} if current_power.destroyable_inventory_internal_transfer_vouchers? %>
           </td>
         </tr>
-      <% end %>
+    <% end %>
     </tbody>
   </table>
 </div>
 <script>
-  $(function () {
-    var dt = $('#voucher_line_items').DataTable({
-      "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
-      "iDisplayLength": 20,
-      "order": [[0, "desc"], [1, "desc"]],
-      // ajax: ...,
-      // autoWidth: false,
-      pagingType: 'full_numbers',
-      "sPaginationType": "bootstrap",
-      // processing: true,
-      // serverSide: true,
-      responsive: true,
-      "bSort": false
-    });
+    $(function () {
+        var dt = $('#voucher_line_items').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            // ajax: ...,
+            // autoWidth: false,
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            // processing: true,
+            // serverSide: true,
+            responsive: true,
+            "bSort": false
+        });
 
-    $('#date_search').keyup(function () {
-      dt.column(0).search(this.value).draw();
-    });
-    $('#from_location__search').keyup(function () {
-      dt.column(2).search(this.value).draw();
-    });
-    $('#to_location_search').keyup(function () {
-      dt.column(3).search(this.value).draw();
-    });
-    $('#created_by_search').keyup(function () {
-      dt.column(6).search(this.value).draw();
-    });
+        $('#date_search').keyup(function () {
+            dt.column(0).search(this.value).draw();
+        });
+        $('#from_location__search').keyup(function () {
+            dt.column(2).search(this.value).draw();
+        });
+        $('#to_location_search').keyup(function () {
+            dt.column(3).search(this.value).draw();
+        });
+        $('#created_by_search').keyup(function () {
+            dt.column(6).search(this.value).draw();
+        });
 
-  });
+    });
 </script>

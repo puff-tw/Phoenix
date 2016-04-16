@@ -1,11 +1,11 @@
 class InventoryInVouchersController < ApplicationController
   power :inventory_in_vouchers, map:
-    {
-    [:edit, :update, :get_voucher_sequences, :get_business_entities]=> :updatable_inventory_in_vouchers,
-    [:new, :create, :get_voucher_sequences, :get_business_entities] => :creatable_inventory_in_vouchers,
-    [:index, :show] => :inventory_in_vouchers_view,
-    [:destroy] => :destroyable_inventory_in_vouchers
-    }, as: :inventory_in_voucher_scope
+                                  {
+                                      [:edit, :update, :get_voucher_sequences, :get_business_entities] => :updatable_inventory_in_vouchers,
+                                      [:new, :create, :get_voucher_sequences, :get_business_entities] => :creatable_inventory_in_vouchers,
+                                      [:index, :show] => :inventory_in_vouchers_view,
+                                      [:destroy] => :destroyable_inventory_in_vouchers
+                                  }, as: :inventory_in_voucher_scope
   include VoucherSequenceable
   include VoucherExtensible
   before_action :set_inventory_in_voucher, only: [:edit, :update, :destroy]
@@ -17,6 +17,12 @@ class InventoryInVouchersController < ApplicationController
       format.html
       format.csv { send_data @inventory_in_vouchers.to_csv, filename: "purchase_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.csv" }
       format.xls { send_data @inventory_in_vouchers.to_csv(col_sep: "\t"), filename: "purchase_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }
+      format.pdf do
+        pdf = InventoryInVoucherPdf.new(@inventory_in_vouchers)
+        send_data pdf.render, filename: "inventor_in_report",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
     end
   end
 
@@ -42,7 +48,7 @@ class InventoryInVouchersController < ApplicationController
     respond_to do |format|
       if @inventory_in_voucher.save
         initialize_form
-        format.html { redirect_to @inventory_in_voucher, flash: { success: 'Inventory In Voucher was created successfully.'} }
+        format.html { redirect_to @inventory_in_voucher, flash: {success: 'Inventory In Voucher was created successfully.'} }
         format.json { render :show, status: :created, location: @inventory_in_voucher }
       else
         initialize_form
@@ -55,7 +61,7 @@ class InventoryInVouchersController < ApplicationController
   def update
     respond_to do |format|
       if @inventory_in_voucher.update(inventory_in_voucher_params.merge!(current_user_id: current_user.id))
-        format.html { redirect_to @inventory_in_voucher, flash: {success: 'Inventory In Voucher was updated successfully.'}}
+        format.html { redirect_to @inventory_in_voucher, flash: {success: 'Inventory In Voucher was updated successfully.'} }
         format.json { render :show, status: :ok, location: @inventory_in_voucher }
       else
         initialize_form
@@ -74,35 +80,35 @@ class InventoryInVouchersController < ApplicationController
   end
 
   private
-    def inventory_in_voucher_params
-      params.require(:inventory_in_voucher).permit(:created_by_id, :remarks,
-          :tax_amount, :total_amount, :voucher_date, :ref_number, :status, :voucher_sequence_id,
-          :goods_value, :primary_location_id, :address, :tax_details, :secondary_entity_id,
-          line_items_attributes: [:id, :product_id, :quantity_in, :price, :amount, :tax_rate,
-            :_destroy]
-        )
-      #:tax_amount will be calculated on server-side and not accepted as params
-    end
+  def inventory_in_voucher_params
+    params.require(:inventory_in_voucher).permit(:created_by_id, :remarks,
+                                                 :tax_amount, :total_amount, :voucher_date, :ref_number, :status, :voucher_sequence_id,
+                                                 :goods_value, :primary_location_id, :address, :tax_details, :secondary_entity_id,
+                                                 line_items_attributes: [:id, :product_id, :quantity_in, :price, :amount, :tax_rate,
+                                                                         :_destroy]
+    )
+    #:tax_amount will be calculated on server-side and not accepted as params
+  end
 
-    def set_inventory_in_voucher
-      @inventory_in_voucher = inventory_in_voucher_scope.includes(:line_items).order('inventory_txn_line_items.id').find(params[:id])
-    end
+  def set_inventory_in_voucher
+    @inventory_in_voucher = inventory_in_voucher_scope.includes(:line_items).order('inventory_txn_line_items.id').find(params[:id])
+  end
 
-    def populate_products
-      @products ||= Product.includes([:language, :category]).active.order(:sku).load
-    end
+  def populate_products
+    @products ||= Product.includes([:language, :category]).active.order(:sku).load
+  end
 
-    def build_child_line_items
-      rec_count = @inventory_in_voucher.line_items.size
-      if rec_count < 4
-        (25 - rec_count).times { @inventory_in_voucher.line_items.build }
-      else
-        5.times { @inventory_in_voucher.line_items.build }
-      end
+  def build_child_line_items
+    rec_count = @inventory_in_voucher.line_items.size
+    if rec_count < 4
+      (25 - rec_count).times { @inventory_in_voucher.line_items.build }
+    else
+      5.times { @inventory_in_voucher.line_items.build }
     end
+  end
 
-    def initialize_form
-      populate_products
-      build_child_line_items
-    end
+  def initialize_form
+    populate_products
+    build_child_line_items
+  end
 end

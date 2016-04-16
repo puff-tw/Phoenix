@@ -9,13 +9,30 @@ class PosInvoicesController < ApplicationController
   before_action :set_pos_invoice, only: [:edit, :update, :destroy]
 
   def index
+
+
     respond_to do |format|
+
+      fromdate = params[:fromdate] || GlobalSettings.start_date
+      todate = params[:todate]|| Date.today
+      ttype = params[:ttype] || 0
+
+      @start = fromdate
+      @end = todate
+      @trtype = ttype.to_i == 0 ? "All" : ttype.to_i == 1 ? "Cash" : "Card"
+
       format.html
       # format.csv { send_data @pos_invoices.to_csv, filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.csv" }
       format.xls #{ send_data @pos_invoices.to_csv(col_sep: "\t"), filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }
-      format.json { render json: PosInvoiceDatatable.new(view_context) }
+      format.json { render json: get_data(fromdate, todate, ttype) }
     end
   end
+
+
+  def get_data(start_date=GlobalSettings.start_date, end_date = Date.today, ttype=0)
+    PosInvoiceDatatable.new(view_context, {:from => start_date, :to => end_date, :ttype => ttype})
+  end
+
 
   def show
     @pos_invoice = pos_invoice_scope.includes([line_items: [product: :language]], :created_by).find(params[:id])
@@ -84,21 +101,21 @@ class PosInvoicesController < ApplicationController
                                         :voucher_sequence_id, :created_by_id,
                                         :remarks, :txn_date, :status, :ref_number,
                                         debit_entries_attributes: [:id, :account_id, :amount,
-                                          :remarks, :bank_name, :card_last_digits,
-                                          :expiry_month, :expiry_year, :mobile_number,
-                                          :card_holder_name, :_destroy, :mode],
+                                                                   :remarks, :bank_name, :card_last_digits,
+                                                                   :expiry_month, :expiry_year, :mobile_number,
+                                                                   :card_holder_name, :transcation_id, :_destroy, :mode],
                                         credit_entries_attributes: [:id, :account_id, :amount,
-                                          :remarks, :bank_name, :card_last_digits,
-                                          :expiry_month, :expiry_year, :mobile_number,
-                                          :card_holder_name, :_destroy],
+                                                                    :remarks, :bank_name, :card_last_digits,
+                                                                    :expiry_month, :expiry_year, :mobile_number,
+                                                                    :card_holder_name, :transcation_id, :_destroy],
                                         header_attributes: [:id, :address, :legal_details,
-                                          :customer_membership_number,
-                                          :business_entity_location_id],
+                                                            :customer_membership_number,
+                                                            :business_entity_location_id],
                                         line_items_attributes: [:id, :product_id,
-                                          :quantity, :price, :goods_value, :tax_rate,
-                                            :tax_amount, :amount,:state_category_tax_rate_id,
-                                            :_destroy]
-                                         )
+                                                                :quantity, :price, :goods_value, :tax_rate,
+                                                                :tax_amount, :amount, :state_category_tax_rate_id,
+                                                                :_destroy]
+    )
     #:tax_amount is not included in pos_invoice or line_items as it will be calculated by server
   end
 
@@ -127,7 +144,7 @@ class PosInvoicesController < ApplicationController
 
     debit_payments = @pos_invoice.debit_entries.payment_entries
     if debit_payments.blank? || debit_payments.collect(&:mode).exclude?('Account::CashAccount')
-        @pos_invoice.debit_entries.build(account_id: current_user.cash_account_id, mode: current_user.cash_account.type) if current_user.cash_account_id.present?
+      @pos_invoice.debit_entries.build(account_id: current_user.cash_account_id, mode: current_user.cash_account.type) if current_user.cash_account_id.present?
     end
     if debit_payments.blank? || debit_payments.collect(&:mode).exclude?('Account::BankAccount')
       @pos_invoice.debit_entries.build(account_id: BusinessEntityLocation.find(GlobalSettings.current_bookstall_id).bank_account_id, mode: BusinessEntityLocation.find(GlobalSettings.current_bookstall_id).bank_account.type) if BusinessEntityLocation.find(GlobalSettings.current_bookstall_id).bank_account_id.present?
@@ -150,6 +167,5 @@ class PosInvoicesController < ApplicationController
     build_child_line_items
     build_payment_children
   end
-
 
 end

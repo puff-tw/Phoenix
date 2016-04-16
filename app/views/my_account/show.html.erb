@@ -1,4 +1,45 @@
 <% provide(:title, 'My Account') %>
 <h2 class='text-center'>
-  <%= "Cash due: #{sprintf '%.0f', @current_user.cash_account.entries.debit_balance}" %>
+  <%= "My Account       : #{sprintf '%.0f', @current_user.cash_account.entries.debit_balance}" %><br/>
+  <hr/>
+  <!--
+  <%= "Total Cash       : #{sprintf '%.0f', @current_user.cash_account.entries.full_amount}" %><br/>
+  <%= "Cashier Received : #{sprintf '%.0f', @current_user.cash_account.entries.full_due_amount}" %><br/>
+
+  -->
 </h2>
+
+<table id="accounts_table" class="DataTable1 DataTable-line-items">
+  <thead>
+  <tr>
+    <th>Transcation Id</th>
+    <th>Amount</th>
+    <th>Mode</th>
+    <th>Date and Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @amount_given_to_cashier.each do |transcation| %>
+      <tr>
+        <td><%= transcation.account_txn_id %></td>
+        <td><%= transcation.amount %></td>
+        <td><%= transcation.mode %></td>
+        <td><%= transcation.created_at.strftime("%-d-%m-%Y %H:%M:%S") %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<script>
+    $(function () {
+        $('#accounts_table').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            responsive: true,
+            "bSort": false
+        });
+    });
+</script>

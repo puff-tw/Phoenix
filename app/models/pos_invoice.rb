@@ -33,6 +33,7 @@ class PosInvoice < Invoice
       attributed['additional_info']['expiry_year'] = attributed['expiry_year']
       attributed['additional_info']['mobile_number'] = attributed['mobile_number']
       attributed['additional_info']['card_holder_name'] = attributed['card_holder_name']
+      attributed['additional_info']['transcation_id'] = attributed['transcation_id']
     end
     false
   end

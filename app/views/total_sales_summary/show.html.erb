@@ -90,8 +90,6 @@
     });
     $('#language_export').click(function () {
 
-      
-
       if ($('#location_id').val() == '') {
         alert('Please select The Location..');
         event.preventDefault();
@@ -106,6 +104,7 @@
 
       $('#language_report').attr('action', "/total-sales-summary-report.xls")
       $('#language_report')[0].submit();
+
 
     });
 

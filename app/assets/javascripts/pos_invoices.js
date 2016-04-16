@@ -48,6 +48,9 @@ function update_change_due() {
 }
 
 $(document).on('ready page:load', function () {
+
+
+
     populate_invoice_values_on_page_reload();
 
     if ($('#pdf_print').length) {
@@ -126,6 +129,9 @@ $(document).on('ready page:load', function () {
 
 
     $(function () {
+
+
+
         //return $('#pos_invoice_index').dataTable({
         //    processing: true,
         //    serverSide: true,

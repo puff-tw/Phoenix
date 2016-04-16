@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150804093936) do
+ActiveRecord::Schema.define(version: 20160412105821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -222,9 +222,9 @@ ActiveRecord::Schema.define(version: 20150804093936) do
     t.integer  "status",                                                    null: false
     t.string   "ref_number",            limit: 30
     t.integer  "voucher_sequence_id",                                       null: false
+    t.text     "address"
     t.integer  "number",                                                    null: false
     t.string   "number_prefix",         limit: 8
-    t.text     "address"
     t.integer  "primary_location_id",                                       null: false
     t.integer  "created_by_id",                                             null: false
     t.integer  "primary_entity_id",                                         null: false
@@ -480,6 +480,20 @@ ActiveRecord::Schema.define(version: 20150804093936) do
 
   add_index "states", ["code"], name: "index_states_on_code", unique: true, using: :btree
   add_index "states", ["name", "region_id"], name: "index_states_on_name_and_region_id", unique: true, using: :btree
+
+  create_table "threshold_captures", force: :cascade do |t|
+    t.integer "category_id",     default: 0
+    t.integer "language_id",     default: 0
+    t.integer "product_sku",     default: 0
+    t.integer "threshold_value"
+  end
+
+  create_table "thresholds", force: :cascade do |t|
+    t.integer  "sku"
+    t.integer  "threshold_val", default: 5
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
   create_table "uoms", force: :cascade do |t|
     t.string   "name",       limit: 50,                null: false

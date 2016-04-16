@@ -17,92 +17,112 @@
     <div class="collapse navbar-collapse" id="menu-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
-          <% if current_user.role?(['admin','power_user', 'hq_staff']) %>
-            <li class="dropdown">
-              <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
-                Accounts <b class="caret"></b>
-              </p>
-              <ul class="dropdown-menu">
-                <li><a href=<%= invoices_pending_url %>>Invoices pending</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Journal Vouchers</li>
-                <li><a href=<%= new_journal_voucher_url %> style="text-indent:10px;">New</a></li>
-                <li><a href=<%= journal_vouchers_url %> style="text-indent:10px;">Listing</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
-                Vouchers <b class="caret"></b>
-              </p>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header">Inventory Out Vouchers</li>
-                <li><a href=<%= new_inventory_out_voucher_url %> style="text-indent:10px;">New</a></li>
-                <li><a href=<%= inventory_out_vouchers_url %> style="text-indent:10px;">Listing</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Inventory In Vouchers</li>
-                <li><a href=<%= new_inventory_in_voucher_url %> style="text-indent:10px;">New</a></li>
-                <li><a href=<%= inventory_in_vouchers_url %> style="text-indent:10px;">Listing</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Inventory Internal Transfer Vouchers</li>
-                <li><a href=<%= new_inventory_internal_transfer_voucher_url %> style="text-indent:10px;">New</a></li>
-                <li><a href=<%= inventory_internal_transfer_vouchers_url %> style="text-indent:10px;">Listing</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">POS Invoices</li>
-                <li><a href=<%= new_pos_invoice_url %> style="text-indent:10px;">New</a></li>
-                <li><a href=<%= pos_invoices_url %> style="text-indent:10px;">Listing</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
-                Reports <b class="caret"></b>
-              </p>
-              <ul class="dropdown-menu">
-                <li><a href='/pos-invoices-list-with-payment.xls'>POS Invoices list with Payment - Latest Event (Excel)</a></li>
-                <li><a href='/pos-invoices-line-items.xls'>POS Line Items extract - Latest Event (Excel)</a></li>
-                <li><a href='/inventory-internal-transfer-vouchers-line-items.xls'>Inventory Vouchers Line Items Extract - Latest Event (Excel)</a></li>
-                <li><a href='/stock-summary.xls'>Stock Summary (Excel)</a></li>
-                <li><a href='/payment-collection.pdf'>Payment Collection Summary (PDF)</a></li>
-                <li><a href='/sales-report.pdf'>Sales Report (PDF)</a></li>
+            <% if current_user.role?(['admin', 'power_user', 'hq_staff']) %>
+                <li class="dropdown">
+                  <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
+                    Accounts <b class="caret"></b>
+                  </p>
+                  <ul class="dropdown-menu">
+                    <li><a href=<%= invoices_pending_url %>>Invoices pending</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Journal Vouchers</li>
+                    <li><a href=<%= new_journal_voucher_url %> style="text-indent:10px;">New</a></li>
+                    <li><a href=<%= journal_vouchers_url %> style="text-indent:10px;">Listing</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
+                    Vouchers <b class="caret"></b>
+                  </p>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header">Inventory Out Vouchers</li>
+                    <li><a href=<%= new_inventory_out_voucher_url %> style="text-indent:10px;">New</a></li>
+                    <li><a href=<%= inventory_out_vouchers_url %> style="text-indent:10px;">Listing</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Inventory In Vouchers</li>
+                    <li><a href=<%= new_inventory_in_voucher_url %> style="text-indent:10px;">New</a></li>
+                    <li><a href=<%= inventory_in_vouchers_url %> style="text-indent:10px;">Listing</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Inventory Internal Transfer Vouchers</li>
+                    <li><a href=<%= new_inventory_internal_transfer_voucher_url %> style="text-indent:10px;">New</a>
+                    </li>
+                    <li><a href=<%= inventory_internal_transfer_vouchers_url %> style="text-indent:10px;">Listing</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">POS Invoices</li>
+                    <li><a href=<%= new_pos_invoice_url %> style="text-indent:10px;">New</a></li>
+                    <li><a href=<%= pos_invoices_url %> style="text-indent:10px;">Listing</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
+                    Reports <b class="caret"></b>
+                  </p>
+                  <ul class="dropdown-menu">
+                    <li><a href='/invoice-list-with-payment'>POS Invoices list with Payment - Latest Event
+                      (Excel)</a></li>
 
-                <li><a href='/total-sales-summary'>Total Sales Summary (Excel)</a></li>
-                <li><a href='/on-hand-lookup'>On Hand Look Up (Excel)</a></li>
-                <li><a href='/calculate_limit'>Sales Limit</a></li>
-              </ul>
+                    <li><a href='/line-item-extract'>POS Line Items extract - Latest Event (Excel)</a></li>
+
+                    <!--    /inventory-internal-transfer-vouchers-line-items.xls-->
+                    <li><a href='/voucher-line-item-extract'>Inventory Vouchers Line Items
+                      Extract - Latest Event (Excel)</a></li>
+                    <li><a href='/stock-summary.xls'>Stock Summary (Excel)</a></li>
+                    <li><a href='/payment-collection.pdf'>Payment Collection Summary (PDF)</a></li>
+                    <li><a href='/sales-report.pdf'>Sales Report (PDF)</a></li>
+
+                    <li><a href='/total-sales-summary'>Total Sales Summary (Excel)</a></li>
+                    <li><a href='/on-hand-lookup'>On Hand Look Up (Excel)</a></li>
+                    <li><a href='/calculate_limit'>Sales Limit</a></li>
+                    <li><a href='/reconciliation'>Stock Reconciliation</a></li>
+                    <li><a href='/sku-lookup'>SKU Lookup</a></li>
+                  </ul>
+                </li>
+
+                <li class="dropdown">
+                  <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
+                    Users <b class="caret"></b>
+                  </p>
+                  <ul class="dropdown-menu">
+                    <li><a href='/create-user'>New</a></li>
+                    <li><a href='/list-user'>Listing</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
+                    Configuration <b class="caret"></b>
+                  </p>
+                  <ul class="dropdown-menu">
+                    <li><a href='/products'>Products</a></li>
+                    <% if current_user.role?(['admin', 'power_user']) %>
+                        <li><a href='/voucher-sequences'>Voucher Sequences</a></li>
+                        <li><a href='/masters'>Admin Panel</a></li>
+                    <% end %>
+                  </ul>
+                </li>
+            <% else %>
+                <li><a href='/pos-products'>Products</a></li>
+                <li class="dropdown">
+                  <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
+                    POS Invoices <b class="caret"></b>
+                  </p>
+                  <ul class="dropdown-menu">
+                    <li><a href=<%= new_pos_invoice_url %> style="text-indent:10px;">New</a></li>
+                    <li><a href=<%= pos_invoices_url %> style="text-indent:10px;">Listing</a></li>
+                    <% if current_user.role?('pos_manager') %>
+                        <li><a href='/payment-collection.pdf' style="text-indent:10px;">Payment Collection Summary
+                          (PDF)</a></li>
+                    <% end %>
+                  </ul>
+                </li>
+            <% end %>
+            <li>
             </li>
-            <li class="dropdown">
-              <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
-                Configuration <b class="caret"></b>
-              </p>
-              <ul class="dropdown-menu">
-                <li><a href='/products'>Products</a></li>
-                <% if current_user.role?(['admin','power_user']) %>
-                  <li><a href='/voucher-sequences'>Voucher Sequences</a></li>
-                  <li><a href='/masters'>Admin Panel</a></li>
-                <% end %>
-              </ul>
-            </li>
-          <% else %>
-            <li><a href='/pos-products'>Products</a></li>
-            <li class="dropdown">
-              <p class="navbar-text dropdown-toggle" data-toggle="dropdown">
-                POS Invoices <b class="caret"></b>
-              </p>
-              <ul class="dropdown-menu">
-                <li><a href=<%= new_pos_invoice_url %> style="text-indent:10px;">New</a></li>
-                <li><a href=<%= pos_invoices_url %> style="text-indent:10px;">Listing</a></li>
-                <% if current_user.role?('pos_manager') %>
-                  <li><a href='/payment-collection.pdf' style="text-indent:10px;">Payment Collection Summary (PDF)</a></li>
-                <% end %>
-              </ul>
-            </li>
-          <% end %>
-          <li>
-          </li>
-          <% if current_user.cash_account_id.present? %>
-            <li><a href='/my-account'>My Account</a></li>
-          <% end %>
-          <li><%= link_to current_user.email, edit_user_path(current_user.id) %></li>
-          <li><%= link_to('Logout', logout_path, :method=>'delete') %></li>
+            <% if current_user.cash_account_id.present? %>
+                <li><a href='/my-account'>My Account</a></li>
+            <% end %>
+            <li><%= link_to current_user.email, edit_user_path(current_user.id) %></li>
+            <li><%= link_to('Logout', logout_path, :method => 'delete') %></li>
         <% end %>
       </ul>
     </div>
