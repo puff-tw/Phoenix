@@ -9,6 +9,7 @@ class StockReconciliationPdf < Prawn::Document
     stroke_horizontal_rule
     move_down 10
     line_items
+    number_pages "<page> / <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 50, 0], :align => :center, :size => 14 }
   end
   def generated_date
     move_down 10
@@ -18,31 +19,32 @@ class StockReconciliationPdf < Prawn::Document
   def line_items
 
     @stock_location.each do |stockitem|
-      result = [['SKU', "Language", "Category", "Location", "Product", "Expected On-Hand Quantity","Actual On-Hand Quantity"]]
+      result = [['SKU',  "Category", "Product", "Expected On-Hand Quantity","Actual On-Hand Quantity"]]
 
+      location = ''
       stockitem[1].each do |item|
-        result += [[item['Sku'], item['Lang'], item['PCat'], item['Location'], item['ProductName'], item['AvailableStock'],""]]
+        result += [[item['Sku'], item['PCat'],  item['ProductName'], item['AvailableStock'],""]]
+        location=item['Location']
       end
 
 
       text stockitem[0],size: 20, style: :bold, align: :center
+      text location,size: 10, style: :bold, align: :right
+      stroke_horizontal_rule
 
       move_down(10)
       table result do
         row(0).font_style = :bold
         columns(0).align = :center
-        columns(0).width = 50
+        columns(0).width = 70
         columns(1).align = :center
-        columns(1).width = 70
-        columns(2..3).align = :center
-        columns(2).width = 60
-        columns(3).width = 75
-        column(4).align = :left
-        columns(4).width = 170
-        column(5).align = :center
-        columns(5).width = 75
-        column(6).align = :center
-        columns(6).width = 60
+        columns(1).width = 100
+        columns(2).align = :left
+        columns(2).width = 180
+        column(3).align = :left
+        columns(3).width = 100
+        column(4).align = :center
+        columns(4).width = 110
         row(0).align = :center
         self.row_colors = ["DDDDDD", "FFFFFF"]
         self.width = 560
