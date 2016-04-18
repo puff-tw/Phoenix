@@ -21,7 +21,9 @@
       <th>PCat</th>
       <th>Lang</th>
       <th>PosSales</th>
+      <th>Min Indence level</th>
       <th>AvailableStock</th>
+      <th>Required</th>
     </tr>
     </thead>
     <tbody>
@@ -34,7 +36,9 @@
           <td><%= product['PCat'] %></td>
           <td><%= product['Lang'] %></td>
           <td><%= product['PosSales'] %></td>
+          <td><%= product['Limit'] %></td>
           <td><%= product['AvailableStock'] %></td>
+          <td><%= (product['Limit'].to_i - product['AvailableStock'].to_i) %></td>
         </tr>
     <% end %>
     </tbody>

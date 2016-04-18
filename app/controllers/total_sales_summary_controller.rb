@@ -283,6 +283,7 @@ class TotalSalesSummaryController < ApplicationController
         if threshold.sku.to_i == available_stock['Sku'].to_i
           if threshold.threshold_val > available_stock['AvailableStock']
             myHash = available_stock
+            myHash['Limit'] = threshold.threshold_val
             result << myHash
           end
         end
