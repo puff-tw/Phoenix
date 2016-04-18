@@ -1,22 +1,24 @@
-
 <div>
   <center>
     <label>Search</label>
     <br/>
+
     <form class="form-inline" action="/pos-invoices">
       <div class="form-group">
         <label for="fromdate">From</label>
-        <input type="text" name="fromdate" id="fromdate" class="form-control datetimepickerfrom" value="<%=GlobalSettings.start_date%>">
+        <input type="text" name="fromdate" id="fromdate" class="form-control datetimepickerfrom" value="<%= GlobalSettings.start_date.strftime("%d/%m/%Y-%H:%M") %>">
       </div>
 
       <div class="form-group">
         <label for="todate">To</label>
-        <input type="text" name="todate" id="todate" class="form-control datetimepickerto" value="<%=Time.now.strftime('dd/mm/yyyy')%>">
+        <input type="text" name="todate" id="todate" class="form-control datetimepickerto">
       </div>
 
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Filter</button>
       </div>
     </form>
+
+
   </center>
 </div>

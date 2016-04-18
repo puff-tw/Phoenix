@@ -11,7 +11,7 @@
       <th class='col-md-1 text-center'>Invoice #<br/><input type="text" id="invoice_search"></th>
       <th class='col-md-2 text-center'>Consignor :: Location<br/><input type="text" id="cosignor_search"></th>
       <th class='col-md-1 text-center'>Consingee Entity<br/><input type="text" id="entity_search"></th>
-      <th class='col-md-1 text-center'>Amount #</th>
+      <th class='col-md-1 text-center'>Amount &nbsp;&nbsp;#</th>
       <th class='col-md-2 text-center'>Remarks<br/><input type="text" id="remarks_search"></th>
       <th class='col-md-1 text-center'>Created by<br/><input type="text" id="created_search"></th>
       <th class='col-md-2 text-center'>Operations</th>
@@ -60,7 +60,8 @@
                             "mColumns": [0, 1, 2, 3, 4, 6]
                         },
                             {
-                                "sExtends": "xls"
+                                "sExtends": "xls",
+                                "oSelectorOpts": {"filter": "applied", page: 'all'},
                             }]
                     }
                 }

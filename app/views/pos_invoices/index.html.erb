@@ -3,9 +3,10 @@
 <%= render 'total_sales_summary/pos_display' %>
 
 <hr/>
+
 <center>
   <h2>Filters</h2>
-  <label>Start-Date : </label><%= @start  %>&nbsp;&nbsp;&nbsp;
+  <label>Start-Date : </label><%= @start %>&nbsp;&nbsp;&nbsp;
   <label>End-Date : </label><%= @end %>&nbsp;&nbsp;&nbsp;
   <label>Transcation Type : </label><%= @trtype %>&nbsp;&nbsp;&nbsp;
 </center>
@@ -49,19 +50,27 @@
 <script>
     $(function () {
 
+        var d = new Date();
+        var month = d.getMonth();
+        var day = d.getDate();
+        var year = d.getFullYear();
+        var hour = d.getHours();
+        var min = d.getMinutes();
 
         $('.datetimepickerfrom').datetimepicker({
-            format: 'DD/MM/YYYY',
-            extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
+            format: 'DD/MM/YYYY-HH:mm',
             showTodayButton: true,
+            sideBySide: true,
             showClose: true
         });
         $('.datetimepickerto').datetimepicker({
-            format: 'DD/MM/YYYY',
-            extraFormats: ['DD/MM/YY', 'DD-MM-YY', 'DD-MM-YYYY'],
+            format: 'DD/MM/YYYY-HH:mm',
             showTodayButton: true,
+            sideBySide: true,
             showClose: true
         });
+        $('.datetimepickerto').datetimepicker('update', new Date());
+
         $(".datetimepickerfrom").on("dp.change", function (e) {
             $('.datetimepickerto').data("DateTimePicker").minDate(e.date);
         });

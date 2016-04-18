@@ -12,11 +12,11 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
   end
 
   def from
-    @from = options[:from].to_date.beginning_of_day
+    @from = options[:from].to_date
   end
 
   def to
-    @to ||= options[:to].to_date.end_of_day
+    @to ||= options[:to].to_date
   end
 
   def ttype
