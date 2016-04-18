@@ -1,7 +1,7 @@
 <% provide(:title, 'InventoryIn Vouchers listing') %>
 <span class="pull-right">
   <%= link_to 'New InventoryIn Voucher', new_inventory_in_voucher_path, class: 'btn btn-primary' %>
-  <a target="_blank" href="/inventory-in-vouchers.pdf" class="btn btn-info">Pdf</a>
+  <!--<a target="_blank" href="/inventory-in-vouchers.pdf" class="btn btn-info">Pdf</a>-->
 </span>
 <div class="display responsive no-wrap voucher_line_items">
   <table id='voucher_line_items' class='DataTable2 DataTable-line-items'>
@@ -11,7 +11,7 @@
       <th class='col-md-1 text-center'>Invoice #</th>
       <th class='col-md-1 text-center'>Vendor/Source <br/><input type="text" id="vendor_search"></th>
       <th class='col-md-3 text-center'>Entity Location <br/><input type="text" id="entity_search"></th>
-      <th class='col-md-1 text-center'>Amount</th>
+      <th class='col-md-1 text-center'>Amount #</th>
       <th class='col-md-2 text-center'>Remarks</th>
       <th class='col-md-1 text-center'>Created by <br/><input type="text" id="createdby_search"></th>
       <th class='col-md-1 text-center'>Operations</th>
@@ -42,15 +42,31 @@
 
     $(function () {
         var dt = $('#voucher_line_items').DataTable({
-
-            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
-            "iDisplayLength": 20,
-            "order": [[0, "desc"], [1, "desc"]],
-            pagingType: 'full_numbers',
-            "sPaginationType": "bootstrap",
-            responsive: true,
-            "bSort": false,
-        });
+                    "dom": 'T<"clear">lfrtip',
+                    "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+                    "iDisplayLength": 20,
+                    "order": [[0, "desc"], [1, "desc"]],
+                    // ajax: ...,
+                    // autoWidth: false,
+                    pagingType: 'full_numbers',
+                    "sPaginationType": "bootstrap",
+                    // processing: true,
+                    // serverSide: true,
+                    responsive: true,
+                    "bSort": false,
+                    "tableTools": {
+                        sSwfPath: "http://cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf",
+                        "aButtons": [{
+                            "sExtends": "pdf",
+                            "oSelectorOpts": {"filter": "applied", page: 'all'},
+                            "mColumns": [0, 1, 2, 3, 4, 6]
+                        },
+                            {
+                                "sExtends": "xls"
+                            }]
+                    }
+                }
+        );
 
         $('#date_search').keyup(function () {
             dt.column(0).search(this.value).draw();
