@@ -1,0 +1,36 @@
+<form method="post" action="/save-element-threshold">
+  <table class="col-md-6 col-md-offset-3  table-condensed table-bordered">
+    <tr>
+      <% if @threshold.category_id != 0 %>
+          <td><label>Category</label></td>
+          <td>  <%= Category.find(@threshold.category_id).name %></td>
+      <% else %>
+          <% if @threshold.language_id !=0 %>
+              <td><label>Language </label></td>
+              <td> <%= Language.find(@threshold.language_id).name %></td>
+          <% else %>
+              <% if @threshold.product_sku !=0 %>
+                  <td><label>Product</label></td>
+                  <td><%= Product.where(:sku => @threshold.product_sku.to_i).first().name %></td>
+              <% end %>
+          <% end %>
+      <% end %>
+    </tr>
+    <td>
+      <label>Threshold Value</label>
+    </td>
+    <td>
+      <input type="text" value="<%= @threshold.threshold_value %>" name="newthreshold" id="newthreshold" class="">
+      <input type="hidden" id="threshold_id" name="threshold_id" value="<%= @threshold.id %>" class="">
+    </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <center>
+          <input type="submit" class="btn btn-primary" id="save" value="Save">
+          <a href="/view-threshold" class="btn btn-warning">Cancel</a>
+        </center>
+      </td>
+    </tr>
+  </table>
+</form>

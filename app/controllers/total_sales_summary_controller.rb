@@ -387,4 +387,13 @@ class TotalSalesSummaryController < ApplicationController
 
     redirect_to :view_threshold, flash: {warning: "Threshold deleted succesfully..."}
   end
+
+  def save_element_threshold
+    id = params[:threshold_id]
+    value = params[:newthreshold]
+    ThresholdCapture.find(id.to_i).update!(:threshold_value => value.to_i)
+
+    init_threshold
+    redirect_to :view_threshold, flash: {success: "Threshold Value Updated succesfully..."}
+  end
 end
