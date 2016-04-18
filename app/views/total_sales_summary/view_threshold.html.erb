@@ -1,0 +1,59 @@
+<div>
+  <table id="thresholdtable" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>Category</th>
+      <th>Language</th>
+      <th>Product SKU</th>
+      <th>Threshold Value</th>
+      <th>Operation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @threshold.each do |threshold| %>
+
+        <tr>
+          <td>
+            <% if threshold.category_id != 0 %>
+                <%= Category.find(threshold.category_id).name %>
+            <% else %>
+                <b>-</b>
+            <% end %>
+          </td>
+          <td>
+            <% if threshold.language_id != 0 %>
+                <%= Language.find(threshold.language_id).name %>
+            <% else %>
+                <b>-</b>
+            <% end %>
+          </td>
+          <td>
+            <% if threshold.product_sku != 0 %>
+                <%= Product.where(:sku => threshold.product_sku.to_i).first().name %>
+            <% else %>
+                <b>-</b>
+            <% end %>
+          </td>
+          <td><%= threshold.threshold_value %></td>
+          <td>
+            <a href="/edit-element/<%= threshold.id %>" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit</a>
+            <a href="/delete-element/<%= threshold.id %>" class="btn btn-danger"><i class="fa fa-close"></i>&nbsp;&nbsp;Delete</a>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<script>
+    $(function () {
+        var dt = $('#thresholdtable').DataTable({
+            "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
+            "iDisplayLength": 20,
+            "order": [[0, "desc"], [1, "desc"]],
+            pagingType: 'full_numbers',
+            "sPaginationType": "bootstrap",
+            responsive: true,
+            "bSort": true
+        });
+    });
+</script>

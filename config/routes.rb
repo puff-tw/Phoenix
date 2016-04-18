@@ -64,6 +64,9 @@ Rails.application.routes.draw do
   get '/sku-lookup' => 'total_sales_summary#sku_lookup'
   get '/edit-threshold' => 'total_sales_summary#edit_threshold'
   post '/save-threshold' => 'total_sales_summary#save_threshold'
+  get '/view-threshold' => 'total_sales_summary#view_threshold'
+  get '/edit-element/:id' => 'total_sales_summary#edit_element_threshold'
+  get '/delete-element/:id' => 'total_sales_summary#delete_element_threshold'
 
 
   post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'

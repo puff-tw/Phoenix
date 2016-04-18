@@ -323,7 +323,7 @@ class TotalSalesSummaryController < ApplicationController
       obj.save
     end
 
-    Threshold.delete_all
+
     init_threshold
 
     redirect_to :edit_threshold, flash: {success: "Threshold limit made succesfully..."}
@@ -331,6 +331,7 @@ class TotalSalesSummaryController < ApplicationController
 
 
   def init_threshold
+    Threshold.delete_all
     @products = Product.all
 
 
@@ -367,5 +368,23 @@ class TotalSalesSummaryController < ApplicationController
         end
       end
     end
+  end
+
+  def view_threshold
+
+    @threshold = ThresholdCapture.all
+  end
+
+  def edit_element_threshold
+    id = params[:id]
+    @threshold = ThresholdCapture.find(id.to_i)
+  end
+
+  def delete_element_threshold
+    id = params[:id]
+    ThresholdCapture.find(id.to_i).delete
+    init_threshold
+
+    redirect_to :view_threshold, flash: {warning: "Threshold deleted succesfully..."}
   end
 end

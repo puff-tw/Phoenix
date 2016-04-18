@@ -2,8 +2,10 @@
 <hr/>
 <div class="row">
   <div class="pull-right" style="margin-right: 20px;">
-    <a href="/edit-threshold" class="btn btn-info"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit Threshold</a>
-    <a href="#" class="btn btn-primary" id="viewthreshold"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Threshold</a>
+    <a href="/edit-threshold" class="btn btn-info"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Threshold</a>
+    <a href="/view-threshold" class="btn btn-primary" id="viewthreshold"><i class="fa fa-pencil"></i>&nbsp;&nbsp;View/Edit
+      Threshold</a>
+
   </div>
 </div>
 
@@ -45,9 +47,9 @@
             "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
             "iDisplayLength": 20,
             "order": [[0, "desc"], [1, "desc"]],
-            pagingType: 'full_numbers',
+            "pagingType": 'full_numbers',
             "sPaginationType": "bootstrap",
-            responsive: true,
+            "responsive": true,
             "bSort": true
         });
 
@@ -67,9 +69,6 @@
             dt.column(8).search(this.value).draw();
         });
 
-        $('#viewthreshold').click(function () {
-            alert("Im working on this");
-        })
 
     });
 </script>
