@@ -27,7 +27,7 @@
     <tbody>
     <% @report.each do |rep| %>
         <tr>
-          <td><%= rep['created_at'].strftime("%H-%M-%Y %H:%M:%S") %></td>
+          <td><%= rep['created_at'].strftime("%d/%m/%Y-%H:%M:%S") %></td>
           <td><%= rep['invoice_number'] %></td>
           <td><%= rep['items_size'] %></td>
           <td><%= rep['item_quantity'] %></td>

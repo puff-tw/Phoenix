@@ -393,7 +393,6 @@ class TotalSalesSummaryController < ApplicationController
     value = params[:newthreshold]
     ThresholdCapture.find(id.to_i).update!(:threshold_value => value.to_i)
 
-    init_threshold
     redirect_to :view_threshold, flash: {success: "Threshold Value Updated succesfully..."}
   end
 end

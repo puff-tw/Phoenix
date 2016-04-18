@@ -48,7 +48,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
       [
           # comma separated list of the values for each cell of a table row
           # example: record.attribute,
-          record.txn_date.strftime('%d/%m/%Y'),
+          record.created_at.strftime("%d/%m/%Y-%H:%M:%S"),
           record.number,
           record.location_entity_name,
           record.business_entity_location_name,

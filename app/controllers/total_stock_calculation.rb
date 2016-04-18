@@ -95,6 +95,7 @@ class TotalStockCalculation < ActiveType::Object
         available_stock -= master[loc][product]['pos_sales'].to_i
         available_stock -= master[loc][product]['in_transit'].to_i
 
+
         productmap = Hash.new
         productmap['BusinessEntity'] = bus_ent_locs[loc][0].gsub(",", "")
         productmap['Location'] = bus_ent_locs[loc][1]
@@ -110,12 +111,9 @@ class TotalStockCalculation < ActiveType::Object
         productmap['AvailableStock'] = available_stock
 
         result<<productmap
-
       end
     end
-
     return result
-
   end
 
   def self.locationwise_stock_summary(options = {}, filter_params={})

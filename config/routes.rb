@@ -59,6 +59,7 @@ Rails.application.routes.draw do
   get '/posdisplay' => 'total_sales_summary#pos_display'
   get '/reconciliation' => 'total_sales_summary#stock_reconciliation'
   get '/invoice-list-with-payment' => 'total_sales_summary#invoice_list_with_payment'
+  get '/invoice-list-with-payment' => 'total_sales_summary#invoice_list_with_payment'
   get '/line-item-extract' => 'total_sales_summary#line_item_extract'
   get '/voucher-line-item-extract' => 'total_sales_summary#voucher_line_item_extract'
   get '/sku-lookup' => 'total_sales_summary#sku_lookup'
