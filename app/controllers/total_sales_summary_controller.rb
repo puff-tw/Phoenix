@@ -397,4 +397,49 @@ class TotalSalesSummaryController < ApplicationController
     init_threshold
     redirect_to :view_threshold, flash: {success: "Threshold Value Updated succesfully..."}
   end
+
+  def pdf_merger_in
+
+    jsonData = params[:hiddenjson]
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = InventoryInVoucherPdf.new(jsonData)
+        send_data pdf.render, filename: "inventory_in_report",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
+    end
+  end
+
+  def pdf_merger_out
+
+    jsonData = params[:hiddenjson]
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = InventoryOutVoucherPdf.new(jsonData)
+        send_data pdf.render, filename: "inventory_out_report",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
+    end
+  end
+
+  def pdf_merger_in_transfer
+
+    jsonData = params[:hiddenjson]
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = InventoryInternalTransferVoucherPdf.new(jsonData)
+        send_data pdf.render, filename: "inventory_internal_transfer",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
+    end
+  end
 end

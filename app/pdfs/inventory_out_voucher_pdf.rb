@@ -2,7 +2,7 @@ class InventoryOutVoucherPdf < Prawn::Document
 
   def initialize(inventory_in_voucher)
     super({top_margin: 20, left_margin: 35, right_margin: 25, bottom_margin: 20})
-    @inventory_out = inventory_in_voucher
+    @inventory_out = JSON.parse inventory_in_voucher
     text GlobalSettings.organisation_name, size: 15, style: :bold, align: :center
     move_down 10
     generated_date
@@ -15,6 +15,7 @@ class InventoryOutVoucherPdf < Prawn::Document
     move_down 10
     text "Generated at: #{ Time.zone.now.to_formatted_s(:long) }", size: 12
   end
+
   def line_items
     table fetch_records do
       row(0).font_style = :bold
@@ -43,13 +44,13 @@ class InventoryOutVoucherPdf < Prawn::Document
     result = [['Date', "Invoice", "Consignor::Location", "Consingee Entity", "Amount", "Remarks", "CreatedBy"]]
     @inventory_out.each do |inventory_out_voucher|
       result += [[
-                     inventory_out_voucher.voucher_date.strftime('%d/%m/%Y'),
-                     inventory_out_voucher.voucher_number,
-                     inventory_out_voucher.primary_entity_name_with_location,
-                     inventory_out_voucher.secondary_entity_alias_name,
-                     inventory_out_voucher.total_amount,
-                     inventory_out_voucher.remarks,
-                     inventory_out_voucher.created_by.custom_object_label
+                     inventory_out_voucher['row1'],
+                     inventory_out_voucher['row2'],
+                     inventory_out_voucher['row3'],
+                     inventory_out_voucher['row4'],
+                     inventory_out_voucher['row5'],
+                     inventory_out_voucher['row6'],
+                     inventory_out_voucher['row7']
                  ]]
     end
     result

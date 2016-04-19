@@ -1,8 +1,13 @@
 <% provide(:title, 'InventoryIn Vouchers listing') %>
-<span class="pull-right">
-  <%= link_to 'New InventoryIn Voucher', new_inventory_in_voucher_path, class: 'btn btn-primary' %>
+<div class="pull-right">
+
   <!--<a target="_blank" href="/inventory-in-vouchers.pdf" class="btn btn-info">Pdf</a>-->
-</span>
+  <form method="post" target="_blank" id="pdfForm" action="/pdf-merger-in.pdf">
+    <input type="hidden" name="hiddenjson" id="hiddenjson">
+    <%= link_to 'New InventoryIn Voucher', new_inventory_in_voucher_path, class: 'btn btn-primary' %>
+    <input type="submit" id="alert" class="btn btn-info" value="Print"/>
+  </form>
+</div>
 <div class="display responsive no-wrap voucher_line_items">
   <table id='voucher_line_items' class='DataTable2 DataTable-line-items'>
     <thead>
@@ -42,7 +47,6 @@
 
     $(function () {
         var dt = $('#voucher_line_items').DataTable({
-                    "dom": 'T<"clear">lfrtip',
                     "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
                     "iDisplayLength": 20,
                     "order": [[0, "desc"], [1, "desc"]],
@@ -53,21 +57,44 @@
                     // processing: true,
                     // serverSide: true,
                     responsive: true,
-                    "bSort": false,
-                    "tableTools": {
-                        sSwfPath: "http://cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf",
-                        "aButtons": [{
-                            "sExtends": "pdf",
-                            "oSelectorOpts": {"filter": "applied", page: 'all'},
-                            "mColumns": [0, 1, 2, 3, 4, 6]
-                        },
-                            {
-                                "sExtends": "xls"
-                            }]
-                    }
+                    "bSort": false
                 }
         );
 
+        $('#alert').on('click', function (e) {
+            $('#hiddenjson').val("")
+            e.preventDefault();
+
+            var arr = [];
+            var rows = $("#voucher_line_items").dataTable().$('tr', {"filter": "applied"}).each(function () {
+                var row1 = $(this).find("td:eq(0)").text();
+                var row2 = $(this).find("td:eq(1)").text();
+                var row3 = $(this).find("td:eq(2)").text();
+                var row4 = $(this).find("td:eq(3)").text();
+                var row5 = $(this).find("td:eq(4)").text();
+                var row6 = $(this).find("td:eq(5)").text();
+                var row7 = $(this).find("td:eq(6)").text();
+
+
+                var data = {
+                    row1: row1,
+                    row2: row2,
+                    row3: row3,
+                    row4: row4,
+                    row5: row5,
+                    row6: row6,
+                    row7: row7,
+                }
+                arr.push(data)
+
+            });
+
+            jsonData = JSON.stringify(arr);
+            $('#hiddenjson').val(jsonData)
+
+            $('#pdfForm').submit();
+
+        });
         $('#date_search').keyup(function () {
             dt.column(0).search(this.value).draw();
         });

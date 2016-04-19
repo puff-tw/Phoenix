@@ -72,6 +72,9 @@ Rails.application.routes.draw do
 
 
   post '/create-user-accounts' => 'total_sales_summary#create_user_with_account'
+  post '/pdf-merger-in' => 'total_sales_summary#pdf_merger_in'
+  post '/pdf-merger-out' => 'total_sales_summary#pdf_merger_out'
+  post '/pdf-merger-in-transfer' => 'total_sales_summary#pdf_merger_in_transfer'
 
   post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
   get '/on-hand-lookup' => 'on_hand_look_up#show'

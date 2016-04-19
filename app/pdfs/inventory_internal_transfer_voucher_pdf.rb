@@ -1,7 +1,7 @@
 class InventoryInternalTransferVoucherPdf < Prawn::Document
   def initialize(inventory_internal_transfer_voucher)
     super({top_margin: 20, left_margin: 35, right_margin: 25, bottom_margin: 20})
-    @inventory_internal_transfer_voucher = inventory_internal_transfer_voucher
+    @inventory_internal_transfer_voucher = JSON.parse inventory_internal_transfer_voucher
     text GlobalSettings.organisation_name, size: 15, style: :bold, align: :center
     move_down 10
     generated_date
@@ -41,16 +41,16 @@ class InventoryInternalTransferVoucherPdf < Prawn::Document
   end
 
   def line_item_rows
-    result = [['Date', "Invoice", "From Location", "To Location", "Amount", "Remarks","CreatedBy"]]
+    result = [['Date', "Invoice", "From Location", "To Location", "Amount", "Remarks", "CreatedBy"]]
     @inventory_internal_transfer_voucher.each do |inventory_internal_transfer_voucher|
       result += [[
-                     inventory_internal_transfer_voucher.voucher_date.strftime('%d/%m/%Y'),
-                     inventory_internal_transfer_voucher.voucher_number,
-                     inventory_internal_transfer_voucher.primary_entity_name_with_location,
-                     inventory_internal_transfer_voucher.secondary_location_name,
-                     inventory_internal_transfer_voucher.total_amount,
-                     inventory_internal_transfer_voucher.remarks,
-                     inventory_internal_transfer_voucher.created_by.custom_object_label
+                     inventory_internal_transfer_voucher['row1'],
+                     inventory_internal_transfer_voucher['row2'],
+                     inventory_internal_transfer_voucher['row3'],
+                     inventory_internal_transfer_voucher['row4'],
+                     inventory_internal_transfer_voucher['row5'],
+                     inventory_internal_transfer_voucher['row6'],
+                     inventory_internal_transfer_voucher['row7']
                  ]]
     end
     result
