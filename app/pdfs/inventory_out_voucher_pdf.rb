@@ -35,7 +35,7 @@ class InventoryOutVoucherPdf < Prawn::Document
       row(0).align = :center
       self.row_colors = ["DDDDDD", "FFFFFF"]
       self.width = 560
-      self.cell_style = {size: 10, padding_left: 10, padding_right: 10}
+      self.cell_style = {size: 10, padding_left: 5, padding_right: 5}
       self.header = true
     end
   end

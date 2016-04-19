@@ -9,7 +9,7 @@ class StockReconciliationPdf < Prawn::Document
     stroke_horizontal_rule
     move_down 10
     line_items
-    number_pages "<page> / <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 50, 0], :align => :center, :size => 14 }
+    number_pages "<page> / <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 50, 0], :align => :center, :size => 10 }
   end
   def generated_date
     move_down 10
@@ -30,6 +30,7 @@ class StockReconciliationPdf < Prawn::Document
 
       text stockitem[0],size: 20, style: :bold, align: :center
       text location,size: 10, style: :bold, align: :right
+      text "#{ Time.zone.now.to_formatted_s(:long) }", size: 10, style: :bold, align: :left
       stroke_horizontal_rule
 
       move_down(10)

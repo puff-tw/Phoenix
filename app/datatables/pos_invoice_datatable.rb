@@ -12,11 +12,11 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
   end
 
   def from
-    @from = options[:from].to_date
+    @from = options[:from].to_datetime
   end
 
   def to
-    @to ||= options[:to].to_date
+    @to ||= options[:to].to_datetime
   end
 
   def ttype
@@ -35,6 +35,8 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
   end
 
   def data
+    print @from
+    print @to
 
     myHash = Hash.new
 
@@ -77,14 +79,14 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
             .view_pos_invoices
             .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
             .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
-            .where(:txn_date => from..to)
+            .where(:created_at => from..to)
             .references(:line_items, :header, :created_by)
       when 1
         current_power
             .view_pos_invoices
             .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
             .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
-            .where(:txn_date => from..to)
+            .where(:created_at => from..to)
             .where("mode = ?", ['Account::CashAccount'])
             .references(:line_items, :header, :created_by)
       when 2
@@ -92,12 +94,13 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
             .view_pos_invoices
             .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
             .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
-            .where(:txn_date => from..to)
+            .where(:created_at => from..to)
             .where("mode = ?", ['Account::BankAccount'])
             .references(:line_items, :header, :created_by)
 
     end
   end
+
 
 # ==== Insert 'presenter'-like methods below if necessary
   def_delegators :@view, :link_to, :h, :pos_invoice_url, :edit_pos_invoice_path, :current_power

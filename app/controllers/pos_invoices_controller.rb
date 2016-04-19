@@ -13,8 +13,8 @@ class PosInvoicesController < ApplicationController
 
     respond_to do |format|
 
-      fromdate = params[:fromdate] || GlobalSettings.start_date
-      todate = params[:todate]|| Date.today
+      fromdate = params[:fromdate] || GlobalSettings.start_date.to_date.beginning_of_day.strftime("%d/%m/%Y-%H:%M:%S")
+      todate = params[:todate]|| Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S")
       ttype = params[:ttype] || 0
 
       @start = fromdate
