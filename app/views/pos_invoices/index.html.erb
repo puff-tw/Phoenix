@@ -51,12 +51,14 @@
     $(function () {
 
         var d = new Date();
-        var month = d.getMonth();
+        var month = d.getMonth() + 1;
         var day = d.getDate();
         var year = d.getFullYear();
         var hour = d.getHours();
         var min = d.getMinutes();
 
+        valr = day + "/" + month + "/" + year + "-" + hour + ":" + min;
+        $('.datetimepickerto').val(valr)
         $('.datetimepickerfrom').datetimepicker({
             format: 'DD/MM/YYYY-HH:mm',
             showTodayButton: true,
@@ -69,7 +71,6 @@
             sideBySide: true,
             showClose: true
         });
-        $('.datetimepickerto').datetimepicker('update', new Date());
 
         $(".datetimepickerfrom").on("dp.change", function (e) {
             $('.datetimepickerto').data("DateTimePicker").minDate(e.date);
@@ -77,6 +78,10 @@
         $(".datetimepickerto").on("dp.change", function (e) {
             $('.datetimepickerfrom').data("DateTimePicker").maxDate(e.date);
         });
+
+
+//        var picker = $('.datetimepickerto').data('datetimepicker');
+//        picker.setDate(d);
 
 
         var dt = $('#pos_invoice_index').dataTable({
