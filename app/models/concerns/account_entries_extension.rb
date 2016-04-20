@@ -3,8 +3,38 @@ module AccountEntriesExtension
     where(type: 'AccountEntry::Debit').sum(:amount) - where(type: 'AccountEntry::Credit').sum(:amount)
   end
 
-  def full_amount
-    where(type: 'AccountEntry::Debit').sum(:amount)
+  def debit_detail
+    from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+    to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+
+    where(type: 'AccountEntry::Debit')
+        .where(:created_at => from..to)
+        .group("date(created_at)")
+        .order('date_created_at')
+        .sum(:amount)
+  end
+
+
+  def credit_detail
+    from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+    to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+
+    where(type: 'AccountEntry::Credit')
+        .where(:created_at => from..to)
+        .group("date(created_at)")
+        .order('date_created_at')
+        .sum(:amount)
+  end
+
+  def card_detail
+    from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+    to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+
+    where("mode = ?", ['Account::BankAccount'])
+        .where(:created_at => from..to)
+        .group("date(created_at)")
+        .order('date_created_at')
+        .sum(:amount)
   end
 
   def full_due_amount

@@ -35,8 +35,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
   end
 
   def data
-    print @from
-    print @to
+
 
     myHash = Hash.new
 
