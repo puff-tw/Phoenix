@@ -1,5 +1,8 @@
 module AccountEntriesExtension
   def debit_balance
+    from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+    to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+
     where(type: 'AccountEntry::Debit').sum(:amount) - where(type: 'AccountEntry::Credit').sum(:amount)
   end
 
@@ -8,7 +11,6 @@ module AccountEntriesExtension
     to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
 
     where(type: 'AccountEntry::Debit')
-        .where(:created_at => from..to)
         .group("date(created_at)")
         .order('date_created_at')
         .sum(:amount)
@@ -20,7 +22,6 @@ module AccountEntriesExtension
     to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
 
     where(type: 'AccountEntry::Credit')
-        .where(:created_at => from..to)
         .group("date(created_at)")
         .order('date_created_at')
         .sum(:amount)

@@ -19,12 +19,27 @@
   </thead>
 
   <tbody>
-  <% @debit.each do |k, v| %>
+  <%
+     deb = 0
+     cre = 0
+     @dates.each do |date| %>
       <tr>
-        <td><%= k %></td>
-        <td><%= v %></td>
-        <td><%= @credit[k] %></td>
+        <td><%= date %></td>
+        <td>
+          <%= @debit[date] %>
+          <% deb = deb+@debit[date].to_i
+          %></td>
+        <td>
+          <%= @credit[date] %>
+          <% cre = cre + @credit[date].to_i
+          %></td>
       </tr>
   <% end %>
+  <tr>
+    <td></td>
+    <td>Total :<%= deb %></td>
+    <td>Total :<%= cre %></td>
+
+  </tr>
   </tbody>
 </table>

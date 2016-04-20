@@ -6,8 +6,22 @@ class MyAccountController < ApplicationController
 
     id=@current_user.cash_account.id
     @amount_given_to_cashier = AccountEntry
-                                   .where(:type => 'AccountEntry::Credit')
+                                   .where(:mode => 'Account::BankAccount')
+                                   .where(:type => 'AccountEntry::Debit')
                                    .where(:account_id => id)
                                    .order("created_at DESC")
+
+    allDates = Array.new
+    @debit.each do |k, v|
+      allDates << k
+    end
+    @credit.each do |k, v|
+      allDates << k
+    end
+
+
+    @dates = allDates.uniq.sort
+
+
   end
 end
