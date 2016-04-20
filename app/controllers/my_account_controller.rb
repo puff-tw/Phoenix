@@ -20,7 +20,7 @@ class MyAccountController < ApplicationController
     end
 
 
-    @dates = allDates.uniq.sort
+    @dates = allDates.uniq.sort { |x, y| y<=>x }
 
 
   end
