@@ -257,6 +257,8 @@ class TotalSalesSummaryController < ApplicationController
   def voucher_line_item_extract
     @report = InventoryTxnVouchersReport.inventory_internal_transfer_vouchers_line_items()
 
+    voucher_type = @report.map { |x| x['VoucherType'] }
+    @uniq_vucher = voucher_type.uniq
   end
 
   def sku_lookup
