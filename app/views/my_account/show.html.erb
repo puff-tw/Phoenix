@@ -1,6 +1,7 @@
 <% provide(:title, 'My Account') %>
 <h2 class='text-center'>
-  <%= "My Account       : #{sprintf '%.0f', @current_user.cash_account.entries.debit_balance}" %><br/>
+  My Account<sub>(Total cash sale - Amount Deposited)</sub>
+  :<%= " #{sprintf '%.0f', @current_user.cash_account.entries.debit_balance}" %><br/>
   <hr/>
 
   <%#= "Total Cash       : #{sprintf '%.0f', @current_user.cash_account.entries.full_amount}" %><br/>
@@ -13,9 +14,9 @@
   <thead>
   <tr>
     <th>Date</th>
-    <th>Total Sale Amount(Cash)</th>
-    <th>Total Amount Received by cashier</th>
-    <th>Credit Card Transcation</th>
+    <th>Total Cash Sales</th>
+    <th>Amount Deposited</th>
+    <th>Total Credit Card Sales</th>
   </tr>
   </thead>
 
@@ -49,7 +50,6 @@
     <td>Total :<%= deb %></td>
     <td>Total :<%= cre %></td>
     <td>Total :<%= card1 %></td>
-
   </tr>
   </tbody>
 </table>
