@@ -15,6 +15,10 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
     @from = options[:from].to_datetime
   end
 
+  def location
+    @location = options[:location].to_i
+  end
+
   def to
     @to ||= options[:to].to_datetime
   end
@@ -79,6 +83,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
             .includes(:line_items, [header: [business_entity_location: :business_entity]], :created_by, :debit_entries)
             .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
             .where(:created_at => from..to)
+            .where('business_entity_locations.id=?', [location])
             .references(:line_items, :header, :created_by)
       when 1
         current_power
@@ -87,6 +92,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
             .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
             .where(:created_at => from..to)
             .where("mode = ?", ['Account::CashAccount'])
+            .where('business_entity_locations.id = ?', [location])
             .references(:line_items, :header, :created_by)
       when 2
         current_power
@@ -95,6 +101,7 @@ class PosInvoiceDatatable < AjaxDatatablesRails::Base
             .select("mode,account_txns.*, (select SUM(invoice_line_items.amount) FROM invoice_line_items WHERE invoice_line_items.account_txn_id=account_txns.id) AS total_amount")
             .where(:created_at => from..to)
             .where("mode = ?", ['Account::BankAccount'])
+            .where('business_entity_locations.id =?', [location])
             .references(:line_items, :header, :created_by)
 
     end

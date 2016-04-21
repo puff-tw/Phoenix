@@ -1,36 +1,46 @@
 class PosInvoicesController < ApplicationController
   power :pos_invoices, map: {
-      [:edit, :update, :get_voucher_sequences] => :updatable_pos_invoices,
-      [:new, :create, :get_voucher_sequences] => :creatable_pos_invoices,
-      [:index, :show] => :view_pos_invoices,
-      [:destroy] => :destroyable_pos_invoices
-  }, as: :pos_invoice_scope
+                         [:edit, :update, :get_voucher_sequences] => :updatable_pos_invoices,
+                         [:new, :create, :get_voucher_sequences] => :creatable_pos_invoices,
+                         [:index, :show] => :view_pos_invoices,
+                         [:destroy] => :destroyable_pos_invoices
+                     }, as: :pos_invoice_scope
   include VoucherSequenceable
   before_action :set_pos_invoice, only: [:edit, :update, :destroy]
 
   def index
 
 
+    @location = BusinessEntity
+                    .joins(:locations)
+                    .select('business_entity_locations.id,
+                             business_entities.alias_name,
+                             business_entity_locations.name')
+                    .where('business_entities.id = business_entity_locations.business_entity_id and business_entity_locations.active = TRUE')
+
+
     respond_to do |format|
 
       fromdate = params[:fromdate] || GlobalSettings.start_date.to_date.beginning_of_day.strftime("%d/%m/%Y-%H:%M:%S")
       todate = params[:todate]|| Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S")
+      location = params[:location] || GlobalSettings.current_bookstall_id
       ttype = params[:ttype] || 0
 
       @start = fromdate
       @end = todate
+      @locationselect=BusinessEntityLocation.find(location.to_i).name
       @trtype = ttype.to_i == 0 ? "All" : ttype.to_i == 1 ? "Cash" : "Card"
 
       format.html
       # format.csv { send_data @pos_invoices.to_csv, filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.csv" }
       format.xls #{ send_data @pos_invoices.to_csv(col_sep: "\t"), filename: "sale_transactions_complete_#{Time.zone.now.in_time_zone.strftime('%Y%m%d')}.xls" }
-      format.json { render json: get_data(fromdate, todate, ttype) }
+      format.json { render json: get_data(fromdate, todate, ttype, location) }
     end
   end
 
 
-  def get_data(start_date=GlobalSettings.start_date, end_date = Date.today, ttype=0)
-    PosInvoiceDatatable.new(view_context, {:from => start_date, :to => end_date, :ttype => ttype})
+  def get_data(start_date=GlobalSettings.start_date, end_date = Date.today, ttype=0, location)
+    PosInvoiceDatatable.new(view_context, {:from => start_date, :to => end_date, :ttype => ttype, :location => location})
   end
 
 

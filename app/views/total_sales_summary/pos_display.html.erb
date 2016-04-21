@@ -5,16 +5,39 @@
 
     <form class="form-inline" action="/pos-invoices">
       <div class="form-group">
-        <label for="fromdate">From</label>
-        <input type="text" name="fromdate" id="fromdate" class="form-control datetimepickerfrom" value="<%= GlobalSettings.start_date.strftime("%d/%m/%Y-%H:%M") %>">
+        <label for="fromdate">From</label><br/>
+        <input type="text" name="fromdate" id="fromdate" class="form-control datetimepickerfrom" value="<%= GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M") %>">
       </div>
 
       <div class="form-group">
-        <label for="todate">To</label>
+        <label for="todate">To</label><br/>
         <input type="text" name="todate" id="todate" class="form-control datetimepickerto">
       </div>
 
       <div class="form-group">
+        <label for="location">Location : </label><br/>
+        <select class="form-control select-box" name="location" id="location">
+          <option value="">Select one</option>
+          <% @location.each do |c| %>
+              <% if (c.id == GlobalSettings.current_bookstall_id) %>
+                  <option value="<%= c.id %>" selected><%= c.alias_name %> :: <%= c.name %></option>
+              <% else %>
+                  <option value="<%= c.id %>"><%= c.alias_name %> :: <%= c.name %></option>
+              <% end %>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ttype">Transcation Type</label><br/>
+        <select name="ttype" id="ttype" class="form-control">
+          <option value="0">All</option>
+          <option value="1">Cash</option>
+          <option value="2">Card</option>
+        </select>
+      </div>
+
+      <div class="form-group"><br/>
         <button type="submit" class="btn btn-primary">Filter</button>
       </div>
     </form>

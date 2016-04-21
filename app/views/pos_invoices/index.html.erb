@@ -1,6 +1,6 @@
 <% provide(:title, 'POS Invoice listing') %>
 
-<%= render 'total_sales_summary/pos_display' %>
+<%= render :template => 'total_sales_summary/pos_display', :locals => {:location => @location} %>
 
 <hr/>
 
@@ -8,6 +8,7 @@
   <h2>Filters</h2>
   <label>Start-Date : </label><%= @start %>&nbsp;&nbsp;&nbsp;
   <label>End-Date : </label><%= @end %>&nbsp;&nbsp;&nbsp;
+  <label>Location  : </label><%= @locationselect %>&nbsp;&nbsp;&nbsp;
   <label>Transcation Type : </label><%= @trtype %>&nbsp;&nbsp;&nbsp;
 </center>
 
@@ -50,6 +51,7 @@
 <script>
     $(function () {
 
+        $('.select-box').select2()
         var d = new Date();
         var month = d.getMonth() + 1;
         var day = d.getDate();
@@ -95,7 +97,7 @@
             data: {
                 "fromdate": $('#fromdate').val(),
                 "todate": $("#todate").val(),
-                "transcation_type": $("#todate").val()
+                "transcation_type": $("#ttype").val()
             },
             columns: [
                 {"sClass": "text-center"},
