@@ -51,16 +51,23 @@
 </div>
 
 <script>
+    ////cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf
     $(function () {
         var dt = $('#voucherlineitemextract').DataTable({
+            dom: 'T<"clear">lfrtip',
             "aLengthMenu": [[15, 30, 60, 120, 240], [15, 30, 60, 120, 240]], // -1 for "All"
             "iDisplayLength": 20,
             "order": [[0, "desc"], [1, "desc"]],
             pagingType: 'full_numbers',
             "sPaginationType": "bootstrap",
             responsive: true,
-            "bSort": false
+            "bSort": false,
+            tableTools: {
+                "aButtons": ["xls"],
+                "sSwfPath": 'http://cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf'
+            }
         });
+
 
         document.getElementById("voucher").onchange = function () {
             dt.column(2).search(this.value.trim()).draw();
