@@ -15,6 +15,7 @@
     <th>Date</th>
     <th>Total Sale Amount(Cash)</th>
     <th>Total Amount Received by cashier</th>
+    <th>Credit Card Transcation</th>
   </tr>
   </thead>
 
@@ -22,23 +23,32 @@
   <%
      deb = 0
      cre = 0
+     card1 = 0
      @dates.each do |date| %>
       <tr>
         <td><%= date %></td>
         <td>
           <%= @debit[date] %>
           <% deb = deb+@debit[date].to_i
-          %></td>
+          %>
+        </td>
         <td>
           <%= @credit[date] %>
           <% cre = cre + @credit[date].to_i
-          %></td>
+          %>
+        </td>
+        <td>
+          <%= @card[date] %>
+          <% card1 = card1 + @card[date].to_i
+          %>
+        </td>
       </tr>
   <% end %>
   <tr>
     <td></td>
     <td>Total :<%= deb %></td>
     <td>Total :<%= cre %></td>
+    <td>Total :<%= card1 %></td>
 
   </tr>
   </tbody>
