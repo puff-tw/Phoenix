@@ -11,7 +11,7 @@
 
       <div class="form-group">
         <label for="todate">To</label><br/>
-        <input type="text" name="todate" id="todate" class="form-control datetimepickerto">
+        <input type="text" name="todate" id="todate" class="form-control datetimepickerto" value="<%= Time.now.to_datetime.strftime("%d/%m/%Y-%H:%M")%>">
       </div>
 
       <div class="form-group">

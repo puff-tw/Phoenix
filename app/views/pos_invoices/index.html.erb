@@ -52,15 +52,16 @@
     $(function () {
 
         $('.select-box').select2()
-        var d = new Date();
-        var month = d.getMonth() + 1;
-        var day = d.getDate();
-        var year = d.getFullYear();
-        var hour = d.getHours();
-        var min = d.getMinutes();
+//        var d = new Date();
+//        var month = d.getMonth() + 1;
+//        var day = d.getDate();
+//        var year = d.getFullYear();
+//        var hour = d.getHours();
+//        var min = d.getMinutes();
+//
+//        valr = day + "/" + month + "/" + year + "-" + hour + ":" + min;
+//        $('.datetimepickerto').val(valr)
 
-        valr = day + "/" + month + "/" + year + "-" + hour + ":" + min;
-        $('.datetimepickerto').val(valr)
         $('.datetimepickerfrom').datetimepicker({
             format: 'DD/MM/YYYY-HH:mm',
             showTodayButton: true,
