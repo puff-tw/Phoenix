@@ -329,7 +329,7 @@ class TotalSalesSummaryController < ApplicationController
 
     init_threshold
 
-    redirect_to :edit_threshold, flash: {success: "Threshold limit made succesfully..."}
+    redirect_to :sku_lookup, flash: {success: "Threshold limit made succesfully..."}
   end
 
 

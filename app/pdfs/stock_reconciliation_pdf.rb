@@ -22,7 +22,8 @@ class StockReconciliationPdf < Prawn::Document
       result = [['SKU',  "Category", "Product", "Expected On-Hand Quantity","Actual On-Hand Quantity"]]
 
       location = ''
-      stockitem[1].each do |item|
+      myitem = stockitem[1].sort_by { |k| k["PCat"] }
+      myitem.each do |item|
         result += [[item['Sku'], item['PCat'],  item['ProductName'], item['AvailableStock'],""]]
         location=item['Location']
       end
