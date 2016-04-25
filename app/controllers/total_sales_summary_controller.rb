@@ -221,9 +221,9 @@ class TotalSalesSummaryController < ApplicationController
 
     @arrs = @stock.dup
     output_hash = Hash.new
-    uniq_values = @stock.uniq! { |e| e['Lang'] }
 
-    @eng = @arrs.select { |arrs| arrs["Lang"].to_s == "English" }
+    uniq_values = @stock.uniq { |e| e['Lang'] }
+
 
 
     uniq_values.each do |lang|
