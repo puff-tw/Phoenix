@@ -54,13 +54,18 @@ class AccountTxn < MyActiveRecord
 
   def set_number
     begin
-      self.number = AccountTxn.where(voucher_sequence_id: self.voucher_sequence_id).maximum(:number).to_i.succ if self.number.blank? || self.number == 0
+
+      #nextv = ActiveRecord::Base.connection.execute("SELECT nextval('account_txns_number_seq')")
+      nextv = AccountTxn.where(voucher_sequence_id: self.voucher_sequence_id).maximum(:number).to_i.succ if self.number.blank? || self.number == 0
+      # self.number = AccountTxn.where(voucher_sequence_id: self.voucher_sequence_id).maximum(:number).to_i.succ if self.number.blank? || self.number == 0
+      self.number =nil
       self.number_prefix = self.voucher_sequence.number_prefix
     rescue => e
       Airbrake.notify(e)
       errors.add(:base, 'Could not obtain invoice number. Please retry saving.') and return false
     end
   end
+
 
   def cancelled?
     return true if status == 'Cancelled' || status == 2
