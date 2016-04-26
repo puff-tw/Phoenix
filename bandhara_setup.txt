@@ -1,3 +1,27 @@
+26 April 2016
+--------------
+134 - SHPT, Hyderabad (Business Entity), voucher sequence id 465?
+160 - Kanha Bookstall (Business Entity Location)
+    bank_account_id=97
+    sales_account_id=98
+
+Test POS User: 76
+Cash Account: 52
+
+
+Account::SalesAccount.create!(business_entity_id: 134, name: "Cel201604-Sales", alias_name: "Sales Cel201604", contra: false, reserved: true, active: true)
+
+=> #<Account::SalesAccount id: 98, business_entity_id: 134, name: "Cel201604-Sales", alias_name: "Sales Cel201604", type: "Account::SalesAccount", contra: false, reserved: true, active: true, created_at: "2016-04-20 07:09:52", updated_at: "2016-04-20 07:09:52">
+
+#Map the sales account to the Business Entity Location
+BusinessEntityLocation.find(160).update_attributes(sales_account_id: 98)
+
+
+
+
+
+Feb 2016 Setup
+---------------
 134 - SHPT, Hyderabad (Business Entity), voucher sequence id 465?
 158 - Kanha Bookstall (Business Entity Location)
     bank_account_id=51

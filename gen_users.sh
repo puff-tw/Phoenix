@@ -13,12 +13,15 @@ while read line; do
    ((k++))
 
    cat <<USER_RECORD
+ActiveRecord::Base.transaction do
+
 user = User.create!(name: '${name}', city_id: 1, email: '${idCard}@kanha.org', contact_number_primary: '${mobile}', active: true, membership_number: '${idNumber}')
-userrole = UserRole.create!(user: user, role_id: 5, business_entity_location_id: 158, active: true)
+userrole = UserRole.create!(user: user, role_id: 5, business_entity_location_id: 160, active: true)
 account = Account::CashAccount.create!(business_entity_id: 134, name: "Cash_#{user.id}", alias_name: 'Cash - ${name}', reserved: true)
 user.update_attributes!(cash_account_id: account.id)
 user.update_attributes!(password: '${idCard}', password_confirmation: '${idCard}')
 
+end
 USER_RECORD
 
 done < $FILE
