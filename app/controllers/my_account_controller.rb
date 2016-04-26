@@ -22,11 +22,15 @@ class MyAccountController < ApplicationController
     # WHERE mode = 'Account::BankAccount' AND account_entries.type = 'AccountEntry::Debit'
     # AND users.id = 1;
 
+    from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+    to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+
     @card = AccountEntry
               .joins(:account_txn => :created_by)
               .where(:mode => 'Account::BankAccount')
               .where(:type => 'AccountEntry::Debit')
               .where('users.id=?', @current_user.id)
+              .where(:created_at=>from..to)
               .group("date(account_entries.created_at)")
               .sum(:amount)
 

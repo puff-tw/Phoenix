@@ -32,19 +32,19 @@ ActiveRecord::Schema.define(version: 20160425100529) do
   add_index "account_entries", ["account_txn_id", "account_id"], name: "index_account_entries_on_account_txn_id_and_account_id", using: :btree
 
   create_table "account_txns", force: :cascade do |t|
-    t.integer  "business_entity_id",             null: false
-    t.integer  "currency_id",                    null: false
-    t.integer  "voucher_sequence_id",            null: false
-    t.integer  "created_by_id",                  null: false
-    t.string   "type",                           null: false
+    t.integer  "business_entity_id",                                                                      null: false
+    t.integer  "currency_id",                                                                             null: false
+    t.integer  "voucher_sequence_id",                                                                     null: false
+    t.integer  "created_by_id",                                                                           null: false
+    t.string   "type",                                                                                    null: false
     t.string   "number_prefix",       limit: 8
-    t.integer  "number",                         null: false
+    t.integer  "number",                         default: "nextval('account_txns_number_seq'::regclass)", null: false
     t.text     "remarks"
-    t.datetime "txn_date",                       null: false
-    t.integer  "status",                         null: false
+    t.datetime "txn_date",                                                                                null: false
+    t.integer  "status",                                                                                  null: false
     t.string   "ref_number",          limit: 30
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                                                              null: false
+    t.datetime "updated_at",                                                                              null: false
   end
 
   add_index "account_txns", ["business_entity_id", "number_prefix", "number"], name: "idx_account_txns_on_business_entity_n_number_prefix_n_number", unique: true, using: :btree
