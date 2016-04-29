@@ -22,9 +22,12 @@ module AccountEntriesExtension
     from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
     to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
 
-    where(type: 'AccountEntry::Credit').where(:created_at=>from..to)
-        .group("date(created_at)")
-        .order('date_created_at')
+    where(type: 'AccountEntry::Credit')
+        .joins(:account_txn)
+        .where("account_txns.type='JournalVoucher'")
+        .where("account_txns.created_at"=>from..to)
+        .group("date(account_txns.created_at)")
+        .order('date_account_txns_created_at')
         .sum(:amount)
   end
 

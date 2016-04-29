@@ -216,11 +216,14 @@ class TotalSalesSummaryController < ApplicationController
   #displays whole stock based on language order in pdf
   def stock_pdf
     filter_params = Hash.new
-    filter_params[:location_id] = GlobalSettings.current_bookstall_id
+    filter_params[:location_id] = params[:location_id]
     @stock = StockReconciliationReport.locationwise_stock_summary_table({}, filter_params)
 
     @arrs = @stock.dup
     output_hash = Hash.new
+
+    result = Hash.new
+
 
     uniq_values = @stock.uniq { |e| e['Lang'] }
 
@@ -231,10 +234,14 @@ class TotalSalesSummaryController < ApplicationController
     end
 
 
+    result['products'] =output_hash
+    result['location'] = BusinessEntityLocation.find(params[:location_id].to_i).name
+
+
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = StockReconciliationPdf.new(output_hash)
+        pdf = StockReconciliationPdf.new(result)
         send_data pdf.render, filename: "payment_collection_report",
                   type: "application/pdf",
                   disposition: 'inline'

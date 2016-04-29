@@ -2,8 +2,8 @@ class StockReconciliationPdf < Prawn::Document
 
   def initialize(stock)
     super({top_margin: 20, left_margin: 35, right_margin: 25, bottom_margin: 20})
-    @stock_location = stock
-    text GlobalSettings.organisation_name, size: 15, style: :bold, align: :center
+    @stock_location = stock['products']
+    text stock['location'], size: 15, style: :bold, align: :center
     move_down 10
     generated_date
     stroke_horizontal_rule
