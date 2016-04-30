@@ -23,9 +23,10 @@ module AccountEntriesExtension
     to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
 
     where(type: 'AccountEntry::Credit')
+        .joins(:account_txn)
+        .where("account_txns.type !='JournalVoucher'")
         .where(:created_at=>from..to)
-        .group("date(created_at)")
-        .order('date_created_at')
+        .group("date(account_txns.created_at)")
         .sum(:amount)
   end
 
