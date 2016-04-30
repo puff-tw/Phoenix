@@ -2,6 +2,7 @@ class MyAccountController < ApplicationController
   def show
 
     @debit = @current_user.cash_account.entries.debit_detail
+    @amount_returned = @current_user.cash_account.entries.amount_returned_detail
     @credit = @current_user.cash_account.entries.credit_detail
 
 
@@ -48,8 +49,16 @@ class MyAccountController < ApplicationController
     end
 
 
+
+
     @dates = allDates.uniq.sort { |x, y| y<=>x }
 
+    @result = {}
 
+    @dates.each do |k|
+      total = @debit[k].to_i - @amount_returned[k].to_i
+      @result[k] =total
+    end
+    a = ""
   end
 end

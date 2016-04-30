@@ -11,12 +11,23 @@ module AccountEntriesExtension
     from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
     to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
 
-    where(type: 'AccountEntry::Debit').where(:created_at=>from..to)
+    where(type: 'AccountEntry::Debit')
+        .where(:created_at=>from..to)
         .group("date(created_at)")
         .order('date_created_at')
         .sum(:amount)
   end
 
+  def amount_returned_detail
+    from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+    to = Date.today.end_of_day.strftime("%d/%m/%Y-%H:%M:%S").to_datetime
+
+    where(type: 'AccountEntry::Credit')
+        .where(:created_at=>from..to)
+        .group("date(created_at)")
+        .order('date_created_at')
+        .sum(:amount)
+  end
 
   def credit_detail
     from = GlobalSettings.start_date.to_date.strftime("%d/%m/%Y-%H:%M:%S").to_datetime

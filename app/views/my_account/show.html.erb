@@ -25,22 +25,22 @@
      deb = 0
      cre = 0
      card1 = 0
-     @dates.each do |date| %>
+     @dates.each do |date1| %>
       <tr>
-        <td><%= date %></td>
+        <td><%= date1 %></td>
         <td>
-          <%= @debit[date] %>
-          <% deb = deb+@debit[date].to_i
+          <%= @result[date1] %>
+          <% deb = deb+@result[date1].to_i
           %>
         </td>
         <td>
-          <%= @credit[date] %>
-          <% cre = cre + @credit[date].to_i
+          <%= @credit[date1] %>
+          <% cre = cre + @credit[date1].to_i
           %>
         </td>
         <td>
-          <%= @card[date] %>
-          <% card1 = card1 + @card[date].to_i
+          <%= @card[date1] %>
+          <% card1 = card1 + @card[date1].to_i
           %>
         </td>
       </tr>
