@@ -74,6 +74,9 @@ Rails.application.routes.draw do
   post '/pdf-merger-in' => 'total_sales_summary#pdf_merger_in'
   post '/pdf-merger-out' => 'total_sales_summary#pdf_merger_out'
   post '/pdf-merger-in-transfer' => 'total_sales_summary#pdf_merger_in_transfer'
+  get '/dc-reports' => 'total_sales_summary#dc_report'
+  get '/with-amount-dcreport' => 'total_sales_summary#with_amount_dcreport'
+  get '/without-amount-dcreport' => 'total_sales_summary#without_amount_dcreport'
 
   post '/total-sales-summary-validate' => 'total_sales_summary#validate_negative_sales'
   get '/on-hand-lookup' => 'on_hand_look_up#show'

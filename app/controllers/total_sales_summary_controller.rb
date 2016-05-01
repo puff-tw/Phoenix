@@ -451,4 +451,45 @@ class TotalSalesSummaryController < ApplicationController
       end
     end
   end
+
+  def dc_report
+
+  end
+
+  def with_amount_dcreport
+    filter_params = Hash.new
+    filter_params[:location_id] = 160
+    stock = DCReport.locationwise_stock_summary({}, filter_params)
+
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = DcReportWithAmountPdf.new(stock)
+        send_data pdf.render, filename: "inventory_internal_transfer",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
+    end
+
+  end
+
+  def without_amount_dcreport
+
+
+    filter_params = Hash.new
+    filter_params[:location_id] = 160
+    stock = DCReport.locationwise_stock_summary({}, filter_params)
+
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = DcReportWithoutAmountPdf.new(stock)
+        send_data pdf.render, filename: "inventory_internal_transfer",
+                  type: "application/pdf",
+                  disposition: 'inline'
+      end
+    end
+  end
 end
